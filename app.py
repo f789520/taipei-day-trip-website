@@ -55,15 +55,13 @@ def attractions():
     pagecount = page*12  # 頁數變成INT *12
     nextpagecount = (page+1)*12
 
+
     keyword = request.args.get("keyword")  # 建立關鍵字搜尋
-    sqlkeyword = "SELECT id,name,category,description,address,transport,mrt,latitude,longitude FROM attration18 WHERE name LIKE '%%%s%%' LIMIT %s,12; " % (
+    sqlkeyword = "SELECT id,name,category,description,address,transport,mrt,latitude,longitude,images FROM attration20 WHERE name LIKE '%%%s%%' LIMIT %s,12; " % (
         keyword, pagecount,)  # 建立關鍵字搜尋test
 
-    sql1 = "SELECT id,name,category,description,address,transport,mrt,latitude,longitude FROM attration18 LIMIT %s,12; " % (
-        pagecount,)  # 沒有images
-
-    sqlimage = "SELECT images FROM attration18 LIMIT %s,12; " % (
-        pagecount,)  # 只有images
+    sql1 = "SELECT id,name,category,description,address,transport,mrt,latitude,longitude,images FROM attration20 LIMIT %s,12; " % (
+        pagecount,)   
 
     sqlnextpage = "SELECT name FROM attration18 LIMIT %s,12; " % (
         nextpagecount,)  # 下一頁的DATA
@@ -78,9 +76,10 @@ def attractions():
         if keyword != None:  # 如果有關鍵字的話執行關鍵字並呈現出來
             mycursor.execute(sqlkeyword)
             myresult = mycursor.fetchall()  # (dictionary=True 可變成字典
+
             # ----------image 處理變成迴圈
             for x in range(len(myresult)): 
-                mycursor.execute(sqlimage)
+                mycursor.execute(sqlkeyword)
                 sqlimage_myresult = mycursor.fetchall()
                 list_image = sqlimage_myresult[x]["images"].split(",")  # 變成列表
                 list_image = list_image[0:-1]  # 扣掉最後一筆LIST 因為是空的
@@ -97,25 +96,23 @@ def attractions():
     
             if sqlnextpage_myresult == []:  # 要擷取下一頁的資料判斷 ， 如果LIST為空[] 則變為null
                 a = ["nextPage", "data"]
-                b = ["null", myresult]
+                b = [None, myresult]
                 myresult_nextPage_null = dict(zip(a, b))
                 return myresult_nextPage_null
             return myresult_dict_from_list
 
         mycursor.execute(sql1)
         myresult = mycursor.fetchall()  # (dictionary=True 可變成字典
-
-        # 判斷的地方，如果沒有KEYWORD 正常執行
-        # ----------image 處理變成迴圈
+        
         for x in range(len(myresult)):
-            mycursor.execute(sqlimage)
+            mycursor.execute(sql1)
             sqlimage_myresult = mycursor.fetchall()
             list_image = sqlimage_myresult[x]["images"].split(",")  # 變成列表
             list_image = list_image[0:-1]  # 扣掉最後一筆LIST 因為是空的
             c = ["images"]
             d = [list_image]
             imagestolist = dict(zip(c, d))  # 黏回去
-            ff = myresult[x].update(imagestolist)
+            myresult[x].update(imagestolist)
 
         # ----------"nextPage", "data" 與資料庫結合
         a = ["nextPage", "data"]
@@ -138,24 +135,16 @@ def attractions():
     except : 
         return abort(500)
 
-
 # 網址代參數 第二個API
 
 @app.route("/api/attraction/<id>")
 def attractionid(id):
     try:# error 處理
-        sql_id = "SELECT id,name,category,description,address,transport,mrt,latitude,longitude FROM attration18 WHERE id=%s ; " % (
+        sql_id = "SELECT id,name,category,description,address,transport,mrt,latitude,longitude,images FROM attration18 WHERE id=%s ; " % (
             id,)
-        sqlimage = "SELECT images FROM attration18 WHERE id=%s ; " % (
-            id,)
-
         mycursor.execute(sql_id)
         myresult = mycursor.fetchall() 
-
-        mycursor.execute(sqlimage)
-        sqlimage_myresult = mycursor.fetchall()
-
-        list_image=sqlimage_myresult[0]["images"].split(",")# 變成列表
+        list_image=myresult[0]["images"].split(",")# 變成列表
         list_image=list_image[0:-1]# 扣掉最後一筆LIST 因為是空的
 
         c=["images"]
@@ -183,11 +172,6 @@ def handle_bad_request(e):
 def handle_bad_request(e):
     return jsonify({ "error": True, "message":"景點編號不正確"}), 400 #後面可以自訂HTTP STATUS 數字
     
-
-
-
-
-
 
 
 app.run(host='0.0.0.0', port=3000)
