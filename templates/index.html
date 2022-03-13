@@ -1,0 +1,585 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maxium-scale=1" />
+    <title>Welcome to MyHome </title>
+
+
+    <link href="week-10.css" rel="stylesheet" type="text/css">
+</head>
+
+
+<body>
+    <!-- <div class="top1"> -->
+        <div class="top_father">
+            <div class="top">
+
+                <div class="top_left_logo">台北一日遊
+                </div>
+                <div class="top_right">
+
+                    <div class="top_right_item">預定行程</div>
+                    <div class="top_right_item">登入/註冊 </div>
+                </div>
+            </div>
+        </div>
+    <!-- </div> -->
+    </div>
+    <div></div>
+    <div class="head">
+        <div class="head2">
+
+            <div class="head_middle">
+                <div class="head_middle_text1">輕鬆享受台北一日悠閒</div>
+                <div class="head_middle_text2">探索每個角落，體驗城市的深度旅遊行程</div>
+                <div class="head_middle_search_box">
+                    <input class="head_middle_search_input" placeholder="輸入景點名稱查詢" id='AttrationKeyword'>
+                    <button class="head_middle_search_button" type="button" onclick="getDataAttrationKeyword()"><img
+                            src="icon_search.png"> </button>
+                </div>
+
+            </div>
+            <div class="welcomeImage"> </div>
+        </div>
+    </div>
+
+    <!-- 從無到有產生景點方塊 -->
+
+
+    <main class="main" id="main">
+    </main>
+
+
+    <!-- LOAD MORE 按鈕............................ -->
+    <!-- <input onclick="add()" type="button" id="add" value="Load More"
+        style="background-color: rgb(202, 194, 189);width:280px;height: 50px ;margin:0 auto;font-size: 20px; z-index: 11;" /> -->
+
+
+    <!-- A footer for the page. -->
+    </div>
+    <footer class="footer" id="foot">
+        <div id="keywordfoot"></div>
+        <div class="footer_text">
+            <p>COPYRIGHT © 2021 台北一日遊</p>
+    </footer>
+</body>
+
+
+<script>
+
+
+
+    // Intersection Observer  //  Infinite Scroll 
+    // https://shubo.io/intersection-observer-api/
+
+    const foot = document.getElementById('foot');
+    const callback = (entries, observer) => {
+        entries.forEach(entry => {
+            console.log(entry);
+            if (entry.isIntersecting) {
+                //滑到最底部 把footer id改成footkey，如果是foot才執行
+                // if (document.getElementById("foot")) {
+
+                add()
+
+                // }
+                // else if (document.getElementById("footkey")) {
+
+                //     console.log("addkeyword()")
+                //     addkeyword()
+                // }
+
+            }
+        }
+        );
+    };
+
+
+    const observer = new IntersectionObserver(callback);
+
+
+    //觀察KEYWORD
+    const keywordfoot = document.getElementById('keywordfoot');
+    const keywordcallback = (entries, observer) => {
+        entries.forEach(entry => {
+            console.log('keywordfoot', entry);
+            if (entry.isIntersecting) {
+                //滑到最底部 把footer id改成footkey，如果是foot才執行
+                // if (document.getElementById("keywordfoot")) {
+
+                console.log("addkeyword()")
+                addkeyword()
+
+                // }
+                // else if (document.getElementById("footkey")) {
+
+                //     console.log("addkeyword()")
+                //     addkeyword()
+                // }
+
+            }
+        }
+        );
+    };
+    const keywordobserver = new IntersectionObserver(keywordcallback);
+
+
+
+    fetch("http://3.115.236.143:3000/api/attractions")
+        .then((result) => {
+            return result.json();//將資料用JSON 的格式用物件和陣列的組合
+        })
+        .then((result) => {
+
+            // 載入網頁時 從無到有載入第一頁的container
+            for (d = 1; d < 13; d++) {
+                let containerdiv = document.createElement("div");
+                containerdiv.id = "container" + String(d);
+                containerdiv.className = "container";
+                document.getElementById("main").appendChild(containerdiv);
+
+                let picdiv = document.createElement("div");
+                picdiv.className = "Pic";
+                picdiv.id = "pic" + String(d);
+                document.getElementById("container" + String(d)).appendChild(picdiv);
+
+                let titlediv = document.createElement("div");
+                titlediv.className = "Title";
+                titlediv.id = "view" + String(d);
+                document.getElementById("container" + String(d)).appendChild(titlediv);
+
+                let containerbottom = document.createElement("div");
+                containerbottom.className = "containerbottom";
+                containerbottom.id = "containerbottom" + String(d);
+                document.getElementById("container" + String(d)).appendChild(containerbottom);
+
+                let mrtdiv = document.createElement("div");
+                mrtdiv.className = "mrtdiv";
+                mrtdiv.id = "mrtdiv" + String(d);
+                document.getElementById("containerbottom" + String(d)).appendChild(mrtdiv);
+
+                let catediv = document.createElement("div");
+                catediv.className = "catediv";
+                catediv.id = "catediv" + String(d);
+                document.getElementById("containerbottom" + String(d)).appendChild(catediv);
+            }
+
+            // 載入網頁時 將照片和景點塞入 從第一頁的container
+            function Viewdata(view, id) {
+                this.name = result.data[i].name;
+                let x = document.createElement("p");
+                x.setAttribute("class", "Title");
+                let t = document.createTextNode(this.name);
+                x.appendChild(t);
+                document.getElementById(id).appendChild(x);
+            }
+            for (i = 0; i < 12; i++) {
+                Viewdata(i, "view" + String(i + 1));
+            }
+            function Picdata(pic, imgid) {
+                this.pic = result.data[j].images[0];
+                let imgTag = document.createElement("img");
+                imgTag.src = this.pic;
+                imgTag.setAttribute("class", "Pic");
+                let mm = document.getElementById(imgid);
+                mm.appendChild(imgTag);
+            }
+            for (j = 0; j < 12; j++) {
+                Picdata(j, "pic" + String(j + 1));
+            }
+
+
+            function mrtdata(mrt, mrtdiv) {
+                this.mrt = result.data[i].mrt;
+                let m = document.createElement("p");
+                m.setAttribute("class", "mrtdiv");
+                let r = document.createTextNode(this.mrt);
+                m.appendChild(r);
+                document.getElementById(mrtdiv).appendChild(m);
+            }
+            for (i = 0; i < 12; i++) {
+                mrtdata(i, "mrtdiv" + String(i + 1));
+            }
+
+            function catedata(cate, catediv) {
+                this.catediv = result.data[i].category;
+                let c = document.createElement("p");
+                c.setAttribute("class", "catediv");
+                let a = document.createTextNode(this.catediv);
+                c.appendChild(a);
+                document.getElementById(catediv).appendChild(c);
+            }
+            for (i = 0; i < 12; i++) {
+                catedata(i, "catediv" + String(i + 1));
+            }
+           
+            setTimeout(  observer.observe(foot), 1500 )
+
+
+        })
+
+
+
+
+    // LOAD MORE............................載入下一頁 ，從下一頁的第一筆取DATA
+    let loadcount = 0
+    function add() {
+        loadcount = loadcount + 1
+        let loadnum = loadcount * 12
+        // console.log("載入數字:" + loadnum)
+
+
+
+        fetch("http://3.115.236.143:3000/api/attractions?page=" + String(loadcount))
+            .then((result) => {
+                return result.json();//將資料用JSON 的格式用物件和陣列的組合
+            })
+            .then((result) => {
+                //loadnum + 1+result.data.length 防止多加最後一頁多的div
+                for (d = loadnum + 1; d < loadnum + 1 + result.data.length; d++) {
+                    let containerdiv = document.createElement("div");
+                    containerdiv.id = "container" + String(d);
+                    containerdiv.className = "container";
+                    document.getElementById("main").appendChild(containerdiv);
+
+                    let picdiv = document.createElement("div");
+                    picdiv.className = "Pic";
+                    picdiv.id = "pic" + String(d);
+                    document.getElementById("container" + String(d)).appendChild(picdiv);
+
+                    let titlediv = document.createElement("div");
+                    titlediv.className = "Title";
+                    titlediv.id = "view" + String(d);
+                    document.getElementById("container" + String(d)).appendChild(titlediv);
+
+                    let containerbottom = document.createElement("div");
+                    containerbottom.className = "containerbottom";
+                    containerbottom.id = "containerbottom" + String(d);
+                    document.getElementById("container" + String(d)).appendChild(containerbottom);
+
+                    let mrtdiv = document.createElement("div");
+                    mrtdiv.className = "mrtdiv";
+                    mrtdiv.id = "mrtdiv" + String(d);
+                    document.getElementById("containerbottom" + String(d)).appendChild(mrtdiv);
+
+                    let catediv = document.createElement("div");
+                    catediv.className = "catediv";
+                    catediv.id = "catediv" + String(d);
+                    document.getElementById("containerbottom" + String(d)).appendChild(catediv);
+                };
+
+                for (let g = 0; g < result.data.length; g++) {
+                    console.log(" 資料長度 ", result.data.length)
+
+
+                    this.name = result.data[g].name;
+                    let x = document.createElement("p");
+                    x.setAttribute("class", "Title");
+                    let t = document.createTextNode(this.name);
+                    x.appendChild(t);
+                    document.getElementById("view" + String(g + loadnum + 1)).appendChild(x);
+
+
+                };
+
+                function Picdata(pic, imgid) {
+                    this.pic = result.data[j].images[0];
+                    let imgTag = document.createElement("img");
+                    imgTag.src = this.pic;
+                    imgTag.setAttribute("class", "Pic");
+                    let mm = document.getElementById(imgid);
+                    mm.appendChild(imgTag);
+                };
+                for (j = 0; j < result.data.length; j++) {
+                    Picdata(j, "pic" + String(j + loadnum + 1));
+                };
+
+
+                function mrtdata(mrt, mrtdiv) {
+                    this.mrt = result.data[i].mrt;
+                    let m = document.createElement("p");
+                    m.setAttribute("class", "mrtdiv");
+                    let r = document.createTextNode(this.mrt);
+                    m.appendChild(r);
+                    document.getElementById(mrtdiv).appendChild(m);
+                }
+                for (i = 0; i < result.data.length; i++) {
+                    mrtdata(i, "mrtdiv" + String(i + loadnum + 1));
+                }
+
+                function catedata(cate, catediv) {
+                    this.catediv = result.data[i].category;
+                    let c = document.createElement("p");
+                    c.setAttribute("class", "catediv");
+                    let a = document.createTextNode(this.catediv);
+                    c.appendChild(a);
+                    document.getElementById(catediv).appendChild(c);
+                }
+                for (i = 0; i < result.data.length; i++) {
+                    catedata(i, "catediv" + String(i + loadnum + 1));
+                }
+
+                console.log("result.nextPage", result.nextPage)
+                console.log("result.nextPage", result.nextPage == null)
+                console.log("result.nextPage", result.nextPage != null)
+
+                if (result.nextPage == null) {
+                    console.log("關鍵字有嗎")
+                    console.log("關鍵字foot有關嗎 ", observer.unobserve(foot));
+
+
+
+
+                    observer.unobserve(foot)
+
+                    // document.querySelector("footer").id = "footnull";
+                    // const footnull = document.getElementById('footnull');
+                    // console.log("footnull", footkey)
+
+                }
+            });
+    }
+
+
+    // Part 2 - 4：完成關鍵字搜尋功能  : 查詢資料景點名字  id='AttrationKeyword'
+    function getDataAttrationKeyword() {
+        //重置 載入更多 頁數 的數字
+        keywordloadcount = 0 
+        loadcount = 0
+        //取得關鍵字 宣告全域
+        AttrationKeywordElement = document.getElementById('AttrationKeyword');
+        AttrationKeyword = AttrationKeywordElement.value;
+        console.log(AttrationKeyword)
+    
+
+        observer.unobserve(foot);
+
+        // 把觀察目標id改成footkey 讓他進入addkey ,fetch keyword資料庫
+        // document.querySelector("footer").id = "footkey";
+        // const footkey = document.getElementById('footkey');
+        // console.log("footkey", footkey)
+        //載入完關鍵字關閉
+        // 刪除main下面所有子節點 清空頁面
+        let delmain = document.getElementById("main");
+        while (delmain.firstChild) {
+            delmain.removeChild(delmain.firstChild);
+        }
+
+        fetch("http://3.115.236.143:3000/api/attractions?keyword=" + AttrationKeyword)
+            .then(function (response) {
+                return response.json();
+
+            })
+            .then(function (result) {
+                if (result.data.length == 0) {
+                    let nodata = document.createElement("p");// 加入P 標籤
+                    nodata.id = "nodata"// P 標籤的id = nodata
+                    nodata.setAttribute("class", "top_right_item");// id = nodata ,給他一個class 類別那就top_right_item好了
+                    let t = document.createTextNode("沒有結果");//顯示nodata的文字
+                    nodata.appendChild(t);//顯示nodata的文字 插入在nodata後 將nodata 插入在id = main 的下面 就可以顯示在畫面上
+                    document.getElementById("main").appendChild(nodata);
+                }
+                else {
+
+                    // 刪除所有元素後顯示下面
+
+                    for (d = 1; d < result.data.length + 1; d++) {
+                        let containerdiv = document.createElement("div");
+                        containerdiv.id = "container" + String(d);
+                        containerdiv.className = "container";
+                        document.getElementById("main").appendChild(containerdiv);
+
+                        let picdiv = document.createElement("div");
+                        picdiv.className = "Pic";
+                        picdiv.id = "pic" + String(d);
+                        document.getElementById("container" + String(d)).appendChild(picdiv);
+
+                        let titlediv = document.createElement("div");
+                        titlediv.className = "Title";
+                        titlediv.id = "view" + String(d);
+                        document.getElementById("container" + String(d)).appendChild(titlediv);
+
+                        let containerbottom = document.createElement("div");
+                        containerbottom.className = "containerbottom";
+                        containerbottom.id = "containerbottom" + String(d);
+                        document.getElementById("container" + String(d)).appendChild(containerbottom);
+
+                        let mrtdiv = document.createElement("div");
+                        mrtdiv.className = "mrtdiv";
+                        mrtdiv.id = "mrtdiv" + String(d);
+                        document.getElementById("containerbottom" + String(d)).appendChild(mrtdiv);
+
+                        let catediv = document.createElement("div");
+                        catediv.className = "catediv";
+                        catediv.id = "catediv" + String(d);
+                        document.getElementById("containerbottom" + String(d)).appendChild(catediv);
+                    }
+
+                    // 載入網頁時 將照片和景點塞入 從第一頁的container
+                    function Viewdata(view, id) {
+                        this.name = result.data[i].name;
+                        let x = document.createElement("p");
+                        x.setAttribute("class", "Title");
+                        let t = document.createTextNode(this.name);
+                        x.appendChild(t);
+                        document.getElementById(id).appendChild(x);
+                    }
+                    for (i = 0; i < result.data.length; i++) {
+                        Viewdata(i, "view" + String(i + 1));
+                    }
+                    function Picdata(pic, imgid) {
+                        this.pic = result.data[j].images[0];
+                        let imgTag = document.createElement("img");
+                        imgTag.src = this.pic;
+                        imgTag.setAttribute("class", "Pic");
+                        let mm = document.getElementById(imgid);
+                        mm.appendChild(imgTag);
+                    }
+                    for (j = 0; j < result.data.length; j++) {
+                        Picdata(j, "pic" + String(j + 1));
+                    }
+                    function mrtdata(mrt, mrtdiv) {
+                        this.mrt = result.data[i].mrt;
+                        let m = document.createElement("p");
+                        m.setAttribute("class", "mrtdiv");
+                        let r = document.createTextNode(this.mrt);
+                        m.appendChild(r);
+                        document.getElementById(mrtdiv).appendChild(m);
+                    }
+                    for (i = 0; i < result.data.length; i++) {
+                        mrtdata(i, "mrtdiv" + String(i + 1));
+                    }
+
+                    function catedata(cate, catediv) {
+                        this.catediv = result.data[i].category;
+                        let c = document.createElement("p");
+                        c.setAttribute("class", "catediv");
+                        let a = document.createTextNode(this.catediv);
+                        c.appendChild(a);
+                        document.getElementById(catediv).appendChild(c);
+                    }
+                    for (i = 0; i < result.data.length; i++) {
+                        catedata(i, "catediv" + String(i + 1));
+                    }
+
+                    //載入完關鍵字打開
+                    setTimeout( keywordobserver.observe(keywordfoot), 1500 )
+
+                }
+            });
+    }
+
+
+
+
+    // keyword 關鍵字搜尋載入更多功能
+    let keywordloadcount = 0 
+
+
+    function addkeyword() {
+        console.log("有addkeyword嗎")
+        console.log(AttrationKeyword)
+        observer.unobserve(foot);
+        keywordloadcount = keywordloadcount + 1
+        let keywordloadnum = keywordloadcount * 12
+
+
+        fetch("http://3.115.236.143:3000/api/attractions?keyword=" + AttrationKeyword + "&page=" + String(keywordloadcount))
+            .then((result) => {
+                return result.json();//將資料用JSON 的格式用物件和陣列的組合
+            })
+            .then((result) => {
+                //loadnum + 1+result.data.length 防止多加最後一頁多的div
+                for (d = keywordloadnum + 1; d < keywordloadnum + 1 + result.data.length; d++) {
+                    let containerdiv = document.createElement("div");
+                    containerdiv.id = "container" + String(d);
+                    containerdiv.className = "container";
+                    document.getElementById("main").appendChild(containerdiv);
+
+                    let picdiv = document.createElement("div");
+                    picdiv.className = "Pic";
+                    picdiv.id = "pic" + String(d);
+                    document.getElementById("container" + String(d)).appendChild(picdiv);
+
+                    let titlediv = document.createElement("div");
+                    titlediv.className = "Title";
+                    titlediv.id = "view" + String(d);
+                    document.getElementById("container" + String(d)).appendChild(titlediv);
+
+                    let containerbottom = document.createElement("div");
+                    containerbottom.className = "containerbottom";
+                    containerbottom.id = "containerbottom" + String(d);
+                    document.getElementById("container" + String(d)).appendChild(containerbottom);
+
+                    let mrtdiv = document.createElement("div");
+                    mrtdiv.className = "mrtdiv";
+                    mrtdiv.id = "mrtdiv" + String(d);
+                    document.getElementById("containerbottom" + String(d)).appendChild(mrtdiv);
+
+                    let catediv = document.createElement("div");
+                    catediv.className = "catediv";
+                    catediv.id = "catediv" + String(d);
+                    document.getElementById("containerbottom" + String(d)).appendChild(catediv);
+                };
+
+                for (let g = 0; g < result.data.length; g++) {
+                    console.log(" 資料長度 ", result.data.length)
+                    this.name = result.data[g].name;
+                    let x = document.createElement("p");
+                    x.setAttribute("class", "Title");
+                    let t = document.createTextNode(this.name);
+                    x.appendChild(t);
+                    document.getElementById("view" + String(g + keywordloadnum + 1)).appendChild(x);
+                };
+
+                function Picdata(pic, imgid) {
+                    this.pic = result.data[j].images[0];
+                    let imgTag = document.createElement("img");
+                    imgTag.src = this.pic;
+                    imgTag.setAttribute("class", "Pic");
+                    let mm = document.getElementById(imgid);
+                    mm.appendChild(imgTag);
+                };
+                for (j = 0; j < result.data.length; j++) {
+                    Picdata(j, "pic" + String(j + keywordloadnum + 1));
+                };
+
+
+                function mrtdata(mrt, mrtdiv) {
+                    this.mrt = result.data[i].mrt;
+                    let m = document.createElement("p");
+                    m.setAttribute("class", "mrtdiv");
+                    let r = document.createTextNode(this.mrt);
+                    m.appendChild(r);
+                    document.getElementById(mrtdiv).appendChild(m);
+                }
+                for (i = 0; i < result.data.length; i++) {
+                    mrtdata(i, "mrtdiv" + String(i + keywordloadnum + 1));
+                }
+
+                function catedata(cate, catediv) {
+                    this.catediv = result.data[i].category;
+                    let c = document.createElement("p");
+                    c.setAttribute("class", "catediv");
+                    let a = document.createTextNode(this.catediv);
+                    c.appendChild(a);
+                    document.getElementById(catediv).appendChild(c);
+                }
+                for (i = 0; i < result.data.length; i++) {
+                    catedata(i, "catediv" + String(i + keywordloadnum + 1));
+                }
+
+                if (result.nextPage == null) {
+                    console.log("有關掉keywordfoot嗎")
+                    keywordobserver.unobserve(keywordfoot);
+                }
+            });
+    }
+
+</script>
+
+
+
+</html>
