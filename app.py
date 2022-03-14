@@ -7,6 +7,8 @@ import mysql.connector
 from flask.json import jsonify
 from flask import Flask, request, abort,jsonify
 from flask import Flask, abort
+from flask import Flask
+from flask_cors import CORS
 
 # ------------------------------------MySQL 連線
 mydb = mysql.connector.connect(
@@ -19,9 +21,11 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor(dictionary=True)
 
-app = Flask(__name__)
+app = Flask(__name__,   static_folder="templates",
+            static_url_path="/")
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+CORS(app)
 
 # Pages
 
@@ -63,10 +67,10 @@ def attractions():
     sql1 = "SELECT id,name,category,description,address,transport,mrt,latitude,longitude,images FROM attration20 LIMIT %s,12; " % (
         pagecount,)   
 
-    sqlnextpage = "SELECT name FROM attration18 LIMIT %s,12; " % (
+    sqlnextpage = "SELECT name FROM attration20 LIMIT %s,12; " % (
         nextpagecount,)  # 下一頁的DATA
 
-    sqlkeywordnextpage = "SELECT name FROM attration18  WHERE name LIKE '%%%s%%'  LIMIT %s,12; " % (
+    sqlkeywordnextpage = "SELECT name FROM attration20  WHERE name LIKE '%%%s%%'  LIMIT %s,12; " % (
        keyword,nextpagecount,)  # 下一頁的DATA for KEYWOR 判斷null 用的 
     
 
@@ -140,7 +144,7 @@ def attractions():
 @app.route("/api/attraction/<id>")
 def attractionid(id):
     try:# error 處理
-        sql_id = "SELECT id,name,category,description,address,transport,mrt,latitude,longitude,images FROM attration18 WHERE id=%s ; " % (
+        sql_id = "SELECT id,name,category,description,address,transport,mrt,latitude,longitude,images FROM attration20 WHERE id=%s ; " % (
             id,)
         mycursor.execute(sql_id)
         myresult = mycursor.fetchall() 
