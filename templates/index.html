@@ -12,23 +12,27 @@
 
 
 <body>
-    <!-- <div class="top1"> -->
+    <div class="top_head">
         <div class="top_father">
             <div class="top">
+                <div class="top2">
 
-                <div class="top_left_logo">台北一日遊
-                </div>
-                <div class="top_right">
+                    <div class="top_left_logo">台北一日遊
+                    </div>
+                    <div class="top_right">
 
-                    <div class="top_right_item">預定行程</div>
-                    <div class="top_right_item">登入/註冊 </div>
+                        <div class="top_right_item">預定行程</div>
+                        <div class="top_right_item">登入/註冊 </div>
+                    </div>
                 </div>
             </div>
         </div>
-    <!-- </div> -->
     </div>
     <div></div>
+
     <div class="head">
+
+
         <div class="head2">
 
             <div class="head_middle">
@@ -41,8 +45,11 @@
                 </div>
 
             </div>
-            <div class="welcomeImage"> </div>
+            <div> </div>
         </div>
+        <div class="headimg">
+        </div>
+    </div>
     </div>
 
     <!-- 從無到有產生景點方塊 -->
@@ -50,12 +57,6 @@
 
     <main class="main" id="main">
     </main>
-
-
-    <!-- LOAD MORE 按鈕............................ -->
-    <!-- <input onclick="add()" type="button" id="add" value="Load More"
-        style="background-color: rgb(202, 194, 189);width:280px;height: 50px ;margin:0 auto;font-size: 20px; z-index: 11;" /> -->
-
 
     <!-- A footer for the page. -->
     </div>
@@ -69,8 +70,6 @@
 
 <script>
 
-
-
     // Intersection Observer  //  Infinite Scroll 
     // https://shubo.io/intersection-observer-api/
 
@@ -79,26 +78,13 @@
         entries.forEach(entry => {
             console.log(entry);
             if (entry.isIntersecting) {
-                //滑到最底部 把footer id改成footkey，如果是foot才執行
-                // if (document.getElementById("foot")) {
-
                 add()
-
-                // }
-                // else if (document.getElementById("footkey")) {
-
-                //     console.log("addkeyword()")
-                //     addkeyword()
-                // }
-
             }
         }
         );
     };
 
-
     const observer = new IntersectionObserver(callback);
-
 
     //觀察KEYWORD
     const keywordfoot = document.getElementById('keywordfoot');
@@ -106,19 +92,7 @@
         entries.forEach(entry => {
             console.log('keywordfoot', entry);
             if (entry.isIntersecting) {
-                //滑到最底部 把footer id改成footkey，如果是foot才執行
-                // if (document.getElementById("keywordfoot")) {
-
-                console.log("addkeyword()")
                 addkeyword()
-
-                // }
-                // else if (document.getElementById("footkey")) {
-
-                //     console.log("addkeyword()")
-                //     addkeyword()
-                // }
-
             }
         }
         );
@@ -126,13 +100,11 @@
     const keywordobserver = new IntersectionObserver(keywordcallback);
 
 
-
     fetch("http://3.115.236.143:3000/api/attractions")
         .then((result) => {
             return result.json();//將資料用JSON 的格式用物件和陣列的組合
         })
         .then((result) => {
-
             // 載入網頁時 從無到有載入第一頁的container
             for (d = 1; d < 13; d++) {
                 let containerdiv = document.createElement("div");
@@ -214,13 +186,9 @@
             for (i = 0; i < 12; i++) {
                 catedata(i, "catediv" + String(i + 1));
             }
-           
-            setTimeout(  observer.observe(foot), 1500 )
-
+            setTimeout(observer.observe(foot), 2000)
 
         })
-
-
 
 
     // LOAD MORE............................載入下一頁 ，從下一頁的第一筆取DATA
@@ -346,20 +314,16 @@
     // Part 2 - 4：完成關鍵字搜尋功能  : 查詢資料景點名字  id='AttrationKeyword'
     function getDataAttrationKeyword() {
         //重置 載入更多 頁數 的數字
-        keywordloadcount = 0 
+        keywordloadcount = 0
         loadcount = 0
         //取得關鍵字 宣告全域
         AttrationKeywordElement = document.getElementById('AttrationKeyword');
         AttrationKeyword = AttrationKeywordElement.value;
-        console.log(AttrationKeyword)
-    
+        console.log("關鍵字",AttrationKeyword)
+
 
         observer.unobserve(foot);
-
-        // 把觀察目標id改成footkey 讓他進入addkey ,fetch keyword資料庫
-        // document.querySelector("footer").id = "footkey";
-        // const footkey = document.getElementById('footkey');
-        // console.log("footkey", footkey)
+ 
         //載入完關鍵字關閉
         // 刪除main下面所有子節點 清空頁面
         let delmain = document.getElementById("main");
@@ -367,10 +331,9 @@
             delmain.removeChild(delmain.firstChild);
         }
 
-        fetch("http://3.115.236.143:3000/api/attractions?keyword=" + AttrationKeyword)
+        fetch("http://3.115.236.143:3000/api/attractions?keyword="+AttrationKeyword)
             .then(function (response) {
                 return response.json();
-
             })
             .then(function (result) {
                 if (result.data.length == 0) {
@@ -464,8 +427,9 @@
                         catedata(i, "catediv" + String(i + 1));
                     }
 
-                    //載入完關鍵字打開
-                    setTimeout( keywordobserver.observe(keywordfoot), 1500 )
+                    // 載入完關鍵字打開
+                    setTimeout(keywordobserver.observe(keywordfoot), 1500)
+                    // keywordobserver.observe(keywordfoot)
 
                 }
             });
@@ -475,18 +439,20 @@
 
 
     // keyword 關鍵字搜尋載入更多功能
-    let keywordloadcount = 0 
+    let keywordloadcount = 0
 
 
     function addkeyword() {
         console.log("有addkeyword嗎")
         console.log(AttrationKeyword)
+
         observer.unobserve(foot);
+
         keywordloadcount = keywordloadcount + 1
         let keywordloadnum = keywordloadcount * 12
 
 
-        fetch("http://3.115.236.143:3000/api/attractions?keyword=" + AttrationKeyword + "&page=" + String(keywordloadcount))
+        fetch("http://3.115.236.143:3000/api/attractions?keyword="+AttrationKeyword+"&page=" + String(keywordloadcount))
             .then((result) => {
                 return result.json();//將資料用JSON 的格式用物件和陣列的組合
             })
