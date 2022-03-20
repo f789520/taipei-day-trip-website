@@ -21,7 +21,7 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor(dictionary=True)
 
-app = Flask(__name__,   static_folder="templates",
+app = Flask(__name__,   static_folder="static",
             static_url_path="/")
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -142,8 +142,11 @@ def attractions():
 # 網址代參數 第二個API
 
 @app.route("/api/attraction/<id>")
+       
 def attractionid(id):
+    
     try:# error 處理
+        # id= request.args.get("id")
         sql_id = "SELECT id,name,category,description,address,transport,mrt,latitude,longitude,images FROM attration20 WHERE id=%s ; " % (
             id,)
         mycursor.execute(sql_id)
@@ -162,7 +165,7 @@ def attractionid(id):
         return myresult_dict_from_list
 
 # error 處理
-    except id=="" : 
+    except id=="" or id =="id"or id ==None: 
         return abort(404)
     except  : 
         return abort(500)
