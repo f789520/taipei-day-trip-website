@@ -537,11 +537,12 @@ p {
         max-width: 100%;
         max-height: 406px; 
         position: relative;
-        margin-bottom: 37px;
+        /* margin-bottom: 37px; */
         justify-content: center;
         justify-items: auto;
         min-height: 350px; 
         display:flex;
+        margin:37px auto
 
 
     }
@@ -559,7 +560,8 @@ p {
 
     .main_left_img>.img {
         border-radius: 5px 5px 5px 5px;
-        object-fit: cover;
+        object-fit: contain;
+        height:406px;
     }
 
 
