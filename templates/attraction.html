@@ -4,7 +4,7 @@
 
     <meta charset="UTF-8">
     </meta>
-    <meta name="index" content="width=device-width, initial-scale=1,maxium-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,maxium-scale=1" />
     <title> 台北一日遊-attraction </title>
     <link href="/attraction.css" rel="stylesheet" type="text/css">
     <!-- 上傳網址要+/ 擺在static ， 離線的話不加 擺在HTML 同一個資料夾 -->
@@ -26,7 +26,7 @@
     </div>
 
     <!-- 分割線 -->
-    <hr class="top_hr" style="margin-bottom:37px ;" />
+    <hr class="top_hr" style="margin-bottom:37px ; opacity: 0.2;" />
 
     <div class="main">
         <!-- 左半邊 -->
@@ -73,8 +73,8 @@
                 <div class="main_right_bookingbox">
                     <!-- 有機會將日期表示做改變 -->
                     <div>
-                        <p style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;">選擇日期 : <input
-                                id="date" type="date"></p>
+                        <p style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;">選擇日期 :&ensp; <input
+                                id="date" type="date" style="border: 0 ;padding-left :10px; padding-top :5px; padding-bottom :5px;"></p>
                     </div>
                 </div>
 
@@ -122,7 +122,7 @@
                     </div>
                 </div>
                 <!--開始預訂行程按鈕-->
-                <button class="main_right_booking_button" type="button" onclick="startbooking()">開始預訂行程 </button>
+                <button class="main_right_booking_button" type="button" style="border: 0 ;"  >開始預訂行程 </button>
 
             </div>
         </div>
@@ -172,7 +172,7 @@
     // console.log(url.pathname.split('/')) // 得到 ['', 'attraction', '2']
     url_id = url.pathname.split('/')[2]
     // console.log("來把 id", url_id)
-    // fetch("http://3.115.236.143:3000/api/attraction/10") //離線測試用
+    // fetch("http://3.115.236.143:3000/api/attraction/2") //離線測試用
     fetch("http://3.115.236.143:3000/api/attraction/" + url_id) //這裡呼叫後端 "/api/attraction/<id >> 所以id 跟照片的id 是一樣的要怎麼做
         .then((result) => {
             return result.json();//將資料用JSON 的格式用物件和陣列的組合
