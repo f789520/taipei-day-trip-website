@@ -14,7 +14,7 @@ from flask_cors import CORS
 mydb = mysql.connector.connect(
     host="127.0.0.1",
     user="root",
-    password="Ff88888888",# For EC2
+    password="88888888",# 上傳為Ff88888888   本地為88888888
     auth_plugin='mysql_native_password', # For EC2
     db="website",
     charset="utf8",
@@ -50,7 +50,7 @@ def thankyou():
     return render_template("thankyou.html")
 
 
-# 第一個API 
+# 旅遊景點 第一個API 
 
 @app.route("/api/attractions")
 def attractions():
@@ -139,7 +139,7 @@ def attractions():
     except : 
         return abort(500)
 
-# 網址代參數 第二個API
+# 網址代參數  旅遊景點 第二個API
 
 @app.route("/api/attraction/<id>")
        
@@ -179,6 +179,44 @@ def handle_bad_request(e):
 def handle_bad_request(e):
     return jsonify({ "error": True, "message":"景點編號不正確"}), 400 #後面可以自訂HTTP STATUS 數字
     
+
+
+# 用RESTful API 才能有同一個接口
+# 使用者 第一個API
+
+@app.route("/api/user") 
+def members():#GET 方法
+    email = request.args.get("email")
+    emailsql = "SELECT id,name,email FROM member WHERE email='%s'" % (email,)
+    mycursor.execute(emailsql)
+    emailresult = mycursor.fetchone()
+    if emailresult == None:
+        return "{\"data\":null}"
+    return json.dumps(emailresult, ensure_ascii=False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.run(host='0.0.0.0', port=3000)

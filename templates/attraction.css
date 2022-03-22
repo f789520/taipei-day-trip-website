@@ -652,7 +652,7 @@ p {
 
     /* 中間分割線 */
     .middle_hr {
-        width: 1200px;
+        /* width: 1200px; */
         /* margin-top: 37px; */
         display: flex;
         margin:37px auto;
