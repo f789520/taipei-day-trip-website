@@ -80,8 +80,8 @@ p {
     background: #757575;
     justify-content: center;
     align-items: center;
-    margin: auto;
-    margin-top: 120px;
+    /* margin: auto; */
+    margin-top: 40%;
 }
 
 .footer_text {
