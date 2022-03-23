@@ -10,6 +10,9 @@ from flask import Flask, abort
 from flask import Flask
 from flask import Flask, jsonify
 from flask_cors import CORS
+from flaskext.mysql import MySQL
+
+from flask_restful import Resource, Api #for RESTful
 
 # ------------------------------------MySQL 連線
 mydb = mysql.connector.connect(
@@ -28,7 +31,7 @@ app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 CORS(app)
 
-
+api = Api(app)#for RESTful
 
 # Pages
 
@@ -187,4 +190,157 @@ def handle_bad_request(e):
 
 
 
-app.run(host='0.0.0.0', port=3000)
+
+
+# ---------------------------------------------
+
+# 用RESTful API 才能有同一個接口
+# 使用者 第一個API
+
+@app.route("/api/user") 
+def members():#GET 方法
+    email = request.args.get("email")
+    emailsql = "SELECT id,name,email FROM member WHERE email='%s'" % (email,)
+    mycursor.execute(emailsql)
+    emailresult = mycursor.fetchone()
+    if emailresult == None:
+        return "{\"data\":null}"
+    return json.dumps(emailresult, ensure_ascii=False)
+
+
+
+
+
+
+# 使用者 第2個API
+@app.route("/signup",methods=["POST"])
+def signup():
+    nickname=request.form["nickname"]
+    username=request.form["usernameup"]
+    password=request.form["passwordup"]
+    sql = "SELECT 'name','username','password' FROM member WHERE username =%s"
+    user =(username,)
+    mycursor.execute(sql,user)
+    myresult = mycursor.fetchone() 
+    if  myresult != None :
+        return redirect("http://127.0.0.1:3000/error?message=帳號已經被註冊")
+    elif nickname   =="":
+        return redirect("http://127.0.0.1:3000/error?message=姓名、帳號、密碼不能為空白")
+    elif username   =="":
+        return redirect("http://127.0.0.1:3000/error?message=姓名、帳號、密碼不能為空白")
+    elif password   =="":
+        return redirect("http://127.0.0.1:3000/error?message=姓名、帳號、密碼不能為空白")
+
+    sql = "INSERT INTO member (name,username,password) VALUES (%s, %s, %s)"
+    val = (nickname, username, password)
+    mycursor.execute(sql, val)
+    mydb.commit()
+    return redirect("http://127.0.0.1:3000/")
+
+
+# 使用者 第3個API 要用PATCH
+@app.route("/signin", methods=["POST"])
+def signin():
+    username=request.form["username"]
+    password=request.form["password"]
+    sql = "SELECT * FROM member WHERE username='%s' and password='%s'" %(username,password)
+    mycursor.execute(sql)
+    myresult = mycursor.fetchone() 
+    if myresult == None:
+        return redirect("http://127.0.0.1:3000/error?message=帳號、或密碼輸入錯誤")
+    session["nickname"]=myresult['name'] 
+    return redirect("http://127.0.0.1:3000/member")
+
+
+
+
+
+
+# 使用者 第4個API 要用DELETE
+
+@app.route("/signout")
+def signout():
+    del session["nickname"]
+    return redirect("http://127.0.0.1:3000/")
+
+
+
+
+
+# ---------------------------------------------
+
+#Create an instance of MySQL
+mysql = MySQL()
+
+#Set database credentials in config.
+app.config['MYSQL_DATABASE_USER'] = 'user_name'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
+app.config['MYSQL_DATABASE_DB'] = 'database_name'
+app.config['MYSQL_DATABASE_HOST'] = 'server_name'
+
+
+          
+#Get a user by id, update or delete user
+class User(Resource):
+    def get(self, user_id):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute('select * from otg_demo_users where id = %s',user_id)
+            rows = cursor.fetchall()
+            return jsonify(rows)
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            conn.close()
+
+    def put(self, user_id):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            _name = request.form['name']
+            _age = request.form['age']
+            _city = request.form['city']
+            update_user_cmd = """update otg_demo_users 
+                                 set name=%s, age=%s, city=%s
+                                 where id=%s"""
+            cursor.execute(update_user_cmd, (_name, _age, _city, user_id))
+            conn.commit()
+            response = jsonify('User updated successfully.')
+            response.status_code = 200
+        except Exception as e:
+            print(e)
+            response = jsonify('Failed to update user.')         
+            response.status_code = 400
+        finally:
+            cursor.close()
+            conn.close()    
+            return(response)       
+
+    def delete(self, user_id):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute('delete from otg_demo_users where id = %s',user_id)
+            conn.commit()
+            response = jsonify('User deleted successfully.')
+            response.status_code = 200
+        except Exception as e:
+            print(e)
+            response = jsonify('Failed to delete user.')         
+            response.status_code = 400
+        finally:
+            cursor.close()
+            conn.close()    
+            return(response)       
+
+
+
+#API resource routes
+# api.add_resource(UserList, '/users', endpoint='users')
+api.add_resource(User, '/user/<int:user_id>', endpoint='user')
+
+
+if __name__ == "__main__":
+app.run(host='0.0.0.0', port=3000) (debug=True)

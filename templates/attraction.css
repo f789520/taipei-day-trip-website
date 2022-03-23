@@ -541,9 +541,9 @@ p {
         /* margin-bottom: 37px; */
         justify-content: center;
         justify-items: auto;
-        min-height: 350px; 
-        display:flex;
-        margin:37px auto
+        /* min-height: 350px; 
+        display:flex; */
+        margin:0 15
 
 
     }
@@ -561,7 +561,7 @@ p {
 
     .main_left_img>.img {
         border-radius: 5px 5px 5px 5px;
-        object-fit: contain;
+        object-fit: cover;
         height:406px;
     }
 
