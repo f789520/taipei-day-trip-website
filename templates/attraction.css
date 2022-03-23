@@ -1,0 +1,951 @@
+* {
+    font-family: Noto Sans TC;
+    margin: 0;
+}
+
+
+
+
+/* 要能動態 生長ING 下面的圓點 */
+.imgbutton_box {
+    max-width: 540px;
+    height: 12px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* right: 50%; */
+    /* margin: 0 auto; */
+    margin-bottom: 13px;
+    display: flex;
+    justify-content: center;
+
+}
+
+
+.imgbutton_box>.imgbutton_box_ball{
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    display: flex;
+    border: 1px solid #FFFFFF;
+    color: white;
+    background-color: white;
+    margin-left: 12px;
+    opacity: 0.6;
+    /* 要能黑白變 配合對應的圖 */
+    /* background: black;  */
+
+}
+
+.main_left_img {
+    position: relative;
+}
+
+  /* 要能動態  左箭頭 上一張*/
+.img_leftArrow {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    opacity: 0.6;
+    z-index: 10;
+     
+}
+
+
+   /* 要能動態  右箭頭 下一張*/
+.img_rightArrow {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    opacity: 0.6;
+    background-image:url("btn_rightArrow.png")
+}
+
+
+/* 將標籤為img 的 自適應容器大小 */
+img {
+    max-width: 100%;
+    height: 100%;
+    z-index: -10;
+}
+
+/* 將標籤為p 的 不要有 margin */
+p {
+
+    margin: 0px;
+}
+
+.footer {
+    height: 104px;
+    display: flex;
+    background: #757575;
+    justify-content: center;
+    align-items: center;
+    /* margin: auto; */
+    margin-top: 40%;
+}
+
+.footer_text {
+    margin: auto;
+
+    justify-content: center;
+    align-items: center;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    white-space: nowrap;
+    background: #757575;
+    color: #FFFFFF;
+
+}
+
+
+
+/* 景點的booking 框框 裡面每一層的框框 */
+.main>.main_right>.main_right_booking>.main_right_bookingbox {
+
+    max-width: 600px;
+    max-height: 35px;
+    margin-left: 20px;
+    margin-top: 15px;
+
+
+}
+
+.timebuttonbox {
+    display: flex;
+    position: relative;
+}
+
+/* 上下半天按鈕 綠1*/
+.booking_timebutton_green_1 {
+
+    border-radius: 50%;
+    background: #448899;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: -3;
+    left: 90;
+    display: block;
+
+
+}
+
+
+/* 上下半天按鈕 綠2*/
+.booking_timebutton_green_2 {
+
+    border-radius: 50%;
+    background: #448899;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: -3;
+    left: 178;
+
+    display: none;
+}
+
+/* 上下半天按鈕 白1*/
+.booking_timebutton_white_1 {
+
+    border-radius: 50%;
+    background: #FFFFFF;
+    width: 22px;
+    height: 22px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    position: absolute;
+    top: -5;
+    left: 88;
+    /* position: absolute; */
+}
+
+
+/* 上下半天按鈕 白2*/
+.booking_timebutton_white_2 {
+
+    border-radius: 50%;
+    background: #FFFFFF;
+    width: 22px;
+    height: 22px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    position: absolute;
+    top: -5;
+    left: 176;
+    /* position: absolute; */
+}
+
+
+
+/* 動態money */
+
+
+.money_2000 {
+
+    color: #666666;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    display: block;
+}
+
+
+.money_2500 {
+
+    color: #666666;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    display: none;
+}
+
+
+
+/* ----------------------------------------------------------------------------------------- */
+
+
+@media (min-width:1200px) {
+
+    .top1 {
+        height: 54px;
+        width: 100%;
+    }
+
+
+    .top {
+        width: 100%;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        background: #FFFFFF;
+        height: 54px;
+        margin: 0 auto;
+    }
+
+    .top2 {
+        z-index: 1000;
+        min-width: 1200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #FFFFFF;
+        margin: auto;
+    }
+
+    .top_left_logo {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 30px;
+        color: #448899;
+        z-index: 1000;
+        margin-left: 10px;
+    }
+
+    .top_right {
+        display: flex;
+        margin-top: 10px;
+        z-index: 1000;
+        justify-content: flex-end;
+        flex: auto;
+    }
+
+    .top_right_item {
+        margin: auto 10px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        text-align: center;
+        line-height: 13px;
+        color: #666666;
+        z-index: 1000;
+    }
+
+    .main {
+        display: flex;
+        /* 讓main_img和main_right分兩邊 */
+        max-width: 1200px;
+        height: 400px;
+        justify-content: center;
+        margin: 0 auto;
+        
+
+    }
+
+    .main>.main_left {
+
+        /* 讓main_img和main_right分兩邊 */
+        width: 540px;
+        height: 406px;
+        position: relative;
+        margin-bottom: 37px;
+        display:flex;
+        justify-content: center;
+
+    }
+
+
+
+    /* https://codepen.io/FlorinPop17/pen/RwwvKYJ 這個下面有三個 ball */
+    .main>.main_left>.main_left_img {
+
+        max-width: 100%;
+        /* max-height: 100%; */
+        border-radius: 5px 5px 5px 5px;
+        overflow: hidden;
+        /* object-fit: contain; */
+        /* margin: auto;
+        object-fit: cover;
+        flex: auto; */
+    }
+
+
+
+
+
+
+    .main>.main_right {
+
+        width: 600px;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        margin-left: 30px;
+        margin-bottom: 48px;
+
+        /* 直行排列 */
+
+    }
+
+    /* 景點名稱 */
+    .main>.main_right>.main_right_name {
+
+        font-style: normal;
+        font-weight: 700;
+        font-size: 24px;
+        /* line-height: 24px; */
+        height: 33px;
+        max-width: 600px;
+        margin-bottom: 15px;
+        color: #666666;
+
+
+
+    }
+
+
+    /* 景點分類 */
+    .main>.main_right>.main_right_cate {
+
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 13px;
+        height: 22px;
+        max-width: 600px;
+        margin-bottom: 15px;
+        color: #666666;
+
+    }
+
+
+    /* 景點的booking 框框 */
+    .main>.main_right>.main_right_booking {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        justify-items: start;
+        max-width: 600px;
+        height: 400px;
+        background: #E8E8E8;
+        border-radius: 5px;
+
+    }
+
+
+    /*  HTML 直接打的字 沒辦法用CSS 套用!!!  */
+    /* 景點的booking 框框 裡面的標題CSS 
+    及介紹的標題*/
+    /* .main>.main_right>.main_right_booking>.booking_title {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 13px;
+        color: #666666;
+    } */
+
+
+    /* 景點的booking 框框 裡面的內文CSS */
+    /* .main>.main_right>.main_right_booking>.booking_text {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 13px;
+        color: #666666;
+    } */
+
+
+    /* 景點的booking 框框 最下面的 開始預訂行程按鈕 */
+    .main>.main_right>.main_right_booking>.main_right_booking_button {
+
+        background: #448899;
+        border-radius: 5px;
+        color: #FFFFFF;
+        font-family: 'Noto Sans TC';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 16px;
+        width: 154px;
+        height: 36px;
+        margin-left: 20px;
+        margin-top: 25px;
+        margin-bottom: 41px;
+        z-index: 2;
+
+    }
+
+    /* 中間分割線 */
+    .middle_hr {
+        width: 1200px;
+        /* margin-top: 37px auto; */
+        margin:37px auto;
+        /* border: 0.5px ; */
+        opacity: 0.2;
+    }
+
+    /* 下面資訊大框框 */
+    .intro {
+
+        max-width: 1200px;
+        max-height: 362px;
+        margin: 0 auto;
+    }
+
+
+    /* 景點介紹 */
+    .intro>.intro_description {
+
+        max-width: 1180px;
+        /* max-height: 96px; */
+        overflow: auto;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 23px;
+        color: #666666;
+        margin-top: 50px;
+
+    }
+
+
+    /* 地址和交通的框框 */
+    .intro>.intro_container {
+        max-width: 1180px;
+        margin-top: 20px;
+
+
+    }
+
+
+    /* 介紹的內文 */
+    .intro>.intro_container>.intro_text {
+
+        width: 1180px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        color: #666666;
+
+    }
+}
+
+
+/* ----------------------------------------------------------------------------------------- */
+@media (min-width:360.5px) and (max-width:1200px) {
+    .top1 {
+        height: 54px;
+        width: 100%;
+    }
+
+    .top {
+        z-index: 1000;
+        min-width: 100%;
+        display: flex;
+        align-items: center;
+        position: fixed;
+        background: #FFFFFF;
+        height: 54px;
+    }
+
+    .top2 {
+
+        z-index: 1000;
+        min-width: 100%;
+        display: flex;
+        align-items: center;
+        background: #FFFFFF;
+    }
+
+
+    .top_left_logo {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 30px;
+        color: #448899;
+        z-index: 1000;
+        margin-left: 10px;
+    }
+
+    .top_right {
+        display: flex;
+        margin-top: 10px;
+        z-index: 1000;
+        justify-content: flex-end;
+        flex: auto;
+    }
+
+    .top_right_item {
+        margin: auto 10px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        text-align: center;
+        line-height: 13px;
+        color: #666666;
+        z-index: 1000;
+    }
+
+    .main {
+        display: flex;
+        /* 讓main_img和main_right分兩邊 */
+        max-width: 1200px;
+        /* height: 400px; */
+        justify-content: center;
+        margin: 0 auto;
+        flex-wrap: wrap;
+
+    }
+
+    .main>.main_left {
+
+        /* 讓main_img和main_right分兩邊 */
+        max-width: 100%;
+        max-height: 406px; 
+        position: relative;
+        /* margin-bottom: 37px; */
+        justify-content: center;
+        justify-items: auto;
+        /* min-height: 350px; 
+        display:flex; */
+        margin:0 15
+
+
+    }
+
+
+
+    /* https://codepen.io/FlorinPop17/pen/RwwvKYJ 這個下面有三個 ball */
+    .main>.main_left>.main_left_img {
+
+        max-width: 100%;
+        /* max-height: 100%;
+        border-radius: 5px 5px 5px 5px;
+        overflow: hidden */
+    }
+
+    .main_left_img>.img {
+        border-radius: 5px 5px 5px 5px;
+        object-fit: cover;
+        height:406px;
+    }
+
+
+    .main>.main_right {
+        min-width: 50%;
+
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        /* margin-left: 30px; */
+        margin-bottom: 48px;
+
+        /* 直行排列 */
+
+    }
+
+    /* 景點名稱 */
+    .main>.main_right>.main_right_name {
+
+        font-style: normal;
+        font-weight: 700;
+        font-size: 24px;
+        /* line-height: 24px; */
+        height: 33px;
+
+        margin-bottom: 15px;
+        color: #666666;
+
+
+
+    }
+
+
+    /* 景點分類 */
+    .main>.main_right>.main_right_cate {
+
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 13px;
+        height: 22px;
+
+        margin-bottom: 15px;
+        color: #666666;
+
+    }
+
+
+    /* 景點的booking 框框 */
+    .main>.main_right>.main_right_booking {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        justify-items: start;
+
+        height: 400px;
+        background: #E8E8E8;
+        border-radius: 5px;
+
+    }
+
+
+
+
+
+    /* 景點的booking 框框 最下面的 開始預訂行程按鈕 */
+    .main>.main_right>.main_right_booking>.main_right_booking_button {
+
+        background: #448899;
+        border-radius: 5px;
+        color: #FFFFFF;
+        font-family: 'Noto Sans TC';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 16px;
+        width: 154px;
+        height: 36px;
+        margin-left: 20px;
+        margin-top: 25px;
+        margin-bottom: 41px;
+        z-index: 2;
+
+    }
+
+
+
+
+    /* 中間分割線 */
+    .middle_hr {
+        /* width: 1200px; */
+        /* margin-top: 37px; */
+        display: flex;
+        margin:37px auto;
+     
+        opacity: 0.2;
+    
+    
+    }
+
+    /* 下面資訊大框框 */
+    .intro {
+
+        /* max-width: 1200px; */
+        /* max-height: 362px; */
+        margin: 0 auto;
+        /* display: flex; */
+    }
+
+
+    /* 景點介紹 */
+    .intro>.intro_description {
+
+        max-width: 1180px;
+        /* max-height: 96px; */
+        overflow: auto;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 23px;
+        color: #666666;
+        margin-top: 50px;
+
+    }
+
+
+    /* 地址和交通的框框 */
+    .intro>.intro_container {
+        max-width: 1180px;
+        margin-top: 20px;
+
+
+    }
+
+
+    /* 介紹的內文 */
+    .intro>.intro_container>.intro_text {
+
+        /* width: 1180px; */
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        color: #666666;
+
+    }
+}
+
+
+/* ----------------------------------------------------------------------------------------- */
+@media screen and (max-width:360px) {
+
+
+    .top {
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        position: fixed;
+        background: #FFFFFF;
+        top: 0;
+        height: 54px;
+    }
+
+
+    .top2 {
+        min-width: 360px;
+        display: flex;
+        align-items: center;
+        background: #FFFFFF;
+    }
+
+    .top_left_logo {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 30px;
+        color: #448899;
+        z-index: 1000;
+        margin-left: 10px;
+        margin-right: 15;
+    }
+
+    .top_right {
+        display: flex;
+        margin-top: 10px;
+        z-index: 1000;
+        /* justify-content: flex-end; */
+        flex: auto;
+    }
+
+    .top_right_item {
+        margin: auto 10px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        text-align: center;
+        line-height: 13px;
+        color: #666666;
+        z-index: 1000;
+        margin-left: 5;
+    }
+
+
+    .top_hr {
+        border: 0;
+        border-top: 1px solid #d0d0d5;
+        margin-top: 60px;
+
+    }
+
+
+    .main {
+        display: flex;
+        /* 讓main_img和main_right分兩邊 */
+        max-width: 1200px;
+        /* height: 400px; */
+        justify-content: center;
+        margin: 0 auto;
+        flex-wrap: wrap
+    }
+
+    .main>.main_left {
+        /* 讓main_img和main_right分兩邊 */
+        max-width: 100%;
+        min-height: 350px; 
+        position: relative;
+        margin-bottom: 37px;
+        justify-content: center;
+        justify-items: auto;
+
+
+    }
+
+
+    /* https://codepen.io/FlorinPop17/pen/RwwvKYJ 這個下面有三個 ball */
+    .main>.main_left>.main_left_img {
+
+        max-width: 100%;
+        /* max-height: 100%;
+        border-radius: 5px 5px 5px 5px;
+        overflow: hidden */
+    }
+
+    .main_left_img>.img {
+        border-radius: 5px 5px 5px 5px;
+        object-fit: cover;
+    }
+
+
+    .main>.main_right {
+
+        width: 600px;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        margin: auto 10px;
+
+        margin-bottom: 48px;
+
+    }
+
+    /* 景點名稱 */
+    .main>.main_right>.main_right_name {
+
+        font-style: normal;
+        font-weight: 700;
+        font-size: 24px;
+        /* line-height: 24px; */
+        height: 33px;
+        max-width: 600px;
+        margin-bottom: 15px;
+        color: #666666;
+
+
+
+    }
+
+
+    /* 景點分類 */
+    .main>.main_right>.main_right_cate {
+
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 13px;
+        height: 22px;
+        max-width: 600px;
+        margin-bottom: 15px;
+        color: #666666;
+
+    }
+
+
+    /* 景點的booking 框框 */
+    .main>.main_right>.main_right_booking {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        justify-items: start;
+        max-width: 600px;
+        height: 400px;
+        background: #E8E8E8;
+        border-radius: 5px;
+
+    }
+
+
+
+    /* 景點的booking 框框 最下面的 開始預訂行程按鈕 */
+    .main>.main_right>.main_right_booking>.main_right_booking_button {
+
+        background: #448899;
+        border-radius: 5px;
+        color: #FFFFFF;
+        font-family: 'Noto Sans TC';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 16px;
+        width: 154px;
+        height: 36px;
+        margin-left: 20px;
+        margin-top: 25px;
+        margin-bottom: 41px;
+        z-index: 2;
+
+    }
+
+
+
+
+    /* 中間分割線 */
+    .middle_hr {
+        width: 340px;
+        /* margin-top: 37px; */
+        margin:37px auto;
+        opacity: 0.2;
+    
+    }
+
+    /* 下面資訊大框框 */
+    .intro {
+
+        /* max-width: 1200px; */
+        /* max-height: 362px; */
+        margin: 0 auto;
+    }
+
+
+    /* 景點介紹 */
+    .intro>.intro_description {
+
+        max-width: 1180px;
+        /* max-height: 96px; */
+        overflow: auto;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 23px;
+        color: #666666;
+        margin-top: 50px;
+
+
+
+
+    }
+
+
+    /* 地址和交通的框框 */
+    .intro>.intro_container {
+        max-width: 1180px;
+        margin-top: 20px;
+
+
+    }
+
+
+    /* 介紹的內文 */
+    .intro>.intro_container>.intro_text {
+
+        /* width: 1180px; */
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        color: #666666;
+
+    }
+
+
+}

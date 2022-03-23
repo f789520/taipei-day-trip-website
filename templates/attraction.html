@@ -1,0 +1,411 @@
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maxium-scale=1" />
+    <title> 台北一日遊-attraction </title>
+    <link href="/attraction.css" rel="stylesheet" type="text/css">
+    <!-- 上傳網址要+/ 擺在static ， 離線的話不加 擺在HTML 同一個資料夾 -->
+
+</head>
+
+<body>
+
+    <div class="top1">
+        <div class="top">
+            <div class="top2">
+                <div class="top_left_logo">台北一日遊</div>
+                <div class="top_right">
+                    <div class="top_right_item">預定行程</div>
+                    <div class="top_right_item">登入/註冊 </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分割線 -->
+    <hr class="top_hr" style="margin-bottom:37px ; opacity: 0.2;" />
+
+    <div class="main">
+        <!-- 左半邊 -->
+        <div class="main_left">
+
+            <div class="main_left_img" id='main_left_img'></div> <!-- 創立一個div 給img  塞入 -->
+            <div class="arrowbox">
+                <div class="img_leftArrow" id="img_leftArrow" input type="button" value="CLICK"> <img
+                        src="/btn_leftArrow.png ">
+                </div>
+                <div class="img_rightArrow" id="img_rightArrow" input type="button" value="CLICK"><img
+                        src="/btn_rightArrow.png ">
+                </div>
+            </div>
+            <div class="imgbutton_box" id="imgbutton_box">
+            </div>
+
+        </div>
+
+
+        <!-- 右半邊 -->
+        <div class="main_right">
+            <!-- 景點名字 -->
+            <div class="main_right_name" id="main_right_name"></div>
+            <!-- 景點分類+捷運 -->
+            <div class="main_right_cate" id="main_right_cate"></div>
+            <!-- 預定表格 -->
+            <div class="main_right_booking">
+                <!-- 預定表格 row 的 框   訂購導覽行程 -->
+                <div class="main_right_bookingbox">
+                    <!-- HTML 直接打的字 沒辦法用CSS 套用!!! -->
+                    <div>
+                        <p style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;">訂購導覽行程</p>
+                    </div>
+                </div>
+                <!--   以此景點為中心的一日行程，帶您探索城市角落故事-->
+                <div class="main_right_bookingbox">
+                    <div>
+                        <p style="font-size: 16px ; font-weight: 400;  color: #666666; line-height: 20px;">
+                            以此景點為中心的一日行程，帶您探索城市角落故事</p>
+                    </div>
+                </div>
+                <!--   選擇日期 :-->
+                <div class="main_right_bookingbox">
+                    <!-- 有機會將日期表示做改變 -->
+                    <div>
+                        <p style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;">選擇日期 :&ensp; <input
+                                id="date" type="date" style="border: 0 ;padding-left :10px; padding-top :5px; padding-bottom :5px;"></p>
+                    </div>
+                </div>
+
+                <!--  點擊事件 上半天下半天 -->
+                <div class="main_right_bookingbox">
+                    <div class="timebuttonbox">
+                        <!-- 選擇時間-->
+                        <h style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;">選擇時間 :&ensp;
+                        </h>
+
+                        <!-- 白點1-->
+                        <div class="booking_timebutton_white_1" id="booking_timebutton_white_1" input type="button"
+                            value="CLICK" class="button"></div>
+                        <!-- 綠點1-->
+                        <div class="booking_timebutton_green_1" id="booking_timebutton_green_1"></div>
+                        <!-- 上半天-->
+                        <h style="font-weight: 400;  font-size: 16px;color: #666666;line-height: 13px;">
+                            &ensp;&ensp;&ensp;&ensp;上半天&ensp;&ensp;&ensp;&ensp;&ensp;
+                        </h>
+                        <!-- 白點2-->
+                        <div class="booking_timebutton_white_2" id="booking_timebutton_white_2" input type="button"
+                            value="CLICK" class="button"></div>
+                        <!-- 綠點2-->
+                        <div class="booking_timebutton_green_2" id="booking_timebutton_green_2"></div>
+
+                        <!-- 下半天-->
+                        <h style="font-weight: 400;  font-size: 16px;color: #666666;line-height: 13px;"> 下半天</h>
+
+                    </div>
+                </div>
+
+                <!--導覽費用-->
+                <div class="main_right_bookingbox">
+                    <div style="display: flex;">
+                        <h style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;">導覽費用 :&ensp;
+                        </h>
+                        <!--   動態改2000/2500-->
+                        <h
+                            style="font-size: 16px ; font-weight: 400;  color: #666666; line-height: 16px ;display: flex;">
+                            新台幣&ensp;
+                            <h class="money_2000" id="money_2000">2000</h>
+                            <h class="money_2500" id="money_2500">2500</h>
+                            &ensp;元
+                        </h>
+                    </div>
+                </div>
+                <!--開始預訂行程按鈕-->
+                <button class="main_right_booking_button" type="button" style="border: 0 ;"  >開始預訂行程 </button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+        <hr class="middle_hr" />
+    </div>
+
+    <div class="intro">
+        <!-- 塞景點描述 -->
+        <div class="intro_description" id="intro_description"></div>
+        <!-- 塞景點地址 -->
+        <div class="intro_container">
+            <div style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;"> 景點地址:
+            </div>
+            <div class="intro_text" id="intro_address"> </div>
+        </div>
+        <!-- 塞交通方式 -->
+        <div class="intro_container">
+            <div style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;"> 交通方式:
+            </div>
+            <div class="intro_text" id="intro_transport"> </div>
+        </div>
+
+
+    </div>
+
+    <!-- 觀察點 -->
+    <footer class="footer" id="foot">
+        <div id="keywordfoot"></div>
+        <div class="footer_text">
+            <p>COPYRIGHT © 2021 台北一日遊 </p>
+    </footer>
+
+</body>
+
+<script>
+
+
+    getUrlString = location.href; //抓網址列 想辦法取得id 這個值 餵給 fetch
+    url = new URL(getUrlString)
+    // console.log("網址列", location.href)
+    // console.log("網址列url", url)
+    // console.log("attraction/id", url.pathname); // 得到  /attraction/2
+    // console.log(url.pathname.split('/')) // 得到 ['', 'attraction', '2']
+    url_id = url.pathname.split('/')[2]
+    // console.log("來把 id", url_id)
+    // fetch("http://3.115.236.143:3000/api/attraction/2") //離線測試用
+    fetch("http://3.115.236.143:3000/api/attraction/" + url_id) //這裡呼叫後端 "/api/attraction/<id >> 所以id 跟照片的id 是一樣的要怎麼做
+        .then((result) => {
+            return result.json();//將資料用JSON 的格式用物件和陣列的組合
+        })
+        .then((result) => {
+            // console.log("id是誰",id)
+            // console.log(result);  //  確認源頭資料 
+            // console.log(url_id);  //  確認url_id
+
+            //得到資料照片 > 並塞進 id=main_left_img
+            pic = result.data.images[0];  //  得到第一張照片的資料
+            let imgTag = document.createElement("img");//創立 img 標籤
+            imgTag.src = pic;//標籤.src=照片資料 變成>>  <img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d28/e891/f188/77a58890-7711-4ca2-aebe-4aa379726575.jpg" class="main_left_img">
+            imgTag.setAttribute("class", "img");//給他一個class name 
+            // imgTag.id = "pic" + String(0) //給這張照片id=pic0
+            // let picc0=getElementById("pic_0")抓不到
+            // let main_left_img=document.getElementById(main_left_img);//不要用， 用這段會出現 attraction.html:126 Uncaught (in promise) ReferenceError: Cannot access 'main_left_img' before initialization
+            main_left_img.appendChild(imgTag);  //可直接抓id  第一張照片 塞到id=main_left_img 元素裡面
+
+            //得到資料景點名字  name  > 塞進 id=main_right_name
+            name = result.data.name;
+            let name_p = document.createElement("p");//創立HTML 的p標籤
+            // name_p.setAttribute("class", "main_right_name_text");//本來不用再給他一個class name ... 發現要讓他margin =0 >>直接設所有的p 標籤margin=0
+            let name_text = document.createTextNode(name);  //createTextNode() 可建立文字節點。
+            name_p.appendChild(name_text);//p標籤順利插入name_text 值
+            // console.log(p)//測試p標籤順利插入name 值 >>得到 <p>新北投溫泉區</p> 
+            main_right_name.appendChild(name_p);//可直接抓id
+
+            //得到資料景點category &  mrt > 塞進 id=main_right_cate
+            category = result.data.category;
+            mrt = result.data.mrt;
+            let cate_mrt_p = document.createElement("p");//創立HTML 的p標籤
+            // cate_mrt_p.setAttribute("class", "main_right_name_text");////本來不用再給他一個class name ... 發現要讓他margin =0
+            let cate_mrt_text = document.createTextNode(category + " at " + mrt);  //建立文字節點
+            cate_mrt_p.appendChild(cate_mrt_text);//p標籤順利插入category_text 值
+            main_right_cate.appendChild(cate_mrt_p);//可直接抓id，將category_p+"&"+mrt_p 插入
+
+            //得到資料description  > 塞進intro_description
+            description = result.data.description;
+            let description_p = document.createElement("p");
+            let description_text = document.createTextNode(description);
+            description_p.appendChild(description_text);
+            intro_description.appendChild(description_p);
+
+            //得到資料address  > 塞進intro_address
+            address = result.data.address;
+            let address_p = document.createElement("p");
+            let address_text = document.createTextNode(address);
+            address_p.appendChild(address_text);
+            intro_address.appendChild(address_p);
+
+            //得到資料transport > 塞進intro_transport
+            transport = result.data.transport;
+            let transport_p = document.createElement("p");
+            let transport_text = document.createTextNode(transport);
+            transport_p.appendChild(transport_text);
+            intro_transport.appendChild(transport_p);
+
+
+            //作業 3-3 上下半天 點擊事件 + 價錢變化
+            timebutton_white_2 = document.querySelector(".booking_timebutton_white_2");
+            timebutton_white_1 = document.querySelector(".booking_timebutton_white_1");
+            timebutton_green_2 = document.querySelector(".booking_timebutton_green_2");
+            timebutton_green_1 = document.querySelector(".booking_timebutton_green_1");
+            money_2500 = document.querySelector(".money_2500");
+            money_2000 = document.querySelector(".money_2000");
+            //點擊白點 white_2 下半天 > green_1 消失、green_2 出現、2500元出現 2000消失
+
+
+            timebutton_white_2.addEventListener(
+                "click",
+                function () {
+                    timebutton_green_1.style.display = "none"
+                    timebutton_green_2.style.display = "block"
+                    money_2500.style.display = "block"
+                    money_2000.style.display = "none"
+                    // alert("點擊白點 white_2 下半天 > green_1 消失、green_2 出現、2500元出現 2000消失");
+                },
+                false
+            );
+
+            //點擊白點 white_1 上半天 > green_2 消失、green_1 出現、2000元出現 2500消失
+            timebutton_white_1.addEventListener(
+                "click",
+                function () {
+                    timebutton_green_1.style.display = "block"
+                    timebutton_green_2.style.display = "none"
+                    money_2500.style.display = "none"
+                    money_2000.style.display = "block"
+                    // alert("點擊白點 white_1 上半天 > green_2 消失、green_1 出現、2000元出現 2500消失");
+                },
+                false
+            );
+
+
+            //輪播功能--------------------------------------------------------------------------
+
+            //獲取圖片地址
+            let imgList = result.data.images;
+            console.log("imgList", imgList)
+
+            //根據圖片數目建立圓點 法1
+            // for (let index in imgList) {
+            //     let doteEle = document.getElementsByClassName("imgbutton_box")[0];
+
+            //     doteEle.innerHTML += `<span οnclick="lun(${index})"></span>`;
+            // }
+
+            //根據圖片數目建立圓點 法2
+            for (let i = 0; i < imgList.length; i++) {
+                let imgbutton_box_ball = document.createElement('div');
+                imgbutton_box_ball.id = "imgbutton_box_ball_" + String(i);
+                imgbutton_box_ball.className = "imgbutton_box_ball";
+
+                imgbutton_box_ball.setAttribute("type", "button");//給他一個class name > FOR點擊小點
+                imgbutton_box_ball.setAttribute("value", "CLICK");//給他一個class name > FOR點擊小點
+
+                imgbutton_box.appendChild(imgbutton_box_ball);
+
+
+            }
+
+            //得到左右箭頭
+            img_leftArrow = document.querySelector(".img_leftArrow");
+            img_rightArrow = document.querySelector(".img_rightArrow");
+
+            //得到小黑點
+            imgbutton_box_ball = document.querySelectorAll(".imgbutton_box_ball");
+            console.log(imgbutton_box_ball)
+            console.log(imgbutton_box_ball[1])
+
+            //載入網頁時就讓第一張小圓點是黑色的>>之後用小圓點的顏色判斷圖片是哪一張
+            document.getElementById("imgbutton_box_ball_0").style.background = "black";
+
+            //輪播函式，監聽右鍵有沒有被按
+            img_rightArrow.addEventListener(
+                "click",
+
+                function lun() {
+
+                    for (let i = 0; i < imgList.length; i++) {
+                        if (document.getElementById("imgbutton_box_ball_" + String(i)).style.background == "black") {
+                            rightcount = i
+                        }
+                    }
+                    //確認此時小黑圓點在哪裡 判斷圖片第幾張
+
+                    rightcount = rightcount + 1 //點右一次就+1
+
+                    if (rightcount < imgList.length) {
+                        imgTag.src = imgList[rightcount];//標籤.src=照片資料 變成>>  <img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d28/e891/f188/77a58890-7711-4ca2-aebe-4aa379726575.jpg" class="main_left_img"
+                        imgTag.id = "pic" + String(rightcount)
+                        main_left_img.appendChild(imgTag);  //可直接抓id  第一張照片 塞到id=main_left_img 元素裡面
+                        document.getElementById("imgbutton_box_ball_" + String(rightcount - 1)).style.background = "white"; //上一個小圓點變白
+                        document.getElementById("imgbutton_box_ball_" + String(rightcount)).style.background = "black";//此個小圓點變黑
+
+                    } else if (rightcount = imgList.length) { //最後一張的行為
+                        rightcount = 0;
+                        imgTag.src = imgList[0];
+                        imgTag.id = "pic" + String(0);
+                        main_left_img.appendChild(imgTag);
+                        document.getElementById("imgbutton_box_ball_0").style.background = "black";//第一個小圓點變黑
+                        document.getElementById("imgbutton_box_ball_" + String(imgList.length - 1)).style.background = "white";//最後一個小圓點變白
+                    }
+                },
+                false
+            );
+
+
+            // //輪播函式，監聽 按左鍵行為 
+            img_leftArrow.addEventListener(
+                "click",
+                function lun() {
+                    //用小圓點的背景判斷此時圖片在哪一張
+                    for (let i = 0; i < imgList.length; i++) {
+                        if (document.getElementById("imgbutton_box_ball_" + String(i)).style.background == "black") {
+                            leftcount = i
+                        }
+                    }
+                    // console.log(leftcount) //確認此時小黑圓點在哪裡 判斷圖片第幾張
+
+                    leftcount = leftcount - 1 //點左一次就-1
+
+                    if (leftcount != -1) {
+                        imgTag.src = imgList[leftcount];//標籤.src=照片資料 變成>>  <img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d28/e891/f188/77a58890-7711-4ca2-aebe-4aa379726575.jpg" class="main_left_img">
+                        // console.log("imgTag.src", imgTag.src)//確認網址
+                        // imgTag.id = "pic" + String(leftcount)//插入ID>>也不用
+                        // console.log(" imgTag.id", imgTag.id)//確認ID
+                        main_left_img.appendChild(imgTag);  //可直接抓id  第一張照片 塞到id=main_left_img 元素裡面
+                        // console.log(" main_left_img", main_left_img)
+
+                        document.getElementById("imgbutton_box_ball_" + String(leftcount + 1)).style.background = "white";  //上一張小圓點變白
+                        document.getElementById("imgbutton_box_ball_" + String(leftcount)).style.background = "black";//此張小圓點變黑
+
+                    } else if (leftcount == -1) { //當圖片(小圓點)為第一個時候按左鍵的行為
+                        // console.log("leftcount = imgList.length?", leftcount) //leftcount=-1
+                        imgTag.src = imgList[imgList.length - 1];  //插入最後一張照片網址
+                        // imgTag.id = "pic" + String(imgList.length - 1);
+                        main_left_img.appendChild(imgTag);
+                        document.getElementById("imgbutton_box_ball_" + String(0)).style.background = "white";//第一張小圓點變白
+                        document.getElementById("imgbutton_box_ball_" + String(imgList.length - 1)).style.background = "black";//最後一張小圓點變黑
+                    }
+                },
+                false
+            );
+
+            //額外TRY 點擊 小圓點就到那一張圖片
+
+
+            for (let i = 0; i < imgList.length; i++) {
+                imgbutton_box_ball[i].addEventListener(
+                    "click",
+
+                    function ball() {
+
+                        // console.log("有",imgbutton_box_ball[i],imgbutton_box_ball) //確認有吃到名字
+
+                        for (let g = 0; g < imgList.length; g++) {//將圓點全變白
+                            imgbutton_box_ball[g].style.background = "white";
+                        }
+
+                        imgbutton_box_ball[i].style.background = "black";//點到的圓點變黑
+
+                        imgTag.src = imgList[i];//差入圖片
+                        main_left_img.appendChild(imgTag);
+
+                    }, false
+                );
+            }
+
+
+        })
+
+</script>
+
+</html>
