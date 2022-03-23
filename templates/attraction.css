@@ -31,6 +31,7 @@
     color: white;
     background-color: white;
     margin-left: 12px;
+    opacity: 0.6;
     /* 要能黑白變 配合對應的圖 */
     /* background: black;  */
 
@@ -44,8 +45,8 @@
 .img_leftArrow {
     position: absolute;
     top: 50%;
-    left: 0px;
-    opacity: 0.8;
+    left: 10px;
+    opacity: 0.6;
     z-index: 10;
      
 }
@@ -55,8 +56,8 @@
 .img_rightArrow {
     position: absolute;
     top: 50%;
-    right: 0px;
-    opacity: 0.8;
+    right: 10px;
+    opacity: 0.6;
     background-image:url("btn_rightArrow.png")
 }
 

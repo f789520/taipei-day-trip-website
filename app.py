@@ -199,18 +199,56 @@ def members():#GET 方法
 
 
 
+# 使用者 第2個API
+@app.route("/signup",methods=["POST"])
+def signup():
+    nickname=request.form["nickname"]
+    username=request.form["usernameup"]
+    password=request.form["passwordup"]
+    sql = "SELECT 'name','username','password' FROM member WHERE username =%s"
+    user =(username,)
+    mycursor.execute(sql,user)
+    myresult = mycursor.fetchone() 
+    if  myresult != None :
+        return redirect("http://127.0.0.1:3000/error?message=帳號已經被註冊")
+    elif nickname   =="":
+        return redirect("http://127.0.0.1:3000/error?message=姓名、帳號、密碼不能為空白")
+    elif username   =="":
+        return redirect("http://127.0.0.1:3000/error?message=姓名、帳號、密碼不能為空白")
+    elif password   =="":
+        return redirect("http://127.0.0.1:3000/error?message=姓名、帳號、密碼不能為空白")
+
+    sql = "INSERT INTO member (name,username,password) VALUES (%s, %s, %s)"
+    val = (nickname, username, password)
+    mycursor.execute(sql, val)
+    mydb.commit()
+    return redirect("http://127.0.0.1:3000/")
+
+
+# 使用者 第3個API 要用PATCH
+@app.route("/signin", methods=["POST"])
+def signin():
+    username=request.form["username"]
+    password=request.form["password"]
+    sql = "SELECT * FROM member WHERE username='%s' and password='%s'" %(username,password)
+    mycursor.execute(sql)
+    myresult = mycursor.fetchone() 
+    if myresult == None:
+        return redirect("http://127.0.0.1:3000/error?message=帳號、或密碼輸入錯誤")
+    session["nickname"]=myresult['name'] 
+    return redirect("http://127.0.0.1:3000/member")
 
 
 
 
 
 
+# 使用者 第4個API 要用DELETE
 
-
-
-
-
-
+@app.route("/signout")
+def signout():
+    del session["nickname"]
+    return redirect("http://127.0.0.1:3000/")
 
 
 
