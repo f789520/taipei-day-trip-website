@@ -1,0 +1,370 @@
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maxium-scale=1" />
+    <title> 台北一日遊-attraction </title>
+    <link href="/booking.css" rel="stylesheet" type="text/css">
+    <!-- 上傳網址要+/ 擺在static ， 離線的話不加 擺在HTML 同一個資料夾 -->
+
+</head>
+
+<body>
+
+    <div class="top1">
+        <div class="top">
+            <div class="top2">
+                <div class="top_left_logo" style="cursor: pointer;">台北一日遊</div>
+                <div class="top_right">
+                    <div class="top_right_item" style="cursor: pointer;">預定行程</div>
+                    <div class="top_right_item" id="displaysign" onclick="start() " style="cursor: pointer;"> 登入/註冊
+                    </div>
+                    <div class="top_right_item" id="displaysignout" onclick="displaysignout()"
+                        style="display:none;cursor: pointer;"> 登出
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分割線 -->
+    <hr class="top_hr" style="margin-bottom:37px ; opacity: 0.2;" />
+
+    <!-- signform 註冊 // 登入  ------------------------------------>
+    <div style="display: flex;    z-index: 1002;justify-content: center;    ">
+        <div class="signform" id="signform" style="display: none">
+            <div class="signboxup"></div>
+
+            <div class="signtitlebox">
+                <div class="signtitle">
+                    <p style="font-weight: 700;font-size: 24px;line-height: 24px;color: #666666;">登入會員帳號 </p>
+                </div>
+
+                <div class="signclose">
+                    <img src="/icon_close.png" width="35px" height="35px" onclick="signclose()">
+                </div>
+            </div>
+
+            <!-- 表單應該不是直接傳給後端查資料回傳 是給JS 呼叫後端做請求 -->
+            <form id="signinform" action="" onsubmit=" return func()">
+                <div class="userdiv">
+                    <input id="email" class="signinput" type="text" placeholder="輸入電子信箱" name="email">
+                </div>
+
+                <div class="pwddiv">
+                    <input id="password" class="signinput" type="password" placeholder="輸入密碼" name="password"
+                        autocomplete="on">
+                </div>
+
+                <div class="postdiv">
+                    <button onclick="signin()">登入帳戶</button>
+                </div>
+            </form>
+
+
+
+            <div class="change" style="color: #4d4d4d">
+                <p id="signinmeg" style="text-decoration: none;color:red; display:none;">輸入的 Email 或密碼錯誤，登入失敗 </p>
+                <p>還沒有帳戶？點此<a style="cursor: pointer; text-decoration: none;color: #666666"
+                        onclick="registerform()">註冊</a>
+                </p>
+            </div>
+
+
+        </div>
+
+
+
+        <div class="signform" id="registerform" style="display: none">
+            <div class="signboxup">
+
+            </div>
+
+            <div class="signtitlebox">
+
+                <div class="signtitle">
+                    <p style="font-weight: 700;font-size: 24px;line-height: 24px;color: #666666;">註冊會員帳號 </p>
+                </div>
+
+                <div class="signclose">
+                    <img src="/icon_close.png" width="35px" height="35px" onclick="signclose()">
+                </div>
+            </div>
+            <!-- 註冊---------------------- -->
+            <form id="signupform" action="" onsubmit=" return func()" method="POST">
+                <!-- return error 不用理 -->
+                <div class="userdiv">
+                    <input id="registeruser" class="signinput" type="text" placeholder="輸入姓名" name="registeruser">
+                </div>
+
+                <!-- <img src="image/signloading.gif" style="display: none" id="registerloading"> -->
+                <div class="pwddiv">
+                    <input id="registeremail" class="signinput" type="text" placeholder="輸入電子郵件" name="registeremail"
+                        autocomplete="on">
+                </div>
+
+                <div class="pwddiv">
+                    <input id="registerrepassword" class="signinput" type="password" placeholder="輸入密碼"
+                        name="registerrepassword" autocomplete="on">
+                </div>
+
+                <div class="postdiv">
+                    <button onclick="signup()">註冊新帳戶</button>
+
+                </div>
+            </form>
+
+
+
+            <div class="change" style="color: #4d4d4d">
+                <p id="signinmegerror" style="text-decoration: none;color:red; display:none;">輸入的 Email 已經註冊 </p>
+                <p id="signinmegsus" style="text-decoration: none;color:red; display:none;">註冊成功 </p>
+                <p>已經有帳戶了？點此<a style=" cursor: pointer; text-decoration: none;color: #666666 "
+                        onclick="signform()">登入</a>
+                </p>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+    <!-- 觀察點 -->
+    <footer class="footer" id="foot">
+        <div id="keywordfoot"></div>
+        <div class="footer_text">
+            <p>COPYRIGHT © 2021 台北一日遊 </p>
+    </footer>
+
+    <script>
+        fetch("http://3.115.236.143:3000/api/user", {
+            method: 'GET'
+        }) //測試
+            .then((sessionresult) => {
+                return sessionresult.json();//將資料用JSON 的格式用物件和陣列的組合
+            })
+            .then((sessionresult) => {
+                // console.log("SESSSION判斷", result)
+                // console.log("SESSSION判斷", sessionresult.data)
+                //如果回傳有值的話，右上角顯示登出 登入顯示
+                //如果回傳沒有值 代表沒有登入狀態 display:""
+                if (sessionresult.data == null) {
+                    // console.log("SESSSION判斷等於Null 代表沒有session 將右上角顯示登入 登出顯示0")
+                    document.getElementById('displaysign').style.display = "block"
+                    document.getElementById('displaysignout').style.display = "none"
+                } else {
+                    document.getElementById('displaysign').style.display = "none"
+                    document.getElementById('displaysignout').style.display = "block"
+
+                }
+
+            })
+        //# 階段二 WEEK 4 API-------------------------------------
+        // ----------------------彈出登入登出視窗------------------
+        function start() {
+            document.getElementById('signform').style.display = ""
+            document.getElementById('signformbackground').style.display = ""
+        }
+
+        // ----------------------彈出視窗------------------
+
+        function signclose() {
+            document.getElementById('signform').style.display = "none"
+            document.getElementById('registerform').style.display = "none"
+            document.getElementById('signformbackground').style.display = "none"
+            // location.reload()
+            document.getElementById("registeruser").value = null
+            document.getElementById("registeremail").value = null
+            document.getElementById("registerrepassword").value = null
+            document.getElementById("email").value = null
+            document.getElementById("password").value = null
+        }
+
+        function registerform() {
+            document.getElementById('registerform').style.display = ""
+            document.getElementById('signform').style.display = "none"
+            //點選登入 註冊 回到原本的表單畫面
+            document.getElementById("email").value = null
+            document.getElementById("password").value = null
+
+            document.getElementById("signinmegsus").style.display = "none"
+            document.getElementById("signinmegerror").style.display = "none"
+            document.getElementById("signinmeg").style.display = "none"
+
+
+        }
+        function signform() {
+            document.getElementById('registerform').style.display = "none"
+            document.getElementById('signform').style.display = ""
+            //點選登入 註冊 回到原本的表單畫面
+            document.getElementById("registeruser").value = null
+            document.getElementById("registeremail").value = null
+            document.getElementById("registerrepassword").value = null
+
+            document.getElementById("signinmegsus").style.display = "none"
+            document.getElementById("signinmegerror").style.display = "none"
+            document.getElementById("signinmeg").style.display = "none"
+
+
+        }
+
+
+
+        //--------------登出畫面-------------
+        function displaysignout() {
+            fetch("http://3.115.236.143:3000/api/user", {
+                method: 'DELETE'
+                // method: 'GET'
+            }) //測試
+                .then((sessionresult) => {
+                    return sessionresult.json();//將資料用JSON 的格式用物件和陣列的組合
+                })
+                .then((sessionresult) => {
+                    if (sessionresult.ok == true) {
+                        location.reload()
+                        document.getElementById('displaysignout').style.display = "none"
+                        document.getElementById('displaysign').style.display = ""
+
+
+                    }
+
+
+                })
+
+
+        }
+
+
+        //--------------登入-------------
+        function signin() {
+            emailElement = document.getElementById('email')
+            email = emailElement.value;
+            // console.log("email??", email)
+
+            passwordElement = document.getElementById('password')
+            password = passwordElement.value;
+            // console.log("password??", password)
+
+            fd = new FormData(document.getElementById('signinform'))
+            console.log("fd", fd)
+
+            fetch("http://3.115.236.143:3000/api/user", {
+                method: 'PATCH',
+                body: fd
+            })   //發送query string
+                .then(function (response) {
+                    console.log(response)
+                    // console.log(email)
+                    // console.log(password)
+                    // return response.text();
+                    return response.json();
+                })
+                .then(function (result) {
+                    // document.getElementById("username").innerHTML = result
+
+                    // finall.innerHTML="";
+                    // let username;
+                    // username=result[0]
+                    // finall.innerHTML = result.name + " (" + result.username + ")"
+                    console.log("登入資訊:", result);
+                    // console.log("登入資訊:", result.ok);
+
+
+                    if (result.ok == true) {
+                        //右上角 改變成登出
+                        document.getElementById('displaysign').style.display = "none"
+                        document.getElementById('displaysignout').style.display = "block"
+                        //重新整理關閉表單
+                        location.reload()
+                        signclose()
+
+
+                    } else {
+                        let signinmeg_error = result.message
+                        document.getElementById('displaysign').style.display = "block"
+                        document.getElementById('displaysignout').style.display = "none"
+                        //失敗出現錯誤
+                        document.getElementById('signinmeg').style.display = "block"
+                        document.getElementById('signinmeg').innerText = signinmeg_error
+                        //重新輸入信箱 密碼
+                        document.getElementById("email").value = null
+                        document.getElementById("password").value = null
+
+                    }
+
+                });
+        };
+
+
+
+        //------------- 註冊 -------------
+        signup = function () {
+
+            registeruserElement = document.getElementById('registeruser')
+            registeruser = registeruserElement.value;
+            // console.log("registeruser", registeruser)
+
+            registeremailElement = document.getElementById('registeremail')
+            registeremail = registeremailElement.value;
+            // console.log("registeremail", registeremail)
+            // console.log("email??", email)
+
+            registerrepasswordElement = document.getElementById('registerrepassword')
+            registerrepassword = registerrepasswordElement.value;
+            // console.log("registerrepassword", registerrepassword)
+            // console.log("password??", password)
+
+            upfd = new FormData(document.getElementById('signupform'))
+            // console.log("fd", upfd)
+
+            fetch("http://3.115.236.143:3000/api/user", {
+                method: 'POST',
+                body: upfd
+
+            })   //發送query string
+                .then(function (response) {
+                    console.log(response)
+                    return response.json();
+                })
+                .then(function (result) {
+                    console.log("登入資訊:", result);
+                    // console.log("登入資訊:", result.ok);
+
+                    if (result.ok == true) {  //註冊成功 顯示
+                        document.getElementById('signinmegerror').style.display = "none"
+                        document.getElementById('signinmegsus').style.display = "block"
+                        // document.getElementById("registeruser").value = null
+                        document.getElementById("registeremail").value = null
+                        document.getElementById("registerrepassword").value = null
+
+                    } else {//註冊失敗 顯示
+                        console.log(result.message)
+                        let message = result.message
+                        document.getElementById("registeremail").value = null
+                        document.getElementById("registerrepassword").value = ""
+                        document.getElementById('signinmegerror').style.display = "block"
+                        document.getElementById('signinmegerror').innerText = message
+                        document.getElementById('signinmegsus').style.display = "none"
+                        // document.getElementById("registerform").reset();
+
+                    }
+
+                }).catch((err) => {
+                    console.log('錯誤:', err);
+                });
+        }
+        //  表單不跳
+        function func() {
+            return false;
+        }
+    </script>
+
+
+
+
+</body>
+
+</html>
