@@ -18,9 +18,9 @@ from flask_restful import Resource, Api  # for RESTful
 
 # ------------------------------------MySQL 連線
 mydb = mysql.connector.connect(
-    host="127.0.0.1", #SQL的
+    host="127.0.0.1",  # SQL的
     user="root",
-    password="Ff88888888",  
+    password="Ff88888888",
     auth_plugin='mysql_native_password',  # For EC2
     db="website",
     charset="utf8",
@@ -157,6 +157,10 @@ def attractionid(id):
             id,)
         mycursor.execute(sql_id)
         myresult = mycursor.fetchall()
+        if myresult == None or id == "" or id == "id" or id == None:
+
+            return jsonify({"error": True, "message": "景點編號不正確"}), 400
+
         list_image = myresult[0]["images"].split(",")  # 變成列表
         list_image = list_image[0:-1]  # 扣掉最後一筆LIST 因為是空的
 
@@ -168,13 +172,18 @@ def attractionid(id):
         a = ["data"]
         b = myresult  # 變成不是list
         myresult_dict_from_list = dict(zip(a, b))
-        return myresult_dict_from_list
 
+        return myresult_dict_from_list
 # error 處理
-    except id == "" or id == "id" or id == None:
-        return jsonify({"error": True, "message": "景點編號不正確"}), 400
+
     except:
         return abort(500)
+
+
+@app.errorhandler(404)
+def handle_bad_request(e):
+    # from flask import Flask, jsonify 可以直接寫字典格式出來
+    return jsonify({"error": True, "message": "景點編號不正確"}), 400
 
 
 @app.errorhandler(500)
@@ -182,15 +191,12 @@ def handle_bad_request(e):
     # from flask import Flask, jsonify 可以直接寫字典格式出來
     return jsonify({"error": True, "message": "伺服器內部錯誤"}), 500
 
-  
-
 
 # 階段二 WEEK 4 API
 @app.route("/api/user", methods=['GET', 'POST', 'PATCH', 'DELETE'])
 def apiuser():
 
-
-# 使用者 第1個API GET 
+    # 使用者 第1個API GET
 
     if request.method == 'GET':
 
@@ -215,26 +221,26 @@ def apiuser():
         try:
             name = request.form["registeruser"]
             email = request.form["registeremail"]
-            print("email",email,type(email))
+            print("email", email, type(email))
             password = request.form["registerrepassword"]
-            print("註冊",name,email,password)
+            print("註冊", name, email, password)
             sql = "SELECT 'name','email','password' FROM member WHERE email =%s"
-            emailtuple = (email,) #變TUPLE 
-            print("註冊",name,email,password)
-            mycursor.execute(sql,emailtuple)
-            print("mycursor",mycursor)
+            emailtuple = (email,)  # 變TUPLE
+            print("註冊", name, email, password)
+            mycursor.execute(sql, emailtuple)
+            print("mycursor", mycursor)
             myresult = mycursor.fetchone()
-            print("註冊signupresult  myresult",myresult)
+            print("註冊signupresult  myresult", myresult)
             if myresult != None:
                 return jsonify({"error": True, "message": "註冊失敗，重複的 Email 或其他原因"}), 400
             elif name == "" or email == "" or password == "":
                 return jsonify({"error": True, "message": "註冊失敗，重複的 Email 或其他原因"}), 400
             sql = "INSERT INTO member (name,email,password) VALUES (%s, %s, %s)"
-            val = (name,email,password)
-            print("val",val)
-            mycursor.execute(sql,val)
+            val = (name, email, password)
+            print("val", val)
+            mycursor.execute(sql, val)
             mydb.commit()
-            return jsonify({"ok": True}),200
+            return jsonify({"ok": True}), 200
 
         except:
             return abort(500)
@@ -243,8 +249,8 @@ def apiuser():
 # 使用者 第3個API PATCH
 
     elif request.method == 'PATCH':
-        
-        try:     
+
+        try:
             email = request.form["email"]
             print("email ?", email,)
             password = request.form["password"]
@@ -267,17 +273,15 @@ def apiuser():
 
         except:
             return abort(500)
- 
 
  # 使用者 第4個API 要用DELETE
 
     elif request.method == 'DELETE':
         del session["email"]
         session.clear()
-    
+
         return jsonify({"ok": True})
 
- 
- 
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=3000)

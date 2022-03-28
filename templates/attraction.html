@@ -273,7 +273,31 @@
 
 <script>
 
+    //# 階段二 WEEK 4 API-------------------------------------
+    // 一打開網頁 確認SESSION
+    //192.168.0.131:3000 >> 上限要記得換 3.115.236.143:3000/
+    fetch("http://3.115.236.143:3000/api/user", {
+        method: 'GET'
+    }) //測試
+        .then((sessionresult) => {
+            return sessionresult.json();//將資料用JSON 的格式用物件和陣列的組合
+        })
+        .then((sessionresult) => {
+            // console.log("SESSSION判斷", result)
+            // console.log("SESSSION判斷", sessionresult.data)
+            //如果回傳有值的話，右上角顯示登出 登入顯示
+            //如果回傳沒有值 代表沒有登入狀態 display:""
+            if (sessionresult.data == null) {
+                // console.log("SESSSION判斷等於Null 代表沒有session 將右上角顯示登入 登出顯示0")
+                document.getElementById('displaysign').style.display = "block"
+                document.getElementById('displaysignout').style.display = "none"
+            } else {
+                document.getElementById('displaysign').style.display = "none"
+                document.getElementById('displaysignout').style.display = "block"
 
+            }
+
+        })
 
     getUrlString = location.href; //抓網址列 想辦法取得id 這個值 餵給 fetch
     url = new URL(getUrlString)
@@ -289,35 +313,15 @@
             return result.json();//將資料用JSON 的格式用物件和陣列的組合
         })
         .then((result) => {
-            //# 階段二 WEEK 4 API-------------------------------------
-            // 一打開網頁 確認SESSION
-            //192.168.0.131:3000 >> 上限要記得換 3.115.236.143:3000/
-            fetch("http://3.115.236.143:3000/api/user", {
-                method: 'GET'
-            }) //測試
-                .then((sessionresult) => {
-                    return sessionresult.json();//將資料用JSON 的格式用物件和陣列的組合
-                })
-                .then((sessionresult) => {
-                    // console.log("SESSSION判斷", result)
-                    // console.log("SESSSION判斷", sessionresult.data)
-                    //如果回傳有值的話，右上角顯示登出 登入顯示
-                    //如果回傳沒有值 代表沒有登入狀態 display:""
-                    if (sessionresult.data == null) {
-                        // console.log("SESSSION判斷等於Null 代表沒有session 將右上角顯示登入 登出顯示0")
-                        document.getElementById('displaysign').style.display = "block"
-                        document.getElementById('displaysignout').style.display = "none"
-                    } else {
-                        document.getElementById('displaysign').style.display = "none"
-                        document.getElementById('displaysignout').style.display = "block"
 
-                    }
-
-                })
+            if (result.error == true) {
+                let result_error = result.message
+                document.getElementById('main_right_name').innerText = result.message
+            }
 
 
             // console.log("id是誰",id)
-            // console.log(result);  //  確認源頭資料 
+            console.log(result);  //  確認源頭資料 
             // console.log(url_id);  //  確認url_id
 
             //得到資料照片 > 並塞進 id=main_left_img
@@ -542,7 +546,9 @@
             }
 
 
-        })
+        }).catch((err) => {
+            console.log('錯誤:', err);
+        });
 
     //# 階段二 WEEK 4 API-------------------------------------
     // ----------------------彈出登入登出視窗------------------
@@ -557,7 +563,12 @@
         document.getElementById('signform').style.display = "none"
         document.getElementById('registerform').style.display = "none"
         document.getElementById('signformbackground').style.display = "none"
-        location.reload()
+        // location.reload()
+        document.getElementById("registeruser").value = null
+        document.getElementById("registeremail").value = null
+        document.getElementById("registerrepassword").value = null
+        document.getElementById("email").value = null
+        document.getElementById("password").value = null
     }
 
     function registerform() {

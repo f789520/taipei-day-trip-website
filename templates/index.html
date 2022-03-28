@@ -208,8 +208,8 @@
 
 
     // 一打開網頁 載入首頁
-    fetch("http://3.115.236.143:3000/api/attractions") 
-    // fetch("http://192.168.0.131:3000/api/attractions") //測試
+    fetch("http://3.115.236.143:3000/api/attractions")
+        // fetch("http://192.168.0.131:3000/api/attractions") //測試
         .then((result) => {
             return result.json();//將資料用JSON 的格式用物件和陣列的組合
         })
@@ -341,7 +341,7 @@
         // console.log("載入數字:" + loadnum)
 
         fetch("http://3.115.236.143:3000/api/attractions?page=" + String(loadcount))
-        // fetch("http://192.168.0.131:3000/api/attractions?page=" + String(loadcount)) //測試
+            // fetch("http://192.168.0.131:3000/api/attractions?page=" + String(loadcount)) //測試
             .then((result) => {
                 return result.json();//將資料用JSON 的格式用物件和陣列的組合
             })
@@ -709,7 +709,12 @@
         document.getElementById('signform').style.display = "none"
         document.getElementById('registerform').style.display = "none"
         document.getElementById('signformbackground').style.display = "none"
-        location.reload()
+        // location.reload()
+        document.getElementById("registeruser").value = null
+        document.getElementById("registeremail").value = null
+        document.getElementById("registerrepassword").value = null
+        document.getElementById("email").value = null
+        document.getElementById("password").value = null
     }
 
     function registerform() {
