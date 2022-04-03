@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     </meta>
     <meta name="viewport" content="width=device-width, initial-scale=1,maxium-scale=1" />
-    <title> 台北一日遊-attraction </title>
-    <link href="/booking.css" rel="stylesheet" type="text/css">
+    <title> 台北一日遊-booking </title>
+    <link href="booking.css" rel="stylesheet" type="text/css">
     <!-- 上傳網址要+/ 擺在static ， 離線的話不加 擺在HTML 同一個資料夾 -->
 
 </head>
@@ -16,9 +16,11 @@
     <div class="top1">
         <div class="top">
             <div class="top2">
-                <div class="top_left_logo" style="cursor: pointer;">台北一日遊</div>
+                <div class="top_left_logo" style="cursor: pointer;"><a href="http://3.115.236.143:3000/"
+                        style="text-decoration:none;color:#448899">台北一日遊 </a>
+                </div>
                 <div class="top_right">
-                    <div class="top_right_item" style="cursor: pointer;">預定行程</div>
+                    <div class="top_right_item" id="booking" onclick="booking()" style="cursor: pointer;">預定行程</div>
                     <div class="top_right_item" id="displaysign" onclick="start() " style="cursor: pointer;"> 登入/註冊
                     </div>
                     <div class="top_right_item" id="displaysignout" onclick="displaysignout()"
@@ -99,7 +101,7 @@
                     <input id="registeruser" class="signinput" type="text" placeholder="輸入姓名" name="registeruser">
                 </div>
 
-                <!-- <img src="image/signloading.gif" style="display: none" id="registerloading"> -->
+
                 <div class="pwddiv">
                     <input id="registeremail" class="signinput" type="text" placeholder="輸入電子郵件" name="registeremail"
                         autocomplete="on">
@@ -128,8 +130,226 @@
 
 
 
+
+
+
+
         </div>
     </div>
+
+    <div class="hello" id="hello">
+        <h>您好，<h id="who"> </h> ，待預定行程如下</h>
+    </div>
+
+    <!-- 消失 -->
+    <div id="cancel">
+
+
+        <div class="main">
+            <!-- 左半邊 -->
+            <div class="main_left">
+
+                <div class="main_left_img" id='main_left_img'></div> <!-- 創立一個div 給img  塞入 -->
+
+
+            </div>
+
+
+            <!-- 右半邊 -->
+            <div class="main_right">
+
+                <!-- 預定表格 -->
+                <div class="main_right_booking">
+                    <!-- 預定表格 row 的 框   訂購導覽行程 -->
+                    <div class="main_right_bookingbox">
+                        <!-- HTML 直接打的字 沒辦法用CSS 套用!!! -->
+                        <div class="taipei" id="main_right_name">
+                            <h>台北一日遊 :
+                            </h>
+
+                        </div>
+                    </div>
+                    <!--   日期-->
+                    <div class="main_right_bookingbox" id="main_right_date">
+                        <h style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;">日期
+                            :&ensp;
+
+                        </h>
+                    </div>
+                    <!--   時間 :-->
+                    <div class="main_right_bookingbox" id="main_right_time">
+
+                        <h style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;">時間
+                            :&ensp;
+                        </h>
+
+                    </div>
+
+                    <!-- 費用-->
+                    <div class="main_right_bookingbox">
+
+                        <h style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;">費用
+                            :&ensp; <h style="font-weight: 400" ;>新台幣 </h>
+                            <h style="font-weight: 400" id="main_right_price"></h>
+                            <h style="font-weight: 400">元</h> &ensp;
+                        </h>
+
+                    </div>
+
+                    <!--地點-->
+
+                    <div class="main_right_bookingbox" id="main_right_address">
+                        <h style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;">地點
+                            :&ensp;
+                        </h>
+                    </div>
+
+                </div>
+            </div>
+            <!-- 垃圾桶 -->
+            <div class="trashdiv">
+                <div class="trash" style="cursor: pointer;" onclick="trash()"> <img src="/icon_delete.png"> </div>
+            </div>
+        </div>
+
+
+
+        <div>
+            <hr class="middle_hr" />
+        </div>
+
+
+        <div class="intro">
+            <div class="hello">
+                <h>您的聯絡資訊</h>
+            </div>
+
+            <!-- 聯絡姓名 -->
+            <div class="intro_container">
+                <h
+                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; padding-left: 10px;">
+                    聯絡姓名：
+                </h>
+                <input class="input"></input>
+            </div>
+            <!-- 聯絡信箱 -->
+            <div class="intro_container">
+                <h
+                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
+                    聯絡信箱：
+                </h>
+                <input class="input"></input>
+
+            </div>
+
+            <!-- 手機號碼 -->
+            <div class="intro_container">
+                <h
+                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
+                    手機號碼：
+                </h>
+                <input class="input"></input>
+
+            </div>
+
+
+            <div class="hello">
+                <h style="font-size:16px ; margin-top: 20px;">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</h>
+            </div>
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+        <div>
+            <hr class="middle_hr" />
+        </div>
+
+
+        <div class="intro">
+            <div class="hello">
+                <h>信用卡付款資訊</h>
+            </div>
+
+            <!-- 聯絡姓名 -->
+            <div class="intro_container">
+                <h
+                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; padding-left: 10px;">
+                    卡片號碼：
+                </h>
+                <input class="input" placeholder="**** **** **** ****" type="text"></input>
+            </div>
+            <!-- 聯絡信箱 -->
+            <div class="intro_container">
+                <h
+                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
+                    過期時間：
+                </h>
+                <input class="input" placeholder="MM / YY" type="text"></input>
+
+            </div>
+
+            <!-- 手機號碼 -->
+            <div class="intro_container">
+                <h
+                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
+                    驗證密碼：
+                </h>
+                <input class="input" placeholder="CVV" type="password"></input>
+
+            </div>
+
+
+        </div>
+
+
+        <div>
+            <hr class="middle_hr" />
+        </div>
+
+
+
+        <!-- 需動態 -->
+
+        <div class="intro" style="display: flex;justify-content:end ">
+            <div id="buy_button">
+                <div class="hello">
+                    <h style="font-size:16px ; margin-left: 17px; ">總價：新台幣 <h id="totalMoney"></h> 元 </h>
+                </div>
+                <button class="buy_button">確認訂購並付款</button>
+
+            </div>
+        </div>
+
+
+
+    </div>
+    <!--目前沒有任何待預定的行程 -->
+
+    <div class="hello" id="nobooking">
+        <h
+            style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; padding-left: 10px;">
+            目前沒有任何待預定的行程</h>
+    </div>
+
+
+
+
+    <!--如果沒行程 
+    #cancel  display: none; 
+    #nobooking display: block; 
+    .footer  height :100%
+-->
 
 
     <!-- 觀察點 -->
@@ -140,7 +360,10 @@
     </footer>
 
     <script>
-        fetch("http://3.115.236.143:3000/api/user", {
+
+        // 判斷登出/入
+        fetch("http://3.115.236.143:3000/api/user", {//上線測試
+            // fetch("http://3.115.236.143:3000/api/user", { 
             method: 'GET'
         }) //測試
             .then((sessionresult) => {
@@ -148,20 +371,104 @@
             })
             .then((sessionresult) => {
                 // console.log("SESSSION判斷", result)
-                // console.log("SESSSION判斷", sessionresult.data)
+                console.log("SESSSION判斷", sessionresult.data)
                 //如果回傳有值的話，右上角顯示登出 登入顯示
                 //如果回傳沒有值 代表沒有登入狀態 display:""
                 if (sessionresult.data == null) {
                     // console.log("SESSSION判斷等於Null 代表沒有session 將右上角顯示登入 登出顯示0")
                     document.getElementById('displaysign').style.display = "block"
                     document.getElementById('displaysignout').style.display = "none"
+                    // document.location.href = "http://3.115.236.143:3000/booking";
+                    document.location.href = "http://3.115.236.143:3000/"; //上線測試
                 } else {
                     document.getElementById('displaysign').style.display = "none"
                     document.getElementById('displaysignout').style.display = "block"
+                    document.getElementById("who").innerHTML = sessionresult.data.name
 
                 }
 
             })
+        fetch("http://3.115.236.143:3000/api/booking", {//上線測試
+            // fetch("http://3.115.236.143:3000/api/booking", {
+            method: "GET",
+
+        })
+            .then(function (response) {
+                console.log(response)
+                return response.json();
+                // return response.text();
+            })
+            .then(function (result) {
+                console.log(result) //得到API 回傳的訊息!
+
+                if (result.data == null) { //代表沒有預定資料
+
+                    document.getElementById('cancel').style.display = "none"
+                    document.getElementById('nobooking').style.display = "block"
+                    document.getElementById('foot').style.height = "100%"
+
+                } else {
+                    pic = result.data.attraction.image //得到第一張照片的資料
+                    let imgTag = document.createElement("img");//創立 img 標籤
+                    imgTag.src = pic;//標籤.src=照片資料 變成>>  <img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d28/e891/f188/77a58890-7711-4ca2-aebe-4aa379726575.jpg" class="main_left_img">
+                    imgTag.setAttribute("class", "img");//給他一個class name 
+                    main_left_img.appendChild(imgTag);
+
+                    //得到資料景點名字  name  > 塞進 id=main_right_name
+                    name = result.data.attraction.name;
+                    let name_h = document.createElement("h");
+                    let name_text = document.createTextNode(name);
+                    name_h.appendChild(name_text);
+                    main_right_name.appendChild(name_h);
+
+
+                    date = result.data.date;
+                    let date_h = document.createElement("h");
+                    let date_text = document.createTextNode(date);
+                    date_h.appendChild(date_text);
+                    main_right_date.appendChild(date_h);
+
+
+                    time = result.data.time;
+                    if (time == "afternoon") {
+                        time = "下半天"
+                        let time_h = document.createElement("h");
+                        let time_text = document.createTextNode(time);
+                        time_h.appendChild(time_text);
+                        main_right_time.appendChild(time_h);
+                    } else {
+                        time = "上半天"
+                        let time_h = document.createElement("h");
+                        let time_text = document.createTextNode(time);
+                        time_h.appendChild(time_text);
+                        main_right_time.appendChild(time_h);
+
+                    }
+
+
+
+                    price = result.data.price;
+                    let price_h = document.createElement("h");
+                    let price_text = document.createTextNode(price);
+                    price_h.appendChild(price_text);
+                    main_right_price.appendChild(price_h);
+
+                    price2 = result.data.price;
+                    let price_h2 = document.createElement("h");
+                    let price_text2 = document.createTextNode(price);
+                    totalMoney.appendChild(price_text2);
+
+
+                    address = result.data.attraction.address;
+                    let address_h = document.createElement("h");
+                    let address_text = document.createTextNode(address);
+                    address_h.appendChild(address_text);
+                    main_right_address.appendChild(address_h);
+
+                }
+
+            })
+
         //# 階段二 WEEK 4 API-------------------------------------
         // ----------------------彈出登入登出視窗------------------
         function start() {
@@ -169,7 +476,7 @@
             document.getElementById('signformbackground').style.display = ""
         }
 
-        // ----------------------彈出視窗------------------
+        // ----------------------關閉 登出入 視窗------------------
 
         function signclose() {
             document.getElementById('signform').style.display = "none"
@@ -183,6 +490,8 @@
             document.getElementById("password").value = null
         }
 
+
+        // ----------------------點選註冊頁面------------------
         function registerform() {
             document.getElementById('registerform').style.display = ""
             document.getElementById('signform').style.display = "none"
@@ -196,6 +505,9 @@
 
 
         }
+
+
+        // ----------------------點選登入頁面------------------
         function signform() {
             document.getElementById('registerform').style.display = "none"
             document.getElementById('signform').style.display = ""
@@ -216,6 +528,7 @@
         //--------------登出畫面-------------
         function displaysignout() {
             fetch("http://3.115.236.143:3000/api/user", {
+                // fetch("http://3.115.236.143:3000/api/user", {//上線測試
                 method: 'DELETE'
                 // method: 'GET'
             }) //測試
@@ -250,8 +563,8 @@
 
             fd = new FormData(document.getElementById('signinform'))
             console.log("fd", fd)
-
-            fetch("http://3.115.236.143:3000/api/user", {
+            fetch("http://3.115.236.143:3000/api/user", {//上線測試
+                // fetch("http://3.115.236.143:3000/api/user", {
                 method: 'PATCH',
                 body: fd
             })   //發送query string
@@ -319,8 +632,8 @@
 
             upfd = new FormData(document.getElementById('signupform'))
             // console.log("fd", upfd)
-
-            fetch("http://3.115.236.143:3000/api/user", {
+            fetch("http://3.115.236.143:3000/api/user", {//上線測試
+                // fetch("http://3.115.236.143:3000/api/user", {
                 method: 'POST',
                 body: upfd
 
@@ -360,6 +673,94 @@
         function func() {
             return false;
         }
+
+
+
+        // 處理右上角 預定文字
+        function booking() {
+
+
+            // 檢查使用者是否已經登入
+            fetch("http://3.115.236.143:3000/api/user", { //上線測試
+                // fetch("http://3.115.236.143:3000/api/user", { 
+                method: 'GET'
+            }) //測試
+                .then((sessionresult) => {
+                    return sessionresult.json();//將資料用JSON 的格式用物件和陣列的組合
+                })
+                .then((sessionresult) => {
+                    // console.log("SESSSION判斷", result)
+                    // console.log("SESSSION判斷", sessionresult.data)
+                    //如果回傳有值的話，右上角顯示登出 登入顯示
+                    //如果回傳沒有值 代表沒有登入狀態 display:""
+                    if (sessionresult.data == null) {
+                        // SESSSION判斷等於Null 代表沒有登入，進入登入流程
+                        start()
+                    } else {
+                        //有登入 ， 導到 /booking 頁面
+                        // document.location.href = "http://3.115.236.143:3000/booking";
+                        document.location.href = "http://3.115.236.143:3000/booking";
+
+                    }
+
+                })
+
+        }
+
+
+
+
+        function trash() {
+            console.log("DELETE")
+            fetch("http://3.115.236.143:3000/api/booking", {//上線測試
+                // fetch("http://3.115.236.143:3000/api/user", {
+                method: 'DELETE'
+            }) //測試
+                .then((result) => {
+                    return result.json();//將資料用JSON 的格式用物件和陣列的組合
+                })
+                .then((result) => {
+                    if (result.ok == true) {
+                        //右上角 改變成登出
+                        document.getElementById('cancel').style.display = "none"
+                        document.getElementById('nobooking').style.display = "block"
+                        document.getElementById('foot').style.height = "100%"
+
+                        //重新整理關閉表單
+
+                    }
+
+
+                })
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </script>
 
 

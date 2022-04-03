@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,maxium-scale=1" />
     <title> 台北一日遊-attraction </title>
     <link href="/attraction.css" rel="stylesheet" type="text/css">
-    <!-- 上傳網址要+/ 擺在static ， 離線的話不加 擺在HTML 同一個資料夾 -->
+    <!-- 上傳網址要+/ 擺在static ， 離線的話不加 擺在HTML 同一個資料夾 上線修改-->
 
 </head>
 
@@ -16,9 +16,11 @@
     <div class="top1">
         <div class="top">
             <div class="top2">
-                <div class="top_left_logo" style="cursor: pointer;">台北一日遊</div>
+                <div class="top_left_logo" style="cursor: pointer;"><a href="http://3.115.236.143:3000/"
+                        style="text-decoration:none;color:#448899">台北一日遊 </a>
+                </div>
                 <div class="top_right">
-                    <div class="top_right_item" style="cursor: pointer;">預定行程</div>
+                    <div class="top_right_item" id="booking" onclick="booking()" style="cursor: pointer;">預定行程</div>
                     <div class="top_right_item" id="displaysign" onclick="start() " style="cursor: pointer;"> 登入/註冊
                     </div>
                     <div class="top_right_item" id="displaysignout" onclick="displaysignout()"
@@ -180,8 +182,10 @@
                     <div>
                         <p style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;">選擇日期
                             :&ensp;
+
                             <input id="date" type="date"
-                                style="border: 0 ;padding-left :10px; padding-top :5px; padding-bottom :5px;">
+                                style="border: 0 ;padding-left :10px; padding-top :5px; padding-bottom :5px ;">
+
                         </p>
                     </div>
                 </div>
@@ -196,18 +200,20 @@
 
                         <!-- 白點1-->
                         <div class="booking_timebutton_white_1" id="booking_timebutton_white_1" input type="button"
-                            value="CLICK" class="button"></div>
+                            value="CLICK" class="button" style="cursor: pointer;"></div>
                         <!-- 綠點1-->
-                        <div class="booking_timebutton_green_1" id="booking_timebutton_green_1"></div>
+                        <div class="booking_timebutton_green_1" id="booking_timebutton_green_1" name="time"
+                            value="morning" style="cursor: pointer;"></div>
                         <!-- 上半天-->
                         <h style="font-weight: 400;  font-size: 16px;color: #666666;line-height: 13px;">
                             &ensp;&ensp;&ensp;&ensp;上半天&ensp;&ensp;&ensp;&ensp;&ensp;
                         </h>
                         <!-- 白點2-->
                         <div class="booking_timebutton_white_2" id="booking_timebutton_white_2" input type="button"
-                            value="CLICK" class="button"></div>
+                            value="CLICK" class="button" style="cursor: pointer;"></div>
                         <!-- 綠點2-->
-                        <div class="booking_timebutton_green_2" id="booking_timebutton_green_2"></div>
+                        <div class="booking_timebutton_green_2" id="booking_timebutton_green_2" name="time"
+                            value="afternoon" style="cursor: pointer;"></div>
 
                         <!-- 下半天-->
                         <h style="font-weight: 400;  font-size: 16px;color: #666666;line-height: 13px;"> 下半天</h>
@@ -225,14 +231,16 @@
                         <h
                             style="font-size: 16px ; font-weight: 400;  color: #666666; line-height: 16px ;display: flex;">
                             新台幣&ensp;
-                            <h class="money_2000" id="money_2000">2000</h>
-                            <h class="money_2500" id="money_2500">2500</h>
+                            <h class="money_2000" id="money_2000" name="price" value="2000">2000</h>
+                            <h class="money_2500" id="money_2500" name="price" value="2500">2500</h>
                             &ensp;元
                         </h>
                     </div>
                 </div>
                 <!--開始預訂行程按鈕-->
-                <button class="main_right_booking_button" type="button" style="border: 0 ;">開始預訂行程 </button>
+                <button class="main_right_booking_button" type="button" style="border: 0 ; cursor: pointer;"
+                    id="booking" onclick="startbooking()">開始預訂行程 </button>
+                <p id="bookingmeg" style="text-decoration: none;color:red; display:none;font-size: 20px;margin-left: 20px;"> 建立失敗，輸入不正確或其他原因 </p>
 
             </div>
         </div>
@@ -275,8 +283,9 @@
 
     //# 階段二 WEEK 4 API-------------------------------------
     // 一打開網頁 確認SESSION
-    //192.168.0.131:3000 >> 上限要記得換 3.115.236.143:3000/
+    //上線修改
     fetch("http://3.115.236.143:3000/api/user", {
+    // fetch("http://3.115.236.143:3000/api/user", {
         method: 'GET'
     }) //測試
         .then((sessionresult) => {
@@ -307,8 +316,8 @@
     // console.log(url.pathname.split('/')) // 得到 ['', 'attraction', '2']
     url_id = url.pathname.split('/')[2]
     // console.log("來把 id", url_id)
-    // fetch("http://3.115.236.143:3000/api/attraction/2") //離線測試用
-    fetch("http://3.115.236.143:3000/api/attraction/" + url_id) //這裡呼叫後端 "/api/attraction/<id >> 所以id 跟照片的id 是一樣的要怎麼做
+    fetch("http://3.115.236.143:3000/api/attraction/"+ url_id) //上線修改
+    // fetch("http://3.115.236.143:3000/api/attraction/" + url_id) //這裡呼叫後端 "/api/attraction/<id >> 所以id 跟照片的id 是一樣的要怎麼做
         .then((result) => {
             return result.json();//將資料用JSON 的格式用物件和陣列的組合
         })
@@ -603,7 +612,8 @@
 
     //--------------登出畫面-------------
     function displaysignout() {
-        fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://3.115.236.143:3000/api/user", {//上線修改
+        // fetch("http://3.115.236.143:3000/api/user", {
             method: 'DELETE'
             // method: 'GET'
         }) //測試
@@ -639,7 +649,9 @@
         fd = new FormData(document.getElementById('signinform'))
         console.log("fd", fd)
 
-        fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://3.115.236.143:3000/api/user", {//上線修改
+        // fetch("http://3.115.236.143:3000/api/user", {
+
             method: 'PATCH',
             body: fd
         })   //發送query string
@@ -708,7 +720,8 @@
         upfd = new FormData(document.getElementById('signupform'))
         // console.log("fd", upfd)
 
-        fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://3.115.236.143:3000/api/user", {//上線修改
+        // fetch("http://3.115.236.143:3000/api/user", {
             method: 'POST',
             body: upfd
 
@@ -744,10 +757,215 @@
                 console.log('錯誤:', err);
             });
     }
+
+
     //  表單不跳
     function func() {
         return false;
     }
+
+
+
+
+    // 處理右上角 預定文字
+    function booking() {
+
+
+        // 檢查使用者是否已經登入
+
+        // fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://3.115.236.143:3000/api/user", { //上線修改
+            method: 'GET'
+        }) //測試
+            .then((sessionresult) => {
+                return sessionresult.json();//將資料用JSON 的格式用物件和陣列的組合
+            })
+            .then((sessionresult) => {
+                // console.log("SESSSION判斷", result)
+                // console.log("SESSSION判斷", sessionresult.data)
+                //如果回傳有值的話，右上角顯示登出 登入顯示
+                //如果回傳沒有值 代表沒有登入狀態 display:""
+                if (sessionresult.data == null) {
+                    // SESSSION判斷等於Null 代表沒有登入，進入登入流程
+                    start()
+                } else {
+                    //有登入 ， 導到 /booking 頁面
+                    // document.location.href = "http://3.115.236.143:3000/booking";
+                    document.location.href = "http://3.115.236.143:3000/booking";//上線修改
+
+                }
+
+            })
+
+    }
+
+    // WEEK-5 APIBOOKING
+
+    // 【開始預定行程】按鈕，當使用者點擊按鈕時，請執行以下步驟：
+    function startbooking() {
+
+
+        // 檢查使用者是否已經登入
+        // fetch("http://3.115.236.143:3000/api/user", {  
+        fetch("http://3.115.236.143:3000/api/user", { //上線修改
+            method: 'GET'
+        }) //測試
+            .then((sessionresult) => {
+                return sessionresult.json();//將資料用JSON 的格式用物件和陣列的組合
+            })
+            .then((sessionresult) => {
+                // console.log("SESSSION判斷", result)
+                // console.log("SESSSION判斷", sessionresult.data)
+                //如果回傳有值的話，右上角顯示登出 登入顯示
+                //如果回傳沒有值 代表沒有登入狀態 display:""
+                if (sessionresult.data == null) {
+                    // SESSSION判斷等於Null 代表沒有登入，進入登入流程
+                    start()
+                } else {
+                    //有登入 ，前端使用 AJAX 呼叫【建立新的預定行程 API】，
+                    //紀錄景點、日期、時間、價格等資訊。建立行程成功後，直接將使用者導向到預定行程的頁面( /booking )。
+                    //使用者一次只能預定一個行程，若存在已經預定的行程，則用新的預定取代舊的。
+
+
+                    //獲取 attractionId 的值
+                    getUrlString = location.href; //抓網址列 想辦法取得id 這個值 餵給 fetch
+                    url = new URL(getUrlString)
+
+                    url_id = url.pathname.split('/')[2]
+                    console.log("url_id", url_id)
+
+
+                    //獲取日期 date的值
+                    dateElement = document.getElementById('date')
+                    date = dateElement.value;
+                    console.log("date", date)
+
+                    //獲取 上/下半天 time的值
+
+
+                    if (document.getElementById('booking_timebutton_green_2').style.display == "block") {
+                        booking_timebutton_green = "afternoon"
+                    } else {
+                        booking_timebutton_green = "morning";
+                    }
+
+                    console.log("booking_timebutton_green", booking_timebutton_green)
+
+                    //獲取 price 的值
+
+
+                    if (document.getElementById('money_2500').style.display == "block") {
+                        money = "2500"
+                    } else {
+                        money = "2000"
+                    }
+
+                    console.log("money", money)
+
+                    //  
+                    fetch("http://3.115.236.143:3000/api/booking", {//上線修改
+                    // fetch("http://3.115.236.143:3000/api/booking", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            "attractionId": url_id,
+                            "date": date,
+                            "time": booking_timebutton_green,
+                            "price": money
+                        })
+
+                    })
+                        .then(function (response) {
+                            console.log(response)
+                            return response.json();
+                            // return response.text();
+                        })
+                        .then(function (result) {
+
+                            //抓到後端
+                            console.log("result:", result);
+                            if (result.ok == true) {  //註冊成功 顯示
+                                console.log("result.ok:", result.ok);
+                                document.getElementById('bookingmeg').style.display = "none"
+
+                                // document.location.href = "http://3.115.236.143:3000/booking";
+                                document.location.href = "http://3.115.236.143:3000/booking"; //上線修改
+
+                            } else if (result.message == "未登入系統，拒絕存取") {
+                                console.log("result.error:未登入系統，拒絕存取", result.message);
+                                start()
+
+                            } else if (result.message == "建立失敗，輸入不正確或其他原因") {
+                                console.log("result.error:建立失敗，輸入不正確或其他原因", result.message);
+                                document.getElementById('bookingmeg').style.display = "block"
+                                setTimeout(document.getElementById('bookingmeg').style.display = "none", 5000)
+
+                            } else if (result.message == "未選取日期") {
+                                console.log("未選取日期", result.message);
+                                document.getElementById('bookingmeg').style.display = "block"
+                                document.getElementById('bookingmeg').innerText = result.message
+                                
+                                setTimeout(function(){document.getElementById("bookingmeg").style.display="none";},4000)
+
+                            }
+
+                            //         if (result.ok == true) {  //註冊成功 顯示
+                            //             document.getElementById('signinmegerror').style.display = "none"
+                            //             document.getElementById('signinmegsus').style.display = "block"
+                            //             // document.getElementById("registeruser").value = null
+                            //             document.getElementById("registeremail").value = null
+                            //             document.getElementById("registerrepassword").value = null
+
+                            //         } else {//註冊失敗 顯示
+                            //             console.log(result.message)
+                            //             let message = result.message
+                            //             document.getElementById("registeremail").value = null
+                            //             document.getElementById("registerrepassword").value = ""
+                            //             document.getElementById('signinmegerror').style.display = "block"
+                            //             document.getElementById('signinmegerror').innerText = message
+                            //             document.getElementById('signinmegsus').style.display = "none"
+                            //             // document.getElementById("registerform").reset();
+
+                            // }
+
+                        })
+                    // .catch((err) => {
+                    //     console.log('錯誤:', err);
+                    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                }
+
+            })
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
 </script>
 
 </html>
