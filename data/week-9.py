@@ -15,7 +15,7 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor()
 for item in rawdata:
-    num = item["_id"]
+    id = item["_id"]
     name = item["stitle"]
     category = item["CAT2"]
     description = item["xbody"]
@@ -34,9 +34,9 @@ for item in rawdata:
         listjpg.append(rawjpg)
     images = strjpg  # 輸入string to MYSQL
     try:  # 解決 :  _mysql_connector.MySQLInterfaceError: Column 'mrt' cannot be null
-        sql = "INSERT INTO attration20 (num,name,category,description,address,transport,mrt,latitude,longitude,images) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        sql = "INSERT INTO attration20 (id,name,category,description,address,transport,mrt,latitude,longitude,images) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         # 要加逗號!!!!! 解決 :   mysql.connector.errors.ProgrammingError: Could not process parameters: str(新北投溫泉區), it must be of type list, tuple or dict
-        val = (num, name, category, description, address,transport, mrt, latitude, longitude, images,)
+        val = (id, name, category, description, address,transport, mrt, latitude, longitude, images,)
         mycursor.execute(sql, val)
         mydb.commit()  # mysql.connector.errors.DatabaseError: 1364 (HY000): Field 'category' doesn't have a default value  >>解決 :  https://stackoverflow.com/questions/15438840/mysql-error-1364-field-doesnt-have-a-default-values
     except:

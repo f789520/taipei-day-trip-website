@@ -1,3 +1,4 @@
+from datetime import date
 from flask import *
 from flask import Flask
 from flask import request
@@ -24,8 +25,10 @@ mydb = mysql.connector.connect(
     auth_plugin='mysql_native_password',  # For EC2
     db="website",
     charset="utf8",
+
 )
-mycursor = mydb.cursor(dictionary=True)
+# 出现Unread result found解决 buffered=True
+mycursor = mydb.cursor(dictionary=True, buffered=True)
 
 app = Flask(__name__,   static_folder="static",
             static_url_path="/")
@@ -137,8 +140,8 @@ def attractions():
             a = ["nextPage", "data"]
             b = [None, myresult]  # None 才會顯示 null
             myresult_nextPage_null = dict(zip(a, b))
-            print(myresult_nextPage_null["nextPage"])
-            print(type(myresult_nextPage_null["nextPage"]))
+            # print(myresult_nextPage_null["nextPage"])
+            # print(type(myresult_nextPage_null["nextPage"]))
 
             return myresult_nextPage_null
         return myresult_dict_from_list
@@ -150,6 +153,16 @@ def attractions():
 
 @app.route("/api/attraction/<id>")
 def attractionid(id):
+    mydb = mysql.connector.connect(
+        host="127.0.0.1",  # SQL的
+        user="root",
+        password="Ff88888888",
+        auth_plugin='mysql_native_password',  # For EC2
+        db="website",
+        charset="utf8",
+
+    )
+    mycursor = mydb.cursor(dictionary=True, buffered=True)
 
     try:  # error 處理
         # id= request.args.get("id")
@@ -157,7 +170,8 @@ def attractionid(id):
             id,)
         mycursor.execute(sql_id)
         myresult = mycursor.fetchall()
-        if myresult == None or id == "" or id == "id" or id == None:
+        mydb.close()
+        if myresult == None or id == "" or id == "id" or id == None or myresult == "":
 
             return jsonify({"error": True, "message": "景點編號不正確"}), 400
 
@@ -202,42 +216,47 @@ def apiuser():
 
         if "email" in session:
             email = session["email"]
-            print("有嗎", "email")
-            sql = "SELECT id,name,email FROM member WHERE email='%s'" % (
+            # print("有嗎", "email")
+            mycursor = mydb.cursor(dictionary=True, buffered=True)
+            emailsql = "SELECT id,name,email FROM member WHERE email='%s'" % (
                 email,)
-            mycursor.execute(sql)
+            mycursor.execute(emailsql)
             myresult = mycursor.fetchone()
-            print(myresult)
+            # print(myresult)
+            # mydb.close()
             myresult2 = json.dumps(myresult, ensure_ascii=False)
             myresult3 = "{\"data\":"+myresult2+"}"
-            print(myresult3)
+            # print(myresult3)
             return myresult3
 
         return "{\"data\":null}"
 
-# 使用者 第2個API POST
+# 使用者 第2個API POST 註冊
 
     elif request.method == 'POST':
         try:
+
             name = request.form["registeruser"]
             email = request.form["registeremail"]
-            print("email", email, type(email))
+            # print("email", email, type(email))
             password = request.form["registerrepassword"]
-            print("註冊", name, email, password)
+            # print("註冊", name, email, password)
+            mycursor = mydb.cursor(dictionary=True, buffered=True)
             sql = "SELECT 'name','email','password' FROM member WHERE email =%s"
             emailtuple = (email,)  # 變TUPLE
-            print("註冊", name, email, password)
+            # print("註冊", name, email, password)
             mycursor.execute(sql, emailtuple)
-            print("mycursor", mycursor)
+            # print("mycursor", mycursor)
             myresult = mycursor.fetchone()
-            print("註冊signupresult  myresult", myresult)
+            # mydb.close()
+            # print("註冊signupresult  myresult", myresult)
             if myresult != None:
                 return jsonify({"error": True, "message": "註冊失敗，重複的 Email 或其他原因"}), 400
             elif name == "" or email == "" or password == "":
                 return jsonify({"error": True, "message": "註冊失敗，重複的 Email 或其他原因"}), 400
             sql = "INSERT INTO member (name,email,password) VALUES (%s, %s, %s)"
             val = (name, email, password)
-            print("val", val)
+            # print("val", val)
             mycursor.execute(sql, val)
             mydb.commit()
             return jsonify({"ok": True}), 200
@@ -251,16 +270,19 @@ def apiuser():
     elif request.method == 'PATCH':
 
         try:
+            mycursor = mydb.cursor(dictionary=True, buffered=True)
             email = request.form["email"]
-            print("email ?", email,)
+            # print("email ?", email,)
             password = request.form["password"]
-            print("password ?", password)
+            # print("password ?", password)
+
             sql = "SELECT * FROM member WHERE email='%s' and password='%s'" % (
                 email, password)
             mycursor.execute(sql)
             # global emailresult
             myresult = mycursor.fetchone()
-            print(myresult)
+            # mydb.close()
+            # print(myresult)
 
             if myresult == None:
                 session["email"] = None
@@ -268,7 +290,7 @@ def apiuser():
                 return jsonify({"error": True, "message": "登入失敗，帳號或密碼錯誤或其他原因"}), 400
 
             session["email"] = email
-            print("存入session", session["email"])
+            # print("存入session", session["email"])
             return jsonify({"ok": True})
 
         except:
@@ -281,6 +303,156 @@ def apiuser():
         session.clear()
 
         return jsonify({"ok": True})
+
+
+# 階段二 WEEK 5 API
+
+
+@app.route("/api/booking", methods=['GET', 'POST', 'DELETE'])
+def apibookingg():
+    if request.method == 'GET':
+        if "email" in session:  # 登入成功
+            email = session["email"]
+            print("session[ ]", email)  # session[ ] ply@ply.com
+            mycursor = mydb.cursor(dictionary=True, buffered=True)
+
+            sqlshoppingCart2 = "SELECT attractionId,date,time,price FROM shoppingCart2 WHERE email='%s'" % (
+                email,)
+            mycursor.execute(sqlshoppingCart2)
+            myresult = mycursor.fetchone()
+            # mydb.close()
+
+            # myresult {'attractionId': 9, 'date': '2022-03-29', 'time': 'afternoon', 'price': 2000}
+            print("myresult", myresult)
+            print("myresultTYPE", type(myresult))  # <class 'dict'>
+            # myresult2 = json.dumps(myresult, ensure_ascii=False)
+            # print("myresult2",myresult2) #myresult2 {"attractionId": 9, "date": "2022-03-29", "price": 2000, "time": "afternoon"}
+            # print("myresult2TYPE",type(myresult2)) #<class 'str'>
+            attractionId = myresult["attractionId"]
+            print("myresult2['attractionId']", myresult["attractionId"])  # 9
+
+            mycursor = mydb.cursor(dictionary=True, buffered=True)
+            sqlattractionId = "SELECT id,name,address,images FROM attration20 WHERE id='%s'" % (
+                attractionId,)
+            mycursor.execute(sqlattractionId)
+            attractionIdresult = mycursor.fetchall()
+            # mydb.close()
+            print("attractionIdresult", attractionIdresult)  # [{'id': 9, 'name': '地熱谷', 'address': '臺北市  北投區中山路', 'images': 'https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d202/e23/f478/a219480b-2bb0-4e80-9069-2704c7904545.jpg,https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c0/d37/e611/f805/ec29667c-0ff6-435a-ab82-2905492d04fc.jpg,https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d988/e745/f29/cc1e0a3a-0e3c-47dc-88b8-9c7a9ddc606e.jpg,https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d293/e834/f864/7493ca40-985e-4d7e-9340-f738b6096c26.jpg,https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d375/e862/f67/dcada704-a151-4b49-ac44-a349e7761973.jpg,https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d457/e341/f171/f6dc25a6-cc44-4e4d-a7ea-aea011e2aa65.jpg,https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11003993.jpg,'}]
+            list_image = attractionIdresult[0]["images"].split(",")  # 變成列表
+            first_image = list_image[0]  # 只取第一筆 image
+            # https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d202/e23/f478/a219480b-2bb0-4e80-9069-2704c7904545.jpg
+            print("first_image", first_image)
+            c = ["image"]  # 沒有s 複數
+            d = [first_image]
+            imagestolist2 = dict(zip(c, d))  # 黏回去
+            # {'image': 'https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d202/e23/f478/a219480b-2bb0-4e80-9069-2704c7904545.jpg'}
+            print("imagestolist", imagestolist2)
+            print(" attractionIdresult[0]", attractionIdresult[0])
+            del attractionIdresult[0]["images"]
+            print("attractionIdresult[0]", attractionIdresult[0])
+            print("attractionIdresult[0]TYPE", type(attractionIdresult[0]))
+            print("imagestolistTYPE", type(imagestolist2))
+            print("imagestolist2", imagestolist2)
+            attractionIdresult[0].update(imagestolist2)
+            # attractionIdresult[0].update(imagestolist)
+            # {'id': 9, 'name': '地熱谷', 'address': '臺北市  北投區中山路', 'image': 'https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d202/e23/f478/a219480b-2bb0-4e80-9069-2704c7904545.jpg'}
+            print(
+                "attractionIdresult[0].update(imagestolist2)", attractionIdresult[0])
+
+            bookingResult1 = dict(zip(["attraction"], [attractionIdresult[0]]))
+            # bookingResult1="attraction"+ attractionIdresult[0]
+            # {'attraction': {'id': 9, 'name': '地熱谷', 'address': '臺北市  北投區中山路', 'image': 'https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d202/e23/f478/a219480b-2bb0-4e80-9069-2704c7904545.jpg'}}
+            print("bookingResult1", bookingResult1)
+            bookingResult1.update(myresult)
+            bookingResult = dict(zip(["data"], [bookingResult1]))
+            # {'data': {'attraction': {'id': 9, 'name': '地熱谷', 'address': '臺北市  北投區中山路', 'image': 'https://www.travel.taipei/d_upload_ttn/sceneadmin/image/a0/b0/c1/d202/e23/f478/a219480b-2bb0-4e80-9069-2704c7904545.jpg'}, 'attractionId': 9, 'date': '2022-03-29', 'time': 'afternoon', 'price': 2000}}
+            print("bookingResult", bookingResult)
+
+            return jsonify(bookingResult), 200
+        elif "email" not in session:  # 沒登入
+            return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
+
+    elif request.method == 'DELETE':
+        if "email" in session:  # 登入成功
+            email = session["email"]
+            mycursor = mydb.cursor(dictionary=True, buffered=True)
+            sqldelete = "DELETE FROM shoppingCart2 WHERE email='%s'" % (
+                email,)
+            mycursor.execute(sqldelete)
+            mydb.commit()
+            return jsonify({"ok": True}), 200
+        elif "email" not in session:  # 沒登入
+            return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
+
+    elif request.method == 'POST':
+
+        #  抓前端attration 的資料 傳回前端
+        # try:
+        data = json.loads(request.get_data(as_text=True))
+        print(data)
+
+        print(data['date'])
+
+        if "email" in session:  # 登入成功
+            if data['date'] == None or data['date'] == '':
+                return jsonify({"error": True, "message": "未選取日期"})
+            try:
+                print("進去 SQL 紀錄景點")
+                attractionId = data['attractionId']
+                date = data['date']
+                time = data['time']
+                price = data['price']
+                email = session["email"]
+                print("進去 SQL 紀錄景點 LIST", attractionId,
+                      time, date, price, email)
+
+                sqlchk = "SELECT attractionId,email  FROM shoppingCart2 WHERE email='%s'" % (
+                    email,)
+                mycursor = mydb.cursor(dictionary=True, buffered=True)
+                mycursor.execute(sqlchk)
+                sqlchkresult = mycursor.fetchone()
+                print("sqlchkresult", sqlchkresult)
+                if sqlchkresult == [] or sqlchkresult == None:
+                    print("沒找到資料 用INSERT")
+
+                    sql = "INSERT INTO shoppingCart2 (date,email,time,price,attractionId) VALUES (%s, %s, %s, %s, %s)"
+                    val = (date, email, time, price, attractionId)
+                    print("val", val)
+                    mycursor.execute(sql, val)
+                    mydb.commit()
+                    # mydb.close()
+
+                elif sqlchkresult != [] or sqlchkresult != None:
+                    print("找到資料 用 REPLACE")
+                    # sql="SET SQL_SAFE_UPDATES=0;"
+                    # mycursor.execute(sql)
+                    # sql = "UPDATE shoppingCart2 SET date=date,time=time,price=price,attractionId=attractionId  WHERE email=email"
+                    # mycursor.execute(sql)
+                    sqlupdate = "UPDATE shoppingCart2 SET date=%s,time=%s,price=%s,attractionId=%s  WHERE email=%s  "
+                    val = (date,  time, price, attractionId, email)
+                    mycursor.execute(sqlupdate, val)
+                    mydb.commit()
+
+                    # sql="SET SQL_SAFE_UPDATES=1;"
+                    # mydb.close()
+
+                return jsonify({"ok": True}), 200
+
+            except:
+                return abort(500)
+
+            # return jsonify({"ok": True})
+            # return jsonify(data)
+
+        elif "email" not in session:  # 沒登入
+            return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
+
+        else:  # 建立失敗，輸入不正確或其他原因
+            return jsonify({"error": True, "message": "建立失敗，輸入不正確或其他原因"}), 400
+
+        # except: #伺服器內部錯誤
+
+        #     return abort(500)
 
 
 if __name__ == "__main__":

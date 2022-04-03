@@ -26,8 +26,8 @@
                 </div>
                 <div class="top_right">
 
-                    <div class="top_right_item">預定行程</div>
-                    <div class="top_right_item" id="displaysign" onclick="start()"> 登入/註冊</div>
+                    <div class="top_right_item" id="booking" onclick="booking()" style="cursor: pointer;">預定行程</div>
+                    <div class="top_right_item" id="displaysign" onclick="start()" style="cursor: pointer;"> 登入/註冊</div>
                     <div class="top_right_item" id="displaysignout" onclick="displaysignout()" style="display:none"> 登出
                     </div>
                 </div>
@@ -208,8 +208,8 @@
 
 
     // 一打開網頁 載入首頁
-    fetch("http://3.115.236.143:3000/api/attractions")
-        // fetch("http://192.168.0.131:3000/api/attractions") //測試
+    // fetch("http://3.115.236.143:3000/api/attractions")
+        fetch("http://3.115.236.143:3000/api/attractions") ////上線修改
         .then((result) => {
             return result.json();//將資料用JSON 的格式用物件和陣列的組合
         })
@@ -217,8 +217,9 @@
 
 
             // 一打開網頁 確認SESSION
-            //192.168.0.131:3000 >> 上限要記得換 3.115.236.143:3000/
-            fetch("http://3.115.236.143:3000/api/user", {
+            //3.115.236.143:3000 >> 上限要記得換 3.115.236.143:3000/
+            fetch("http://3.115.236.143:3000/api/user", {//上線修改
+            // fetch("http://3.115.236.143:3000/api/user", {
                 method: 'GET'
             }) //測試
                 .then((sessionresult) => {
@@ -297,7 +298,8 @@
                 //將圖片加入超連結
                 dataid = result.data[i].id; //取得data 的id
                 let linkTag = document.createElement("a"); //建立HTML a 標籤
-                linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
+                // linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
+                    linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; //上線修改
                 mm.appendChild(linkTag); //將id="pic " 插入a標籤
                 linkTag.appendChild(imgTag) //將 a 標籤 插入 img
             }
@@ -340,8 +342,8 @@
         let loadnum = loadcount * 12
         // console.log("載入數字:" + loadnum)
 
-        fetch("http://3.115.236.143:3000/api/attractions?page=" + String(loadcount))
-            // fetch("http://192.168.0.131:3000/api/attractions?page=" + String(loadcount)) //測試
+        // fetch("http://3.115.236.143:3000/api/attractions?page=" + String(loadcount))
+            fetch("http://3.115.236.143:3000/api/attractions?page=" + String(loadcount)) //上線修改
             .then((result) => {
                 return result.json();//將資料用JSON 的格式用物件和陣列的組合
             })
@@ -402,7 +404,9 @@
                     //將圖片加入超連結
                     dataid = result.data[i].id; //取得data 的id
                     let linkTag = document.createElement("a"); //建立HTML a 標籤
-                    linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
+                    // linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
+                    linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id> 上線修改
+
                     mm.appendChild(linkTag); //將id="pic " 插入a標籤
                     linkTag.appendChild(imgTag) //將 a 標籤 插入 img
                 };
@@ -894,6 +898,40 @@
     //  表單不跳
     function func() {
         return false;
+    }
+
+
+
+    // 處理右上角 預定文字
+    function booking() {
+
+
+        // 檢查使用者是否已經登入
+        fetch("http://3.115.236.143:3000/api/user", {//上線測試
+        // fetch("http://3.115.236.143:3000/api/user", {
+            method: 'GET'
+        }) //測試
+            .then((sessionresult) => {
+                return sessionresult.json();//將資料用JSON 的格式用物件和陣列的組合
+            })
+            .then((sessionresult) => {
+                // console.log("SESSSION判斷", result)
+                // console.log("SESSSION判斷", sessionresult.data)
+                //如果回傳有值的話，右上角顯示登出 登入顯示
+                //如果回傳沒有值 代表沒有登入狀態 display:""
+                if (sessionresult.data == null) {
+                    // SESSSION判斷等於Null 代表沒有登入，進入登入流程
+                    start()
+                } else {
+                    //有登入 ， 導到 /booking 頁面
+                    // document.location.href = "http://3.115.236.143:3000/booking";
+                    document.location.href = "http://3.115.236.143:3000/booking";
+
+
+                }
+
+            })
+
     }
 
 </script>
