@@ -230,7 +230,7 @@
                     style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; padding-left: 10px;">
                     聯絡姓名：
                 </h>
-                <input class="input"></input>
+                <input class="input" id="contactname"></input>
             </div>
             <!-- 聯絡信箱 -->
             <div class="intro_container">
@@ -238,7 +238,7 @@
                     style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
                     聯絡信箱：
                 </h>
-                <input class="input"></input>
+                <input class="input" id="contactemail"></input>
 
             </div>
 
@@ -248,7 +248,7 @@
                     style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
                     手機號碼：
                 </h>
-                <input class="input"></input>
+                <input class="input" id="contactphone"></input>
 
             </div>
 
@@ -257,19 +257,10 @@
                 <h style="font-size:16px ; margin-top: 20px;">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</h>
             </div>
 
-
-
-
-
-
-
-
-
+  
         </div>
 
-
-
-
+ 
 
         <div>
             <hr class="middle_hr" />
@@ -281,34 +272,43 @@
                 <h>信用卡付款資訊</h>
             </div>
 
-            <!-- 聯絡姓名 -->
-            <div class="intro_container">
+            <!-- 卡片號碼： -->
+            <div class="intro_container" style="display: flex;">
                 <h
                     style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; padding-left: 10px;">
                     卡片號碼：
                 </h>
-                <input class="input" placeholder="**** **** **** ****" type="text"></input>
+                <div class="input" id="card-number"></div>
             </div>
-            <!-- 聯絡信箱 -->
-            <div class="intro_container">
+            <!-- 過期時間： -->
+            <div class="intro_container" style="display: flex;">
                 <h
                     style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
                     過期時間：
                 </h>
-                <input class="input" placeholder="MM / YY" type="text"></input>
+                <div class="input" id="card-expiration-date"></div>
 
             </div>
 
-            <!-- 手機號碼 -->
-            <div class="intro_container">
+            <!-- 驗證密碼： -->
+            <div class="intro_container" style="display: flex;">
                 <h
                     style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
                     驗證密碼：
                 </h>
-                <input class="input" placeholder="CVV" type="password"></input>
+                <div class="input" id="card-ccv"></div>
 
             </div>
 
+
+            <!-- TEST FORM -->
+            <!-- <div style="width: 480px; margin: 50px auto;">
+                <label>CardView</label>
+                <div id="cardview-container"></div>
+                <button id="submit-button" onclick="onClick()">Get Prime</button>
+                <pre id="result1"></pre>
+                <pre id="result2"></pre>
+            </div> -->
 
         </div>
 
@@ -324,9 +324,12 @@
         <div class="intro" style="display: flex;justify-content:end ">
             <div id="buy_button">
                 <div class="hello">
-                    <h style="font-size:16px ; margin-left: 17px; ">總價：新台幣 <h id="totalMoney"></h> 元 </h>
+                    <h style="font-size:16px ;  ">總價：新台幣 <h id="totalMoney"></h> 元 </h>
                 </div>
-                <button class="buy_button">確認訂購並付款</button>
+                <button class="buy_button" id="orderbutton" onclick="orderbutton()">確認訂購並付款</button>
+                <p id="paymentmeg"
+                    style="text-decoration: none;color:red; display:none;font-size: 16px; ">
+                    付款失敗，輸入不正確或其他原因 </p>
 
             </div>
         </div>
@@ -359,7 +362,72 @@
             <p>COPYRIGHT © 2021 台北一日遊 </p>
     </footer>
 
+
+    <script src="https://js.tappaysdk.com/tpdirect/v5.9.0"></script>
+
+
     <script>
+        // 串金流 設定
+        TPDirect.setupSDK(124028, "app_x9iHhhCikcMRBzWRc9TDv0Z392dNxmNnEjYB53N5RNk2050EPeuE5v1EragH", "sandbox")
+
+        let fields = {
+            number: {
+                // css selector
+                element: document.getElementById('card-number'),
+                placeholder: '**** **** **** ****'
+            },
+            expirationDate: {
+                // DOM object
+                element: document.getElementById('card-expiration-date'),
+                placeholder: 'MM/YY'
+            },
+            ccv: {
+                element: '#card-ccv',
+                placeholder: 'ccv'
+            }
+        }
+
+
+        TPDirect.card.setup({
+            fields: fields,
+            styles: {
+                // Style all elements
+                'input': {
+                    'color': 'gray'
+                },
+                // Styling ccv field
+                'input.ccv': {
+                    // 'font-size': '16px'
+                },
+                // Styling expiration-date field
+                'input.expiration-date': {
+                    // 'font-size': '16px'
+                },
+                // Styling card-number field
+                'input.card-number': {
+                    // 'font-size': '16px'
+                },
+                // style focus state
+                ':focus': {
+                    // 'color': 'black'
+                },
+                // style valid state
+                '.valid': {
+                    'color': 'green'
+                },
+                // style invalid state
+                '.invalid': {
+                    'color': 'red'
+                },
+                // Media queries
+                // Note that these apply to the iframe, not the root window.
+                '@media screen and (max-width: 400px)': {
+                    'input': {
+                        'color': 'orange'
+                    }
+                }
+            }
+        })
 
         // 判斷登出/入
         fetch("http://3.115.236.143:3000/api/user", {//上線測試
@@ -380,10 +448,17 @@
                     document.getElementById('displaysignout').style.display = "none"
                     // document.location.href = "http://3.115.236.143:3000/booking";
                     document.location.href = "http://3.115.236.143:3000/"; //上線測試
-                } else {
+                } else { //表示有登入
+
                     document.getElementById('displaysign').style.display = "none"
                     document.getElementById('displaysignout').style.display = "block"
                     document.getElementById("who").innerHTML = sessionresult.data.name
+
+                    //檢查訂單狀態是否付款成功 串金流
+
+
+
+
 
                 }
 
@@ -698,7 +773,7 @@
                         start()
                     } else {
                         //有登入 ， 導到 /booking 頁面
-                        // document.location.href = "http://3.115.236.143:3000/booking";
+
                         document.location.href = "http://3.115.236.143:3000/booking";
 
                     }
@@ -715,7 +790,7 @@
             fetch("http://3.115.236.143:3000/api/booking", {//上線測試
                 // fetch("http://3.115.236.143:3000/api/user", {
                 method: 'DELETE'
-            }) //測試
+            }) //測試 
                 .then((result) => {
                     return result.json();//將資料用JSON 的格式用物件和陣列的組合
                 })
@@ -735,15 +810,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
         }
 
 
@@ -753,11 +819,198 @@
 
 
 
+        // -----------------------------------------TAYPAY
+
+
+
+
+        //可用預設的 form
+        // var defaultCardViewStyle = {
+        //     color: 'rgb(0,0,0)',
+        //     fontSize: '15px',
+        //     lineHeight: '24px',
+        //     fontWeight: '300',
+        //     errorColor: 'red',
+        //     placeholderColor: ''
+        // }
+
+
+        // TPDirect.card.setup('#cardview-container', defaultCardViewStyle)
+
+        // submitButton = document.querySelector('#submit-button')
+        // cardViewContainer = document.querySelector('#cardview-container')
+
+
+        //TEST 小按鈕
+        // function onClick() {
+        //     TPDirect.card.getPrime(function (result) {
+        //         if (result.status !== 0) {
+        //             console.log('getPrime 錯誤')
+        //             return
+        //         }
+        //         alert('getPrime 成功')
+        //         prime = result.card.prime
+        //         document.querySelector('#result1').innerHTML = JSON.stringify(result.card.prime, null, 4)
+
+        //         $.post('/pay-by-prime', { prime: prime }, function (data) {
+        //             alert('付款成功')
+        //             document.querySelector('#result2').innerHTML = JSON.stringify(data, null, 4)
+        //         })
+        //     })
+        // }
+
+
+        // ----------------------
+
+
+        function apiPayByPrime() {
+
+            return new Promise(function (resolve, reject) {
+
+
+                TPDirect.card.getPrime(function (prime) {
+                    if (prime.status !== 0) {
+                        console.log('getPrime 錯誤')
+                        document.getElementById('paymentmeg').style.display = "block"
+                        // setTimeout(document.getElementById('paymentmeg').style.display = "none", 5000)
+                         
+
+
+                        return
+                    }
+                    // alert('getPrime 成功')
+                    document.getElementById('paymentmeg').style.display = "none"
+
+                    prime = prime.card.prime
+                    resolve(prime) //丟出去prime到函數外
+                    console.log("prime0", prime)
+                    // this.submitPrime(prime)
+
+                    document.querySelector('#result1').innerHTML = JSON.stringify(prime, null, 4)
+
+
+                    // $.post('/pay-by-prime', { prime: prime }, function (data) {
+                    //     alert('付款成功')
+                    //     document.querySelector('#result2').innerHTML = JSON.stringify(data, null, 4)
+                    // })
+                    // console.log("prime1 沒用", prime)
+
+                });
+            })
+        }
+
+        async function orderbutton() {
+            contactname = document.getElementById('contactname').value
+            contactemail = document.getElementById('contactemail').value
+            contactphone = document.getElementById('contactphone').value
+
+
+            // var prime;
+
+            let prime = await apiPayByPrime();
+            console.log("prime await", prime)
+
+
+
+            console.log("prime2", prime)
+
+
+            let res = await fetch("http://3.115.236.143:3000/api/booking", {
+
+                method: "GET",
+
+            })
+                .then(function (response) {
+                    console.log(response)
+                    return response.json();
+
+                })
+                .then(function (bookingresult) {
+
+
+
+                    // let payReslut = await apiPayByPrime(prime);
+                    console.log("prime3", prime)
+
+
+
+                    fetch("http://3.115.236.143:3000/api/orders", {
+
+                        method: "POST",
+                        body: JSON.stringify({
+                            "prime": prime,
+                            "order": {
+                                "price": bookingresult.data.price,
+                                "trip": {
+                                    "attraction": bookingresult.data.attraction,
+                                    "date": bookingresult.data.date,
+                                    "time": bookingresult.data.time
+                                },
+                                "contact": {
+                                    "name": contactname,
+                                    "email": contactemail,
+                                    "phone": contactphone
+                                }
+                            }
+                        })
+
+                    })
+                        .then(function (response) {
+                            console.log(response)
+                            return response.json();
+                            // return response.text();
+                        })
+                        .then(function (bookingresult) {
+                            console.log("bookingresult資訊:", bookingresult);
+                            number = bookingresult.data.number
+                            status = bookingresult.data.payment.status
+
+                            console.log(status)
+
+
+                            //付款成功 status=0
+                            if (bookingresult.data.payment.status == 0) {
+
+
+                                fetch("http://3.115.236.143:3000/api/booking", {//上線測試
+                                    // fetch("http://3.115.236.143:3000/api/user", {
+                                    method: 'DELETE'
+                                }) //測試 
+                                    .then((result) => {
+                                        return result.json();//將資料用JSON 的格式用物件和陣列的組合
+                                    })
+                                    .then((result) => {
+                                        if (result.ok == true) {
+                                            //右上角 改變成登出
+                                            document.getElementById('cancel').style.display = "none"
+                                            document.getElementById('nobooking').style.display = "block"
+                                            document.getElementById('foot').style.height = "100%"
+                                            //重新整理關閉表單
+                                        }
+                                    })
+
+                                document.location.href = "http://3.115.236.143:3000/thankyou?number="+number
+                            } else {
+                                let bookingresultmeg_error = bookingresult.message
+                                document.getElementById('paymentmeg').innerText = bookingresult.message
+                                
+
+
+                            }
 
 
 
 
 
+                        })
+
+
+
+                })
+
+
+
+        }
 
 
 
