@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     </meta>
     <meta name="viewport" content="width=device-width, initial-scale=1,maxium-scale=1" />
-    <title> 台北一日遊-attraction </title>
+    <title> 台北一日遊-thankyou </title>
     <link href="/thankyou.css" rel="stylesheet" type="text/css">
     <!-- 上傳網址要+/ 擺在static ， 離線的話不加 擺在HTML 同一個資料夾 -->
 
@@ -16,9 +16,11 @@
     <div class="top1">
         <div class="top">
             <div class="top2">
-                <div class="top_left_logo" style="cursor: pointer;">台北一日遊</div>
+                <div class="top_left_logo" style="cursor: pointer;"><a href="http://3.115.236.143:3000/"
+                        style="text-decoration:none;color:#448899">台北一日遊 </a>
+                </div>
                 <div class="top_right">
-                    <div class="top_right_item" style="cursor: pointer;">預定行程</div>
+                    <div class="top_right_item" id="booking" onclick="booking()" style="cursor: pointer;">預定行程</div>
                     <div class="top_right_item" id="displaysign" onclick="start() " style="cursor: pointer;"> 登入/註冊
                     </div>
                     <div class="top_right_item" id="displaysignout" onclick="displaysignout()"
@@ -132,6 +134,47 @@
     </div>
 
 
+
+
+    <div class="hello" id="hello">
+
+
+        <div style="text-align: center;">行程預定成功</div>
+        <br>
+        <div style=" text-align: center;">您的訂單編號如下 </div>
+        <br>
+        <br>
+        <div id="ordernumber" style=" font-size:26px;text-align: center;">202204100521126941</div>
+        <br>
+        <br>
+        <br>
+        <div
+            style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; text-align: center;">
+            請記住此編號，或到會員中心查詢歷史訂單</div>
+        <br>
+        <br>
+        <div
+            style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; text-align: center;">
+            <a href="http://3.115.236.143:3000/"> 點此回首頁 </a>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- 觀察點 -->
     <footer class="footer" id="foot">
         <div id="keywordfoot"></div>
@@ -155,6 +198,8 @@
                     // console.log("SESSSION判斷等於Null 代表沒有session 將右上角顯示登入 登出顯示0")
                     document.getElementById('displaysign').style.display = "block"
                     document.getElementById('displaysignout').style.display = "none"
+
+                    document.location.href = "http://3.115.236.143:3000/"; //上線測試
                 } else {
                     document.getElementById('displaysign').style.display = "none"
                     document.getElementById('displaysignout').style.display = "block"
@@ -360,6 +405,89 @@
         function func() {
             return false;
         }
+
+
+
+        function booking() {
+
+
+            // 檢查使用者是否已經登入
+            fetch("http://3.115.236.143:3000/api/user", { //上線測試
+                // fetch("http://3.115.236.143:3000/api/user", { 
+                method: 'GET'
+            }) //測試
+                .then((sessionresult) => {
+                    return sessionresult.json();//將資料用JSON 的格式用物件和陣列的組合
+                })
+                .then((sessionresult) => {
+                    // console.log("SESSSION判斷", result)
+                    // console.log("SESSSION判斷", sessionresult.data)
+                    //如果回傳有值的話，右上角顯示登出 登入顯示
+                    //如果回傳沒有值 代表沒有登入狀態 display:""
+                    if (sessionresult.data == null) {
+                        // SESSSION判斷等於Null 代表沒有登入，進入登入流程
+                        start()
+                    } else {
+                        //有登入 ， 導到 /booking 頁面
+
+                        document.location.href = "http://3.115.236.143:3000/booking";
+
+                    }
+
+                })
+
+        }
+
+        getUrlString = location.search; //抓網址列 後面的動態 訂單資訊
+        console.log("urls", getUrlString)
+        // url = new URL(getUrlString) //抓網址列完整資訊 
+        // console.log("url", url)
+
+
+        console.log("1", getUrlString.substr(8,))//抓網址列 想辦法取得訂單編號給網頁顯示
+        ordernumber = getUrlString.substr(8,)
+
+
+
+
+        fetch("http://3.115.236.143:3000/api/order/" + ordernumber)
+
+            .then((result) => {
+                return result.json();//將資料用JSON 的格式用物件和陣列的組合
+            })
+            .then((result) => {
+
+                console.log(result)
+
+                // ordernumber
+                if (result.error == true) {
+
+                    message = result.message
+                    document.getElementById('ordernumber').innerText = message
+
+                }else{
+                    document.getElementById('ordernumber').innerText = ordernumber
+                }
+
+
+
+
+
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </script>
 
 
