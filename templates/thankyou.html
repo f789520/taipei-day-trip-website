@@ -16,7 +16,7 @@
     <div class="top1">
         <div class="top">
             <div class="top2">
-                <div class="top_left_logo" style="cursor: pointer;"><a href="http://3.115.236.143:3000/"
+                <div class="top_left_logo" style="cursor: pointer;"><a href="http://192.168.0.131:3000/"
                         style="text-decoration:none;color:#448899">台北一日遊 </a>
                 </div>
                 <div class="top_right">
@@ -155,7 +155,7 @@
         <br>
         <div
             style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; text-align: center;">
-            <a href="http://3.115.236.143:3000/"> 點此回首頁 </a>
+            <a href="http://192.168.0.131:3000/"> 點此回首頁 </a>
         </div>
     </div>
 
@@ -183,7 +183,7 @@
     </footer>
 
     <script>
-        fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://192.168.0.131:3000/api/user", {
             method: 'GET'
         }) //測試
             .then((sessionresult) => {
@@ -199,7 +199,7 @@
                     document.getElementById('displaysign').style.display = "block"
                     document.getElementById('displaysignout').style.display = "none"
 
-                    document.location.href = "http://3.115.236.143:3000/"; //上線測試
+                    document.location.href = "http://192.168.0.131:3000/"; //上線測試
                 } else {
                     document.getElementById('displaysign').style.display = "none"
                     document.getElementById('displaysignout').style.display = "block"
@@ -260,7 +260,7 @@
 
         //--------------登出畫面-------------
         function displaysignout() {
-            fetch("http://3.115.236.143:3000/api/user", {
+            fetch("http://192.168.0.131:3000/api/user", {
                 method: 'DELETE'
                 // method: 'GET'
             }) //測試
@@ -296,7 +296,7 @@
             fd = new FormData(document.getElementById('signinform'))
             console.log("fd", fd)
 
-            fetch("http://3.115.236.143:3000/api/user", {
+            fetch("http://192.168.0.131:3000/api/user", {
                 method: 'PATCH',
                 body: fd
             })   //發送query string
@@ -365,7 +365,7 @@
             upfd = new FormData(document.getElementById('signupform'))
             // console.log("fd", upfd)
 
-            fetch("http://3.115.236.143:3000/api/user", {
+            fetch("http://192.168.0.131:3000/api/user", {
                 method: 'POST',
                 body: upfd
 
@@ -412,8 +412,8 @@
 
 
             // 檢查使用者是否已經登入
-            fetch("http://3.115.236.143:3000/api/user", { //上線測試
-                // fetch("http://3.115.236.143:3000/api/user", { 
+            fetch("http://192.168.0.131:3000/api/user", { //上線測試
+                // fetch("http://192.168.0.131:3000/api/user", { 
                 method: 'GET'
             }) //測試
                 .then((sessionresult) => {
@@ -430,7 +430,7 @@
                     } else {
                         //有登入 ， 導到 /booking 頁面
 
-                        document.location.href = "http://3.115.236.143:3000/booking";
+                        document.location.href = "http://192.168.0.131:3000/booking";
 
                     }
 
@@ -450,7 +450,7 @@
 
 
 
-        fetch("http://3.115.236.143:3000/api/order/" + ordernumber)
+        fetch("http://192.168.0.131:3000/api/order/" + ordernumber)
 
             .then((result) => {
                 return result.json();//將資料用JSON 的格式用物件和陣列的組合

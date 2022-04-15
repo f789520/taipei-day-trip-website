@@ -208,8 +208,8 @@
 
 
     // 一打開網頁 載入首頁
-    // fetch("http://3.115.236.143:3000/api/attractions")
-        fetch("http://3.115.236.143:3000/api/attractions") ////上線修改
+    // fetch("http://192.168.0.131:3000/api/attractions")
+        fetch("http://192.168.0.131:3000/api/attractions") ////上線修改
         .then((result) => {
             return result.json();//將資料用JSON 的格式用物件和陣列的組合
         })
@@ -218,8 +218,8 @@
 
             // 一打開網頁 確認SESSION
             
-            fetch("http://3.115.236.143:3000/api/user", {//上線修改
-            // fetch("http://3.115.236.143:3000/api/user", {
+            fetch("http://192.168.0.131:3000/api/user", {//上線修改
+            // fetch("http://192.168.0.131:3000/api/user", {
                 method: 'GET'
             }) //測試
                 .then((sessionresult) => {
@@ -298,8 +298,8 @@
                 //將圖片加入超連結
                 dataid = result.data[i].id; //取得data 的id
                 let linkTag = document.createElement("a"); //建立HTML a 標籤
-                // linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
-                    linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; //上線修改
+                // linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; // 建立 a href=http://192.168.0.131:3000/attraction/<id>
+                    linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; //上線修改
                 mm.appendChild(linkTag); //將id="pic " 插入a標籤
                 linkTag.appendChild(imgTag) //將 a 標籤 插入 img
             }
@@ -342,8 +342,8 @@
         let loadnum = loadcount * 12
         // console.log("載入數字:" + loadnum)
 
-        // fetch("http://3.115.236.143:3000/api/attractions?page=" + String(loadcount))
-            fetch("http://3.115.236.143:3000/api/attractions?page=" + String(loadcount)) //上線修改
+        // fetch("http://192.168.0.131:3000/api/attractions?page=" + String(loadcount))
+            fetch("http://192.168.0.131:3000/api/attractions?page=" + String(loadcount)) //上線修改
             .then((result) => {
                 return result.json();//將資料用JSON 的格式用物件和陣列的組合
             })
@@ -404,8 +404,8 @@
                     //將圖片加入超連結
                     dataid = result.data[i].id; //取得data 的id
                     let linkTag = document.createElement("a"); //建立HTML a 標籤
-                    // linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
-                    linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id> 上線修改
+                    // linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; // 建立 a href=http://192.168.0.131:3000/attraction/<id>
+                    linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; // 建立 a href=http://192.168.0.131:3000/attraction/<id> 上線修改
 
                     mm.appendChild(linkTag); //將id="pic " 插入a標籤
                     linkTag.appendChild(imgTag) //將 a 標籤 插入 img
@@ -471,7 +471,7 @@
             delmain.removeChild(delmain.firstChild);
         }
 
-        fetch("http://3.115.236.143:3000/api/attractions?keyword=" + AttrationKeyword)
+        fetch("http://192.168.0.131:3000/api/attractions?keyword=" + AttrationKeyword)
             .then(function (response) {
                 return response.json();
             })
@@ -545,7 +545,7 @@
                         //將圖片加入超連結
                         dataid = result.data[i].id; //取得data 的id
                         let linkTag = document.createElement("a"); //建立HTML a 標籤
-                        linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
+                        linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; // 建立 a href=http://192.168.0.131:3000/attraction/<id>
                         mm.appendChild(linkTag); //將id="pic " 插入a標籤
                         linkTag.appendChild(imgTag) //將 a 標籤 插入 img
                     }
@@ -597,7 +597,7 @@
         let keywordloadnum = keywordloadcount * 12
 
 
-        fetch("http://3.115.236.143:3000/api/attractions?keyword=" + AttrationKeyword + "&page=" + String(keywordloadcount))
+        fetch("http://192.168.0.131:3000/api/attractions?keyword=" + AttrationKeyword + "&page=" + String(keywordloadcount))
             .then((result) => {
                 return result.json();//將資料用JSON 的格式用物件和陣列的組合
             })
@@ -658,7 +658,7 @@
                     //將圖片加入超連結
                     dataid = result.data[i].id; //取得data 的id
                     let linkTag = document.createElement("a"); //建立HTML a 標籤
-                    linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
+                    linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; // 建立 a href=http://192.168.0.131:3000/attraction/<id>
                     mm.appendChild(linkTag); //將id="pic " 插入a標籤
                     linkTag.appendChild(imgTag) //將 a 標籤 插入 img
                 };
@@ -753,7 +753,7 @@
 
     //--------------登出畫面-------------
     function displaysignout() {
-        fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://192.168.0.131:3000/api/user", {
             method: 'DELETE'
             // method: 'GET'
         }) //測試
@@ -789,7 +789,7 @@
         fd = new FormData(document.getElementById('signinform'))
         console.log("fd", fd)
 
-        fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://192.168.0.131:3000/api/user", {
             method: 'PATCH',
             body: fd
         })   //發送query string
@@ -858,7 +858,7 @@
         upfd = new FormData(document.getElementById('signupform'))
         // console.log("fd", upfd)
 
-        fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://192.168.0.131:3000/api/user", {
             method: 'POST',
             body: upfd
 
@@ -907,8 +907,8 @@
 
 
         // 檢查使用者是否已經登入
-        fetch("http://3.115.236.143:3000/api/user", {//上線測試
-        // fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://192.168.0.131:3000/api/user", {//上線測試
+        // fetch("http://192.168.0.131:3000/api/user", {
             method: 'GET'
         }) //測試
             .then((sessionresult) => {
@@ -924,8 +924,8 @@
                     start()
                 } else {
                     //有登入 ， 導到 /booking 頁面
-                    // document.location.href = "http://3.115.236.143:3000/booking";
-                    document.location.href = "http://3.115.236.143:3000/booking";
+                    // document.location.href = "http://192.168.0.131:3000/booking";
+                    document.location.href = "http://192.168.0.131:3000/booking";
 
 
                 }

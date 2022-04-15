@@ -16,7 +16,7 @@
     <div class="top1">
         <div class="top">
             <div class="top2">
-                <div class="top_left_logo" style="cursor: pointer;"><a href="http://3.115.236.143:3000/"
+                <div class="top_left_logo" style="cursor: pointer;"><a href="http://192.168.0.131:3000/"
                         style="text-decoration:none;color:#448899">台北一日遊 </a>
                 </div>
                 <div class="top_right">
@@ -284,8 +284,8 @@
     //# 階段二 WEEK 4 API-------------------------------------
     // 一打開網頁 確認SESSION
     //上線修改
-    fetch("http://3.115.236.143:3000/api/user", {
-    // fetch("http://3.115.236.143:3000/api/user", {
+    fetch("http://192.168.0.131:3000/api/user", {
+    // fetch("http://192.168.0.131:3000/api/user", {
         method: 'GET'
     }) //測試
         .then((sessionresult) => {
@@ -316,8 +316,8 @@
     // console.log(url.pathname.split('/')) // 得到 ['', 'attraction', '2']
     url_id = url.pathname.split('/')[2]
     // console.log("來把 id", url_id)
-    fetch("http://3.115.236.143:3000/api/attraction/"+ url_id) //上線修改
-    // fetch("http://3.115.236.143:3000/api/attraction/" + url_id) //這裡呼叫後端 "/api/attraction/<id >> 所以id 跟照片的id 是一樣的要怎麼做
+    fetch("http://192.168.0.131:3000/api/attraction/"+ url_id) //上線修改
+    // fetch("http://192.168.0.131:3000/api/attraction/" + url_id) //這裡呼叫後端 "/api/attraction/<id >> 所以id 跟照片的id 是一樣的要怎麼做
         .then((result) => {
             return result.json();//將資料用JSON 的格式用物件和陣列的組合
         })
@@ -612,8 +612,8 @@
 
     //--------------登出畫面-------------
     function displaysignout() {
-        fetch("http://3.115.236.143:3000/api/user", {//上線修改
-        // fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://192.168.0.131:3000/api/user", {//上線修改
+        // fetch("http://192.168.0.131:3000/api/user", {
             method: 'DELETE'
             // method: 'GET'
         }) //測試
@@ -649,8 +649,8 @@
         fd = new FormData(document.getElementById('signinform'))
         console.log("fd", fd)
 
-        fetch("http://3.115.236.143:3000/api/user", {//上線修改
-        // fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://192.168.0.131:3000/api/user", {//上線修改
+        // fetch("http://192.168.0.131:3000/api/user", {
 
             method: 'PATCH',
             body: fd
@@ -720,8 +720,8 @@
         upfd = new FormData(document.getElementById('signupform'))
         // console.log("fd", upfd)
 
-        fetch("http://3.115.236.143:3000/api/user", {//上線修改
-        // fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://192.168.0.131:3000/api/user", {//上線修改
+        // fetch("http://192.168.0.131:3000/api/user", {
             method: 'POST',
             body: upfd
 
@@ -773,8 +773,8 @@
 
         // 檢查使用者是否已經登入
 
-        // fetch("http://3.115.236.143:3000/api/user", {
-        fetch("http://3.115.236.143:3000/api/user", { //上線修改
+        // fetch("http://192.168.0.131:3000/api/user", {
+        fetch("http://192.168.0.131:3000/api/user", { //上線修改
             method: 'GET'
         }) //測試
             .then((sessionresult) => {
@@ -790,8 +790,8 @@
                     start()
                 } else {
                     //有登入 ， 導到 /booking 頁面
-                    // document.location.href = "http://3.115.236.143:3000/booking";
-                    document.location.href = "http://3.115.236.143:3000/booking";//上線修改
+                    // document.location.href = "http://192.168.0.131:3000/booking";
+                    document.location.href = "http://192.168.0.131:3000/booking";//上線修改
 
                 }
 
@@ -806,8 +806,8 @@
 
 
         // 檢查使用者是否已經登入
-        // fetch("http://3.115.236.143:3000/api/user", {  
-        fetch("http://3.115.236.143:3000/api/user", { //上線修改
+        // fetch("http://192.168.0.131:3000/api/user", {  
+        fetch("http://192.168.0.131:3000/api/user", { //上線修改
             method: 'GET'
         }) //測試
             .then((sessionresult) => {
@@ -863,8 +863,8 @@
                     console.log("money", money)
 
                     //  
-                    fetch("http://3.115.236.143:3000/api/booking", {//上線修改
-                    // fetch("http://3.115.236.143:3000/api/booking", {
+                    fetch("http://192.168.0.131:3000/api/booking", {//上線修改
+                    // fetch("http://192.168.0.131:3000/api/booking", {
                         method: "POST",
                         body: JSON.stringify({
                             "attractionId": url_id,
@@ -887,8 +887,8 @@
                                 console.log("result.ok:", result.ok);
                                 document.getElementById('bookingmeg').style.display = "none"
 
-                                // document.location.href = "http://3.115.236.143:3000/booking";
-                                document.location.href = "http://3.115.236.143:3000/booking"; //上線修改
+                                // document.location.href = "http://192.168.0.131:3000/booking";
+                                document.location.href = "http://192.168.0.131:3000/booking"; //上線修改
 
                             } else if (result.message == "未登入系統，拒絕存取") {
                                 console.log("result.error:未登入系統，拒絕存取", result.message);

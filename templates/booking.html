@@ -16,7 +16,7 @@
     <div class="top1">
         <div class="top">
             <div class="top2">
-                <div class="top_left_logo" style="cursor: pointer;"><a href="http://3.115.236.143:3000/"
+                <div class="top_left_logo" style="cursor: pointer;"><a href="http://192.168.0.131:3000/"
                         style="text-decoration:none;color:#448899">台北一日遊 </a>
                 </div>
                 <div class="top_right">
@@ -430,8 +430,8 @@
         })
 
         // 判斷登出/入
-        fetch("http://3.115.236.143:3000/api/user", {//上線測試
-            // fetch("http://3.115.236.143:3000/api/user", { 
+        fetch("http://192.168.0.131:3000/api/user", {//上線測試
+            // fetch("http://192.168.0.131:3000/api/user", { 
             method: 'GET'
         }) //測試
             .then((sessionresult) => {
@@ -446,8 +446,8 @@
                     // console.log("SESSSION判斷等於Null 代表沒有session 將右上角顯示登入 登出顯示0")
                     document.getElementById('displaysign').style.display = "block"
                     document.getElementById('displaysignout').style.display = "none"
-                    // document.location.href = "http://3.115.236.143:3000/booking";
-                    document.location.href = "http://3.115.236.143:3000/"; //上線測試
+                    // document.location.href = "http://192.168.0.131:3000/booking";
+                    document.location.href = "http://192.168.0.131:3000/"; //上線測試
                 } else { //表示有登入
 
                     document.getElementById('displaysign').style.display = "none"
@@ -463,8 +463,8 @@
                 }
 
             })
-        fetch("http://3.115.236.143:3000/api/booking", {//上線測試
-            // fetch("http://3.115.236.143:3000/api/booking", {
+        fetch("http://192.168.0.131:3000/api/booking", {//上線測試
+            // fetch("http://192.168.0.131:3000/api/booking", {
             method: "GET",
 
         })
@@ -602,8 +602,8 @@
 
         //--------------登出畫面-------------
         function displaysignout() {
-            fetch("http://3.115.236.143:3000/api/user", {
-                // fetch("http://3.115.236.143:3000/api/user", {//上線測試
+            fetch("http://192.168.0.131:3000/api/user", {
+                // fetch("http://192.168.0.131:3000/api/user", {//上線測試
                 method: 'DELETE'
                 // method: 'GET'
             }) //測試
@@ -638,8 +638,8 @@
 
             fd = new FormData(document.getElementById('signinform'))
             console.log("fd", fd)
-            fetch("http://3.115.236.143:3000/api/user", {//上線測試
-                // fetch("http://3.115.236.143:3000/api/user", {
+            fetch("http://192.168.0.131:3000/api/user", {//上線測試
+                // fetch("http://192.168.0.131:3000/api/user", {
                 method: 'PATCH',
                 body: fd
             })   //發送query string
@@ -707,8 +707,8 @@
 
             upfd = new FormData(document.getElementById('signupform'))
             // console.log("fd", upfd)
-            fetch("http://3.115.236.143:3000/api/user", {//上線測試
-                // fetch("http://3.115.236.143:3000/api/user", {
+            fetch("http://192.168.0.131:3000/api/user", {//上線測試
+                // fetch("http://192.168.0.131:3000/api/user", {
                 method: 'POST',
                 body: upfd
 
@@ -756,8 +756,8 @@
 
 
             // 檢查使用者是否已經登入
-            fetch("http://3.115.236.143:3000/api/user", { //上線測試
-                // fetch("http://3.115.236.143:3000/api/user", { 
+            fetch("http://192.168.0.131:3000/api/user", { //上線測試
+                // fetch("http://192.168.0.131:3000/api/user", { 
                 method: 'GET'
             }) //測試
                 .then((sessionresult) => {
@@ -774,7 +774,7 @@
                     } else {
                         //有登入 ， 導到 /booking 頁面
 
-                        document.location.href = "http://3.115.236.143:3000/booking";
+                        document.location.href = "http://192.168.0.131:3000/booking";
 
                     }
 
@@ -787,8 +787,8 @@
 
         function trash() {
             console.log("DELETE")
-            fetch("http://3.115.236.143:3000/api/booking", {//上線測試
-                // fetch("http://3.115.236.143:3000/api/user", {
+            fetch("http://192.168.0.131:3000/api/booking", {//上線測試
+                // fetch("http://192.168.0.131:3000/api/user", {
                 method: 'DELETE'
             }) //測試 
                 .then((result) => {
@@ -915,7 +915,7 @@
             console.log("prime2", prime)
 
 
-            let res = await fetch("http://3.115.236.143:3000/api/booking", {
+            let res = await fetch("http://192.168.0.131:3000/api/booking", {
 
                 method: "GET",
 
@@ -934,7 +934,7 @@
 
 
 
-                    fetch("http://3.115.236.143:3000/api/orders", {
+                    fetch("http://192.168.0.131:3000/api/orders", {
 
                         method: "POST",
                         body: JSON.stringify({
@@ -972,8 +972,8 @@
                             if (bookingresult.data.payment.status == 0) {
 
 
-                                fetch("http://3.115.236.143:3000/api/booking", {//上線測試
-                                    // fetch("http://3.115.236.143:3000/api/user", {
+                                fetch("http://192.168.0.131:3000/api/booking", {//上線測試
+                                    // fetch("http://192.168.0.131:3000/api/user", {
                                     method: 'DELETE'
                                 }) //測試 
                                     .then((result) => {
@@ -989,7 +989,7 @@
                                         }
                                     })
 
-                                document.location.href = "http://3.115.236.143:3000/thankyou?number="+number
+                                document.location.href = "http://192.168.0.131:3000/thankyou?number="+number
                             } else {
                                 let bookingresultmeg_error = bookingresult.message
                                 document.getElementById('paymentmeg').innerText = bookingresult.message
