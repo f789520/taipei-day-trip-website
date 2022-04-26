@@ -1,3 +1,4 @@
+import os
 from datetime import date
 from flask import *
 from flask import Flask
@@ -19,37 +20,35 @@ import random
 from flask_restful import Resource, Api  # for RESTful
 import mysql.connector.pooling
 from mysql.connector import pooling
+import re
 from dotenv import load_dotenv
 load_dotenv()
-import os
- 
+
 
 # ------------------------------------MySQL 連線
 
 
 mydb_con = pooling.MySQLConnectionPool(pool_name="mysql_native__pool",
                                        pool_size=10,
-
                                        host="127.0.0.1",  # SQL的
-
                                        auth_plugin='mysql_native_password',  # For EC2
                                        user="root",
                                        charset="utf8",
                                        db="website",
                                        password=os.getenv("password"),)
 
- 
 
 app = Flask(__name__,   static_folder="static",
             static_url_path="/")
- 
+
 CORS(app)
 app.secret_key = "test"  # for session
 
 api = Api(app)  # for RESTful
 
 # Pages
- 
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -68,6 +67,11 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
     return render_template("thankyou.html")
+
+
+@app.route("/member")
+def member():
+    return render_template("member.html")
 
 
 # 旅遊景點 第一個API
@@ -177,6 +181,7 @@ def attractionid(id):
             id,)
         mycursor.execute(sql_id)
         myresult = mycursor.fetchall()
+        mydb.close()
 
         if myresult == None or id == "" or id == "id" or id == None or myresult == "":
 
@@ -199,8 +204,8 @@ def attractionid(id):
     except:
         return abort(500)
 
-    finally:
-        mydb.close()
+    # finally:
+    #     mydb.close()
 
 
 @app.errorhandler(404)
@@ -229,7 +234,7 @@ def apiuser():
             global mydb
             mydb = mydb_con.get_connection()
             mycursor = mydb.cursor(dictionary=True, buffered=True)
-            emailsql = "SELECT id,name,email FROM member WHERE email='%s'" % (
+            emailsql = "SELECT id,name,email,password FROM member WHERE email='%s'" % (
                 email,)
             mycursor.execute(emailsql)
             myresult = mycursor.fetchone()
@@ -262,10 +267,14 @@ def apiuser():
             myresult = mycursor.fetchone()
             # mydb.close()
             # print("註冊signupresult  myresult", myresult)
+            pattern = re.compile("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")
+
             if myresult != None:
                 return jsonify({"error": True, "message": "註冊失敗，重複的 Email 或其他原因"}), 400
             elif name == "" or email == "" or password == "":
-                return jsonify({"error": True, "message": "註冊失敗，重複的 Email 或其他原因"}), 400
+                return jsonify({"error": True, "message": "註冊失敗，未輸入正確姓名、信箱或密碼"}), 400
+            elif pattern.findall(email) == []:
+                return jsonify({"error": True, "message": "註冊失敗，未輸入正確信箱格式"}), 400
             sql = "INSERT INTO member (name,email,password) VALUES (%s, %s, %s)"
             val = (name, email, password)
             # print("val", val)
@@ -315,6 +324,84 @@ def apiuser():
         return jsonify({"ok": True})
 
 
+@app.route("/api/edituser", methods=['POST'])
+def editapiuser():
+    # try:
+    
+    userdata = json.loads(request.get_data(as_text=True))
+    print(userdata)
+    userpassword = userdata['registerrepassword']
+    useremail = userdata['registeremail']
+    username = userdata['registeruser']
+   
+    email=session["email"]
+    print("email", email)
+   
+        
+    mydb = mydb_con.get_connection()
+    mycursor = mydb.cursor(dictionary=True, buffered=True)
+    sql = "SELECT * FROM member WHERE email =%s"
+    emailtuple = (email,)  # 變TUPLE
+    # print("註冊", name, email, password)
+    mycursor.execute(sql, emailtuple)
+    # print("mycursor", mycursor)
+    myresult = mycursor.fetchone()
+    # mydb.close()
+    # print("註冊signupresult  myresult", myresult)
+    pattern = re.compile("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")
+    print("  myresult", myresult)
+    print("myresult[name]", myresult["name"])
+ 
+    if username == "" or useremail == "" or userpassword == "":
+        mydb.close()
+        return jsonify({"error": True, "message": "註冊失敗，未輸入正確姓名、信箱或密碼"}), 400
+    elif pattern.findall(useremail) == []:
+        mydb.close()
+        return jsonify({"error": True, "message": "註冊失敗，未輸入正確信箱格式"}), 400
+    # elif username == myresult["name"] and useremail ==myresult["email"] and userpassword  ==myresult["password"]:
+    #     mydb.close()
+    #     return jsonify({"error": True, "message": "未做修改"}), 400
+    elif useremail != email :
+        sql = "UPDATE member SET name=%s,email=%s,password=%s  WHERE email=%s"
+        val = (username,  useremail, userpassword, email)
+        mycursor.execute(sql, val)
+        print("sql", val)
+        mydb.commit()
+        print("session[]",email)
+        mydb.close()
+ 
+
+        mydb = mydb_con.get_connection()
+        mycursor = mydb.cursor(dictionary=True, buffered=True)
+        ordersql = "UPDATE order2 SET memberEmail=%s  WHERE memberEmail=%s"
+        orderval = (useremail, email)
+        mycursor.execute(ordersql, orderval)
+        print("ordersql", orderval)
+        mydb.commit()
+        mydb.close()
+
+        session["email"]=useremail
+        print("session[]",session["email"])
+        email=session["email"]
+        print("session[]",email)
+
+        return jsonify({"ok": True}), 200
+    elif useremail == email :
+        sql = "UPDATE member SET name=%s,email=%s,password=%s  WHERE email=%s"
+        val = (username,  useremail, userpassword, email)
+
+        print("val", val)
+        mycursor.execute(sql, val)
+        mydb.commit()
+    
+        mydb.close()
+        
+        return jsonify({"ok": True}), 200
+
+    # except:
+    #     return abort(500)
+    # finally:
+    #     mydb.close()
 # 階段二 WEEK 5 API
 
 
@@ -376,7 +463,9 @@ def apibookingg():
 
             if data['date'] == None or data['date'] == '':
                 return jsonify({"error": True, "message": "未選取日期"})
+
             try:
+
                 mydb = mydb_con.get_connection()
                 mycursor = mydb.cursor(dictionary=True, buffered=True)
 
@@ -386,34 +475,38 @@ def apibookingg():
                 price = data['price']
                 email = session["email"]
 
-                sqlchk = "SELECT attractionId,email  FROM shoppingCart2 WHERE email='%s'" % (
-                    email,)
+                # print("1, " , date)
+                # print("2, " , datetime.now().strftime("%Y-%m-%d"))
+                # print("3, " , datetime.strptime(date, "%Y-%m-%d"))
+                # print("4, " , datetime.strptime( datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d"))
+                if datetime.strptime(date, "%Y-%m-%d") >= datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d"):
+                    # print("4, " , datetime.strptime(date, "%Y-%m-%d") > datetime.strptime( datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d"))
+                    sqlchk = "SELECT attractionId,email  FROM shoppingCart2 WHERE email='%s'" % (
+                        email,)
 
-                mycursor.execute(sqlchk)
-                sqlchkresult = mycursor.fetchone()
+                    mycursor.execute(sqlchk)
+                    sqlchkresult = mycursor.fetchone()
 
-                if sqlchkresult == [] or sqlchkresult == None:
+                    if sqlchkresult == [] or sqlchkresult == None:
 
-                    sql = "INSERT INTO shoppingCart2 (date,email,time,price,attractionId) VALUES (%s, %s, %s, %s, %s)"
-                    val = (date, email, time, price, attractionId)
+                        sql = "INSERT INTO shoppingCart2 (date,email,time,price,attractionId) VALUES (%s, %s, %s, %s, %s)"
+                        val = (date, email, time, price, attractionId)
 
-                    mycursor.execute(sql, val)
-                    mydb.commit()
+                        mycursor.execute(sql, val)
+                        mydb.commit()
+                        mydb.close()
+                    elif sqlchkresult != [] or sqlchkresult != None:
 
-                elif sqlchkresult != [] or sqlchkresult != None:
-
-                    sqlupdate = "UPDATE shoppingCart2 SET date=%s,time=%s,price=%s,attractionId=%s  WHERE email=%s  "
-                    val = (date,  time, price, attractionId, email)
-                    mycursor.execute(sqlupdate, val)
-                    mydb.commit()
-
-                return jsonify({"ok": True}), 200
+                        sqlupdate = "UPDATE shoppingCart2 SET date=%s,time=%s,price=%s,attractionId=%s  WHERE email=%s  "
+                        val = (date,  time, price, attractionId, email)
+                        mycursor.execute(sqlupdate, val)
+                        mydb.commit()
+                        mydb.close()
+                    return jsonify({"ok": True}), 200
+                return jsonify({"error": True, "message": "不能選取過去日期"}), 400
 
             except:
                 return abort(500)
-
-            finally:
-                mydb.close()
 
         elif "email" not in session:  # 沒登入
             return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
@@ -422,7 +515,7 @@ def apibookingg():
             return jsonify({"error": True, "message": "建立失敗，輸入不正確或其他原因"}), 400
 
 
-# 串金流
+# WEEK-6 串金流
 @app.route("/api/orders", methods=['POST'])
 def apiorders():
     try:
@@ -430,12 +523,14 @@ def apiorders():
         mycursor = mydb.cursor(dictionary=True, buffered=True)
         #  抓前端booking的資料 傳回前端
         if "email" in session:  # 登入成功
+            memberEmail = session["email"]
+            print(memberEmail)
             orderdata = json.loads(request.get_data(as_text=True))
             prime = orderdata['prime']
             price = orderdata['order']['price']
             email = orderdata['order']['contact']['email']
             phone = orderdata['order']['contact']['phone']
-            contactName = orderdata['order']['contact']['phone']
+            contactName = orderdata['order']['contact']['name']
             date = orderdata['order']['trip']['date']
             time = orderdata['order']['trip']['time']
             address = orderdata['order']['trip']['attraction']['address']
@@ -448,70 +543,80 @@ def apiorders():
             number = datetime.strptime(number, '%Y-%m-%d %H:%M:%S.%f')
             number = number.strftime("%Y%m%d%H%M%S") + \
                 str(random.randint(1000, 9999))
+            number = str(number)
+            patternemail = re.compile(
+                "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")
+            patternphone = re.compile(
+                "(\d{2,3}-?|\(\d{2,3}\))\d{3,4}-?\d{4}|09\d{2}(\d{6}|-\d{3}-\d{3})")
 
-            number = int(number)
-        # order 是 MYSQL 保留字
-            sql = "INSERT INTO order2 (number,price,id,name,address,image,date,time,contactName,email,phone,status) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s, %s)"
-            val = (number, price, id, name, address, image,
-                   date, time, contactName, email, phone, status)
+            if email != "" and phone != "" and contactName != "" and patternemail.findall(email) != [] and patternphone.findall(phone) != []:
 
-            mycursor.execute(sql, val)
-            mydb.commit()
+                # order 是 MYSQL 保留字
+                sql = "INSERT INTO order2 (number,price,id,name,address,image,date,time,contactName,email,phone,status,memberEmail) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s, %s, %s)"
+                val = (number, price, id, name, address, image,
+                       date, time, contactName, email, phone, status, memberEmail)
 
-        # 對Tappay 發送請求
-        #  Merchant ID  在商家設置    f789520_TAISHIN	  /  f789520_CTBC_Union_Pay    / f789520_CTBC
-        # 帳號金鑰(Partner Key )在總覽項目:  partner_iwECA4RtFItOq1r9cpgHAzOvjGQSSnGf5LFkRZdNdTNT90GpkUE8qs1s
-
-        # URL: https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime
-
-            order_data = {
-
-                "prime": prime,
-                "partner_key": os.getenv("partner_key"),
-                "merchant_id": "f789520_CTBC",
-                "details": "TapPay Test",
-                "amount": 10000000,
-                "cardholder": {
-                    "phone_number": phone,
-                    "name": contactName,
-                    "email": email,  # "LittleMing@Wang.com"
-                    "zip_code": "",
-                    "address": address,
-                    # "national_id": "A123456789"
-                },
-                "remember": True
-            }
-
-            order_headers = {
-                'Content-Type': 'application/json',
-                'x-api-key': "partner_iwECA4RtFItOq1r9cpgHAzOvjGQSSnGf5LFkRZdNdTNT90GpkUE8qs1s"
-            }
-
-            r = requests.post('https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime',
-                              data=json.dumps(order_data), headers=order_headers)
-
-            payment_status = json.loads(r.text)["status"]  # 付款狀態 0表示成功 1未付款
-            rec_trade_id = json.loads(r.text)["rec_trade_id"]  # 付款紀錄編號
-
-            if payment_status == 0:  # 如果付款成功
-                # 將訂單的狀態更新成0
-                print("付款成功", number)
-                order2sql = "UPDATE order2 SET status=%s WHERE number=%s  "
-                val = (0, number)
-                mycursor.execute(order2sql, val)
-                # print("val", val)
+                mycursor.execute(sql, val)
                 mydb.commit()
-                # 紀錄付款編號paymentId
-                paymentsql = "INSERT INTO payment (number,paymentId,status) VALUES (%s, %s, %s)"
-                val = (number, rec_trade_id, payment_status)
-                # print("val", val)
-                mycursor.execute(paymentsql, val)
-                mydb.commit()
-                # 在島到預定行程頁面時 ， 刪除預定行程
 
-                return jsonify({"data": {"number": str(number), "payment": {"status": 0, "message": "付款成功"}}}), 200
+                # 對Tappay 發送請求
+                #  Merchant ID  在商家設置    f789520_TAISHIN	  /  f789520_CTBC_Union_Pay    / f789520_CTBC
+                # 帳號金鑰(Partner Key )在總覽項目:  partner_iwECA4RtFItOq1r9cpgHAzOvjGQSSnGf5LFkRZdNdTNT90GpkUE8qs1s
+
+                # URL: https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime
+
+                order_data = {
+
+                    "prime": prime,
+                    "partner_key": os.getenv("partner_key"),
+                    "merchant_id": "f789520_CTBC",
+                    "details": "TapPay Test",
+                    "amount": 10000000,
+                    "cardholder": {
+                        "phone_number": phone,
+                        "name": contactName,
+                        "email": email,  # "LittleMing@Wang.com"
+                        "zip_code": "",
+                        "address": address,
+                        # "national_id": "A123456789"
+                    },
+                    "remember": True
+                }
+
+                order_headers = {
+                    'Content-Type': 'application/json',
+                    'x-api-key': os.getenv("partner_key")
+                }
+
+                r = requests.post('https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime',
+                                  data=json.dumps(order_data), headers=order_headers)
+
+                payment_status = json.loads(
+                    r.text)["status"]  # 付款狀態 0表示成功 1未付款
+                rec_trade_id = json.loads(r.text)["rec_trade_id"]  # 付款紀錄編號
+
+                if payment_status == 0:  # 如果付款成功
+                    # 將訂單的狀態更新成0
+                    print("付款成功", number)
+                    order2sql = "UPDATE order2 SET status=%s WHERE number=%s  "
+                    val = (0, number)
+                    mycursor.execute(order2sql, val)
+                    # print("val", val)
+                    mydb.commit()
+                    # 紀錄付款編號paymentId
+                    paymentsql = "INSERT INTO payment (number,paymentId,status) VALUES (%s, %s, %s)"
+                    val = (number, rec_trade_id, payment_status)
+                    # print("val", val)
+                    mycursor.execute(paymentsql, val)
+                    mydb.commit()
+                    # 在島到預定行程頁面時 ， 刪除預定行程
+
+                    return jsonify({"data": {"number": str(number), "payment": {"status": 0, "message": "付款成功"}}}), 200
+                else:
+                    return jsonify({"error": True, "message": "訂單建立失敗，輸入不正確或其他原因"}), 400
             else:
-                return jsonify({"error": True, "message": "訂單建立失敗，輸入不正確或其他原因"}), 400
+
+                return jsonify({"error": True, "message": "聯絡資訊輸入錯誤"}), 400
         elif "email" not in session:  # 沒登入
             return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
     except:  # 伺服器內部錯誤
@@ -592,6 +697,36 @@ def apiorderNumber(orderNumber):
         # if mydb.in_transaction:
         #     mydb.roolback()
         mydb.close()
+
+
+@app.route("/api/history", methods=['GET'])
+def apihistory():
+    try:  # error 處理
+            mydb = mydb_con.get_connection()
+            mycursor = mydb.cursor(dictionary=True, buffered=True)
+
+            if "email" in session:  # 登入成功
+                
+                memberEmail = session["email"]
+                print("memberEmail", memberEmail)
+                sqlhistory = "SELECT  number,price,id,name,address,image,date,time,contactName,email,phone,status FROM order2  WHERE memberEmail='%s' ; " % (
+                    memberEmail,)
+                mycursor.execute(sqlhistory)
+                myresult = mycursor.fetchall()
+                print("myresult", myresult)
+                print("myresult", str(myresult[0]["number"]))
+
+                return jsonify(myresult), 200
+
+            elif "email" not in session:  # 沒登入
+                return jsonify({"error": True, "message": "未登入系統，拒絕存取"}), 403
+
+    except:
+        return abort(500)
+
+    finally:
+    
+        mydb.close()    
 
 
 if __name__ == "__main__":

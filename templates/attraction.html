@@ -16,7 +16,7 @@
     <div class="top1">
         <div class="top">
             <div class="top2">
-                <div class="top_left_logo" style="cursor: pointer;"><a href="http://192.168.0.131:3000/"
+                <div class="top_left_logo" style="cursor: pointer;"><a href="http://3.115.236.143:3000/"
                         style="text-decoration:none;color:#448899">台北一日遊 </a>
                 </div>
                 <div class="top_right">
@@ -26,6 +26,9 @@
                     <div class="top_right_item" id="displaysignout" onclick="displaysignout()"
                         style="display:none;cursor: pointer;"> 登出
                     </div>
+                    <div class="top_right_item" id="member" style="display:block; width: 20px;"> <a
+                            href="http://3.115.236.143:3000/member" style="text-decoration:none; "><img
+                                src="/member.png"> </a></div>
                 </div>
             </div>
         </div>
@@ -53,12 +56,13 @@
             <!-- 表單應該不是直接傳給後端查資料回傳 是給JS 呼叫後端做請求 -->
             <form id="signinform" action="" onsubmit=" return func()">
                 <div class="userdiv">
-                    <input id="email" class="signinput" type="text" placeholder="輸入電子信箱" name="email">
+                    <input id="email" class="signinput" type="text" placeholder="輸入電子信箱" name="email"
+                        required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
                 </div>
 
                 <div class="pwddiv">
                     <input id="password" class="signinput" type="password" placeholder="輸入密碼" name="password"
-                        autocomplete="on">
+                        required="required" autocomplete="on">
                 </div>
 
                 <div class="postdiv">
@@ -99,18 +103,20 @@
             <form id="signupform" action="" onsubmit=" return func()" method="POST">
                 <!-- return error 不用理 -->
                 <div class="userdiv">
-                    <input id="registeruser" class="signinput" type="text" placeholder="輸入姓名" name="registeruser">
+                    <input id="registeruser" class="signinput" type="text" placeholder="輸入姓名" name="registeruser"
+                        required="required">
                 </div>
 
                 <!-- <img src="image/signloading.gif" style="display: none" id="registerloading"> -->
                 <div class="pwddiv">
-                    <input id="registeremail" class="signinput" type="text" placeholder="輸入電子郵件" name="registeremail"
+                    <input id="registeremail" class="signinput" type="text" placeholder="輸入電子信箱"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="registeremail" required="required"
                         autocomplete="on">
                 </div>
 
                 <div class="pwddiv">
                     <input id="registerrepassword" class="signinput" type="password" placeholder="輸入密碼"
-                        name="registerrepassword" autocomplete="on">
+                        name="registerrepassword" autocomplete="on" required="required">
                 </div>
 
                 <div class="postdiv">
@@ -140,11 +146,11 @@
 
             <div class="main_left_img" id='main_left_img'></div> <!-- 創立一個div 給img  塞入 -->
             <div class="arrowbox">
-                <div class="img_leftArrow" id="img_leftArrow" input type="button" value="CLICK"> <img
-                        src="/btn_leftArrow.png ">
+                <div class="img_leftArrow" id="img_leftArrow" input type="button" value="CLICK" style="cursor: pointer">
+                    <img src="/btn_leftArrow.png ">
                 </div>
-                <div class="img_rightArrow" id="img_rightArrow" input type="button" value="CLICK"><img
-                        src="/btn_rightArrow.png ">
+                <div class="img_rightArrow" id="img_rightArrow" input type="button" value="CLICK"
+                    style="cursor: pointer"><img src="/btn_rightArrow.png ">
                 </div>
             </div>
             <div class="imgbutton_box" id="imgbutton_box">
@@ -184,7 +190,7 @@
                             :&ensp;
 
                             <input id="date" type="date"
-                                style="border: 0 ;padding-left :10px; padding-top :5px; padding-bottom :5px ;">
+                                style="border: 0 ;padding-left :10px; padding-top :5px; padding-bottom :5px ;cursor: pointer">
 
                         </p>
                     </div>
@@ -240,7 +246,9 @@
                 <!--開始預訂行程按鈕-->
                 <button class="main_right_booking_button" type="button" style="border: 0 ; cursor: pointer;"
                     id="booking" onclick="startbooking()">開始預訂行程 </button>
-                <p id="bookingmeg" style="text-decoration: none;color:red; display:none;font-size: 20px;margin-left: 20px;"> 建立失敗，輸入不正確或其他原因 </p>
+                <p id="bookingmeg"
+                    style="text-decoration: none;color:red; display:none;font-size: 20px;margin-left: 20px;">
+                    建立失敗，輸入不正確或其他原因 </p>
 
             </div>
         </div>
@@ -284,8 +292,8 @@
     //# 階段二 WEEK 4 API-------------------------------------
     // 一打開網頁 確認SESSION
     //上線修改
-    fetch("http://192.168.0.131:3000/api/user", {
-    // fetch("http://192.168.0.131:3000/api/user", {
+    fetch("http://3.115.236.143:3000/api/user", {
+        // fetch("http://3.115.236.143:3000/api/user", {
         method: 'GET'
     }) //測試
         .then((sessionresult) => {
@@ -300,10 +308,11 @@
                 // console.log("SESSSION判斷等於Null 代表沒有session 將右上角顯示登入 登出顯示0")
                 document.getElementById('displaysign').style.display = "block"
                 document.getElementById('displaysignout').style.display = "none"
+                document.getElementById('member').style.display = "none"
             } else {
                 document.getElementById('displaysign').style.display = "none"
                 document.getElementById('displaysignout').style.display = "block"
-
+                document.getElementById('member').style.display = "block"
             }
 
         })
@@ -316,8 +325,8 @@
     // console.log(url.pathname.split('/')) // 得到 ['', 'attraction', '2']
     url_id = url.pathname.split('/')[2]
     // console.log("來把 id", url_id)
-    fetch("http://192.168.0.131:3000/api/attraction/"+ url_id) //上線修改
-    // fetch("http://192.168.0.131:3000/api/attraction/" + url_id) //這裡呼叫後端 "/api/attraction/<id >> 所以id 跟照片的id 是一樣的要怎麼做
+    fetch("http://3.115.236.143:3000/api/attraction/" + url_id) //上線修改
+        // fetch("http://3.115.236.143:3000/api/attraction/" + url_id) //這裡呼叫後端 "/api/attraction/<id >> 所以id 跟照片的id 是一樣的要怎麼做
         .then((result) => {
             return result.json();//將資料用JSON 的格式用物件和陣列的組合
         })
@@ -612,8 +621,8 @@
 
     //--------------登出畫面-------------
     function displaysignout() {
-        fetch("http://192.168.0.131:3000/api/user", {//上線修改
-        // fetch("http://192.168.0.131:3000/api/user", {
+        fetch("http://3.115.236.143:3000/api/user", {//上線修改
+            // fetch("http://3.115.236.143:3000/api/user", {
             method: 'DELETE'
             // method: 'GET'
         }) //測試
@@ -649,8 +658,8 @@
         fd = new FormData(document.getElementById('signinform'))
         console.log("fd", fd)
 
-        fetch("http://192.168.0.131:3000/api/user", {//上線修改
-        // fetch("http://192.168.0.131:3000/api/user", {
+        fetch("http://3.115.236.143:3000/api/user", {//上線修改
+            // fetch("http://3.115.236.143:3000/api/user", {
 
             method: 'PATCH',
             body: fd
@@ -677,6 +686,7 @@
                     //右上角 改變成登出
                     document.getElementById('displaysign').style.display = "none"
                     document.getElementById('displaysignout').style.display = "block"
+                    document.getElementById('member').style.display = "block"
                     //重新整理關閉表單
                     location.reload()
                     signclose()
@@ -686,6 +696,7 @@
                     let signinmeg_error = result.message
                     document.getElementById('displaysign').style.display = "block"
                     document.getElementById('displaysignout').style.display = "none"
+                    document.getElementById('member').style.display = "none"
                     //失敗出現錯誤
                     document.getElementById('signinmeg').style.display = "block"
                     document.getElementById('signinmeg').innerText = signinmeg_error
@@ -702,60 +713,64 @@
 
     //------------- 註冊 -------------
     signup = function () {
+        if (document.getElementById('registeruser').validity.valid
+            & document.getElementById('registeremail').validity.valid
+            & document.getElementById('registerrepassword').validity.valid) {
 
-        registeruserElement = document.getElementById('registeruser')
-        registeruser = registeruserElement.value;
-        // console.log("registeruser", registeruser)
+            registeruserElement = document.getElementById('registeruser')
+            registeruser = registeruserElement.value;
+            // console.log("registeruser", registeruser)
 
-        registeremailElement = document.getElementById('registeremail')
-        registeremail = registeremailElement.value;
-        // console.log("registeremail", registeremail)
-        // console.log("email??", email)
+            registeremailElement = document.getElementById('registeremail')
+            registeremail = registeremailElement.value;
+            // console.log("registeremail", registeremail)
+            // console.log("email??", email)
 
-        registerrepasswordElement = document.getElementById('registerrepassword')
-        registerrepassword = registerrepasswordElement.value;
-        // console.log("registerrepassword", registerrepassword)
-        // console.log("password??", password)
+            registerrepasswordElement = document.getElementById('registerrepassword')
+            registerrepassword = registerrepasswordElement.value;
+            // console.log("registerrepassword", registerrepassword)
+            // console.log("password??", password)
 
-        upfd = new FormData(document.getElementById('signupform'))
-        // console.log("fd", upfd)
+            upfd = new FormData(document.getElementById('signupform'))
+            // console.log("fd", upfd)
 
-        fetch("http://192.168.0.131:3000/api/user", {//上線修改
-        // fetch("http://192.168.0.131:3000/api/user", {
-            method: 'POST',
-            body: upfd
+            fetch("http://3.115.236.143:3000/api/user", {//上線修改
+                // fetch("http://3.115.236.143:3000/api/user", {
+                method: 'POST',
+                body: upfd
 
-        })   //發送query string
-            .then(function (response) {
-                console.log(response)
-                return response.json();
-            })
-            .then(function (result) {
-                console.log("登入資訊:", result);
-                // console.log("登入資訊:", result.ok);
+            })   //發送query string
+                .then(function (response) {
+                    console.log(response)
+                    return response.json();
+                })
+                .then(function (result) {
+                    console.log("登入資訊:", result);
+                    // console.log("登入資訊:", result.ok);
 
-                if (result.ok == true) {  //註冊成功 顯示
-                    document.getElementById('signinmegerror').style.display = "none"
-                    document.getElementById('signinmegsus').style.display = "block"
-                    // document.getElementById("registeruser").value = null
-                    document.getElementById("registeremail").value = null
-                    document.getElementById("registerrepassword").value = null
+                    if (result.ok == true) {  //註冊成功 顯示
+                        document.getElementById('signinmegerror').style.display = "none"
+                        document.getElementById('signinmegsus').style.display = "block"
+                        // document.getElementById("registeruser").value = null
+                        document.getElementById("registeremail").value = null
+                        document.getElementById("registerrepassword").value = null
 
-                } else {//註冊失敗 顯示
-                    console.log(result.message)
-                    let message = result.message
-                    document.getElementById("registeremail").value = null
-                    document.getElementById("registerrepassword").value = ""
-                    document.getElementById('signinmegerror').style.display = "block"
-                    document.getElementById('signinmegerror').innerText = message
-                    document.getElementById('signinmegsus').style.display = "none"
-                    // document.getElementById("registerform").reset();
+                    } else {//註冊失敗 顯示
+                        console.log(result.message)
+                        let message = result.message
+                        document.getElementById("registeremail").value = null
+                        document.getElementById("registerrepassword").value = ""
+                        document.getElementById('signinmegerror').style.display = "block"
+                        document.getElementById('signinmegerror').innerText = message
+                        document.getElementById('signinmegsus').style.display = "none"
+                        // document.getElementById("registerform").reset();
 
-                }
+                    }
 
-            }).catch((err) => {
-                console.log('錯誤:', err);
-            });
+                }).catch((err) => {
+                    console.log('錯誤:', err);
+                });
+        }
     }
 
 
@@ -773,8 +788,8 @@
 
         // 檢查使用者是否已經登入
 
-        // fetch("http://192.168.0.131:3000/api/user", {
-        fetch("http://192.168.0.131:3000/api/user", { //上線修改
+        // fetch("http://3.115.236.143:3000/api/user", {
+        fetch("http://3.115.236.143:3000/api/user", { //上線修改
             method: 'GET'
         }) //測試
             .then((sessionresult) => {
@@ -790,8 +805,8 @@
                     start()
                 } else {
                     //有登入 ， 導到 /booking 頁面
-                    // document.location.href = "http://192.168.0.131:3000/booking";
-                    document.location.href = "http://192.168.0.131:3000/booking";//上線修改
+                    // document.location.href = "http://3.115.236.143:3000/booking";
+                    document.location.href = "http://3.115.236.143:3000/booking";//上線修改
 
                 }
 
@@ -805,9 +820,12 @@
     function startbooking() {
 
 
+
+
+
         // 檢查使用者是否已經登入
-        // fetch("http://192.168.0.131:3000/api/user", {  
-        fetch("http://192.168.0.131:3000/api/user", { //上線修改
+        // fetch("http://3.115.236.143:3000/api/user", {  
+        fetch("http://3.115.236.143:3000/api/user", { //上線修改
             method: 'GET'
         }) //測試
             .then((sessionresult) => {
@@ -827,18 +845,39 @@
                     //使用者一次只能預定一個行程，若存在已經預定的行程，則用新的預定取代舊的。
 
 
+
                     //獲取 attractionId 的值
                     getUrlString = location.href; //抓網址列 想辦法取得id 這個值 餵給 fetch
                     url = new URL(getUrlString)
 
                     url_id = url.pathname.split('/')[2]
-                    console.log("url_id", url_id)
+                    // console.log("url_id", url_id)
 
 
                     //獲取日期 date的值
                     dateElement = document.getElementById('date')
                     date = dateElement.value;
                     console.log("date", date)
+                    console.log(" Date.parse( date)", Date.parse(date));
+
+
+                    let datenow = new Date();
+                    const formatDate = (datenow) => {
+                        let formatted_datenow = datenow.getFullYear() + "-" + (datenow.getMonth() + 1) + "-" + datenow.getDate()
+                        return formatted_datenow;
+                    }
+                    console.log("formatDate(datenow)", formatDate(datenow));
+                    console.log("Date.parse( formatDate(datenow))", Date.parse(formatDate(datenow)));
+
+                    // let date1 =formatDate(date)
+
+
+
+
+
+
+
+
 
                     //獲取 上/下半天 time的值
 
@@ -863,8 +902,8 @@
                     console.log("money", money)
 
                     //  
-                    fetch("http://192.168.0.131:3000/api/booking", {//上線修改
-                    // fetch("http://192.168.0.131:3000/api/booking", {
+                    fetch("http://3.115.236.143:3000/api/booking", {//上線修改
+                        // fetch("http://3.115.236.143:3000/api/booking", {
                         method: "POST",
                         body: JSON.stringify({
                             "attractionId": url_id,
@@ -881,14 +920,25 @@
                         })
                         .then(function (result) {
 
+
+                            //如果date 的值 小於今天 
+                            if (Date.parse(date) <= Date.parse(formatDate(datenow))) {
+                                console.log("date  小於 ")
+                                document.getElementById('bookingmeg').style.display = "block"
+                                document.getElementById('bookingmeg').innerText = "不能選擇過去日期"
+
+                                setTimeout(function () { document.getElementById("bookingmeg").style.display = "none"; }, 4000)
+
+
+                            }
                             //抓到後端
-                            console.log("result:", result);
-                            if (result.ok == true) {  //註冊成功 顯示
+                            // console.log("result:", result);
+                            else if (result.ok == true) {  //註冊成功 顯示
                                 console.log("result.ok:", result.ok);
                                 document.getElementById('bookingmeg').style.display = "none"
 
-                                // document.location.href = "http://192.168.0.131:3000/booking";
-                                document.location.href = "http://192.168.0.131:3000/booking"; //上線修改
+                                // ok 跳轉
+                                document.location.href = "http://3.115.236.143:3000/booking";
 
                             } else if (result.message == "未登入系統，拒絕存取") {
                                 console.log("result.error:未登入系統，拒絕存取", result.message);
@@ -903,51 +953,16 @@
                                 console.log("未選取日期", result.message);
                                 document.getElementById('bookingmeg').style.display = "block"
                                 document.getElementById('bookingmeg').innerText = result.message
-                                
-                                setTimeout(function(){document.getElementById("bookingmeg").style.display="none";},4000)
+
+                                setTimeout(function () { document.getElementById("bookingmeg").style.display = "none"; }, 4000)
+
+                            } else if (result.message == "未選取日期") {
+
 
                             }
 
-                            //         if (result.ok == true) {  //註冊成功 顯示
-                            //             document.getElementById('signinmegerror').style.display = "none"
-                            //             document.getElementById('signinmegsus').style.display = "block"
-                            //             // document.getElementById("registeruser").value = null
-                            //             document.getElementById("registeremail").value = null
-                            //             document.getElementById("registerrepassword").value = null
-
-                            //         } else {//註冊失敗 顯示
-                            //             console.log(result.message)
-                            //             let message = result.message
-                            //             document.getElementById("registeremail").value = null
-                            //             document.getElementById("registerrepassword").value = ""
-                            //             document.getElementById('signinmegerror').style.display = "block"
-                            //             document.getElementById('signinmegerror').innerText = message
-                            //             document.getElementById('signinmegsus').style.display = "none"
-                            //             // document.getElementById("registerform").reset();
-
-                            // }
 
                         })
-                    // .catch((err) => {
-                    //     console.log('錯誤:', err);
-                    // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                 }
 

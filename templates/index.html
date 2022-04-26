@@ -28,7 +28,10 @@
 
                     <div class="top_right_item" id="booking" onclick="booking()" style="cursor: pointer;">預定行程</div>
                     <div class="top_right_item" id="displaysign" onclick="start()" style="cursor: pointer;"> 登入/註冊</div>
-                    <div class="top_right_item" id="displaysignout" onclick="displaysignout()" style="display:none"> 登出
+                    <div class="top_right_item" id="displaysignout" onclick="displaysignout()" style="display:none"> 登出</div>
+                    <div class="top_right_item" id="member"   style="display:block; width: 20px;"> <a href="http://3.115.236.143:3000/member"
+                        style="text-decoration:none; "><img
+                        src="member.png"> </a></div>
                     </div>
                 </div>
             </div>
@@ -75,12 +78,13 @@
             <!-- 表單應該不是直接傳給後端查資料回傳 是給JS 呼叫後端做請求 -->
             <form id="signinform" action="" onsubmit=" return func()">
                 <div class="userdiv">
-                    <input id="email" class="signinput" type="text" placeholder="輸入電子信箱" name="email">
+                    <input id="email" class="signinput" type="text" placeholder="輸入電子信箱"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="email" required="required">
                 </div>
 
                 <div class="pwddiv">
                     <input id="password" class="signinput" type="password" placeholder="輸入密碼" name="password"
-                        autocomplete="on">
+                        autocomplete="on" required="required">
                 </div>
 
                 <div class="postdiv">
@@ -121,18 +125,20 @@
             <form id="signupform" action="" onsubmit=" return func()" method="POST">
                 <!-- return error 不用理 -->
                 <div class="userdiv">
-                    <input id="registeruser" class="signinput" type="text" placeholder="輸入姓名" name="registeruser">
+                    <input id="registeruser" class="signinput" type="text" placeholder="輸入姓名" name="registeruser"
+                        required="required">
                 </div>
 
                 <!-- <img src="image/signloading.gif" style="display: none" id="registerloading"> -->
                 <div class="pwddiv">
-                    <input id="registeremail" class="signinput" type="text" placeholder="輸入電子郵件" name="registeremail"
-                        autocomplete="on">
+                    <input id="registeremail" class="signinput" type="text" placeholder="輸入電子信箱"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="registeremail" autocomplete="on"
+                        required="required">
                 </div>
 
                 <div class="pwddiv">
                     <input id="registerrepassword" class="signinput" type="password" placeholder="輸入密碼"
-                        name="registerrepassword" autocomplete="on">
+                        name="registerrepassword" autocomplete="on" required="required">
                 </div>
 
                 <div class="postdiv">
@@ -161,7 +167,14 @@
     </main>
 
     <!-- A footer for the page. -->
+    </br>
+
+    <div class="loading">
+        <div class="ball"></div>
+        <div class="ball"></div>
+        <div class="ball"></div>
     </div>
+
     <footer class="footer" id="foot">
         <div id="keywordfoot"></div>
         <div class="footer_text">
@@ -175,41 +188,68 @@
 
 <script>
 
+    function Removeball() {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                document.querySelector('.loading').classList.remove('show')
+                console.log("12341567894564123132")
+                add()
+            }, 600)
+            resolve()
+        })
+    }
+
 
     // Intersection Observer  //  Infinite Scroll  觀察 foot
     // https://shubo.io/intersection-observer-api/
     const foot = document.getElementById('foot');
     const callback = (entries, observer) => {
-        entries.forEach(entry => {
+
+        entries.forEach(async entry => {
             // console.log(entry);
             if (entry.isIntersecting) {
-                add()
+                document.querySelector('.loading').classList.add('show');
+                let showingRemove = await Removeball()
             }
         }
         );
     };
-    const observer = new IntersectionObserver(callback);
+    const observer = new IntersectionObserver(callback, { threshold: 0.8 });
 
+
+
+
+    function RemoveballKeyword() {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                document.querySelector('.loading').classList.remove('show')
+                // console.log("12341567894564123132")
+                addkeyword()
+            }, 600)
+            resolve()
+        })
+    }
     //觀察keywordfoot
     const keywordfoot = document.getElementById('keywordfoot');
     const keywordcallback = (entries, observer) => {
-        entries.forEach(entry => {
-            // console.log('keywordfoot', entry);
+        entries.forEach(async entry => {
+
             if (entry.isIntersecting) {
-                addkeyword()
+                document.querySelector('.loading').classList.add('show');
+                let showingRemove = await RemoveballKeyword()
             }
         }
         );
     };
-    const keywordobserver = new IntersectionObserver(keywordcallback);
+    const keywordobserver = new IntersectionObserver(keywordcallback, { threshold: 0.8 });
 
 
 
 
 
     // 一打開網頁 載入首頁
-    // fetch("http://192.168.0.131:3000/api/attractions")
-        fetch("http://192.168.0.131:3000/api/attractions") ////上線修改
+    // fetch("http://3.115.236.143:3000/api/attractions")
+    fetch("http://3.115.236.143:3000/api/attractions") ////上線修改
         .then((result) => {
             return result.json();//將資料用JSON 的格式用物件和陣列的組合
         })
@@ -217,9 +257,9 @@
 
 
             // 一打開網頁 確認SESSION
-            
-            fetch("http://192.168.0.131:3000/api/user", {//上線修改
-            // fetch("http://192.168.0.131:3000/api/user", {
+
+            fetch("http://3.115.236.143:3000/api/user", {//上線修改
+                // fetch("http://3.115.236.143:3000/api/user", {
                 method: 'GET'
             }) //測試
                 .then((sessionresult) => {
@@ -234,9 +274,11 @@
                         // console.log("SESSSION判斷等於Null 代表沒有session 將右上角顯示登入 登出顯示0")
                         document.getElementById('displaysign').style.display = "block"
                         document.getElementById('displaysignout').style.display = "none"
+                        document.getElementById('member').style.display = "none"
                     } else {
                         document.getElementById('displaysign').style.display = "none"
                         document.getElementById('displaysignout').style.display = "block"
+                        document.getElementById('member').style.display = "block"
 
                     }
 
@@ -298,8 +340,8 @@
                 //將圖片加入超連結
                 dataid = result.data[i].id; //取得data 的id
                 let linkTag = document.createElement("a"); //建立HTML a 標籤
-                // linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; // 建立 a href=http://192.168.0.131:3000/attraction/<id>
-                    linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; //上線修改
+                // linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
+                linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; //上線修改
                 mm.appendChild(linkTag); //將id="pic " 插入a標籤
                 linkTag.appendChild(imgTag) //將 a 標籤 插入 img
             }
@@ -332,6 +374,8 @@
             //設一段延遲等網頁載完打開觀察
             setTimeout(observer.observe(foot), 2000)
 
+
+
         })
 
 
@@ -342,8 +386,8 @@
         let loadnum = loadcount * 12
         // console.log("載入數字:" + loadnum)
 
-        // fetch("http://192.168.0.131:3000/api/attractions?page=" + String(loadcount))
-            fetch("http://192.168.0.131:3000/api/attractions?page=" + String(loadcount)) //上線修改
+        // fetch("http://3.115.236.143:3000/api/attractions?page=" + String(loadcount))
+        fetch("http://3.115.236.143:3000/api/attractions?page=" + String(loadcount)) //上線修改
             .then((result) => {
                 return result.json();//將資料用JSON 的格式用物件和陣列的組合
             })
@@ -404,8 +448,8 @@
                     //將圖片加入超連結
                     dataid = result.data[i].id; //取得data 的id
                     let linkTag = document.createElement("a"); //建立HTML a 標籤
-                    // linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; // 建立 a href=http://192.168.0.131:3000/attraction/<id>
-                    linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; // 建立 a href=http://192.168.0.131:3000/attraction/<id> 上線修改
+                    // linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
+                    linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id> 上線修改
 
                     mm.appendChild(linkTag); //將id="pic " 插入a標籤
                     linkTag.appendChild(imgTag) //將 a 標籤 插入 img
@@ -446,6 +490,8 @@
                     // console.log("確認進入nextPage == null 關掉foot ", observer.unobserve(foot));
                     observer.unobserve(foot)
                 }
+
+
             });
     }
 
@@ -471,7 +517,7 @@
             delmain.removeChild(delmain.firstChild);
         }
 
-        fetch("http://192.168.0.131:3000/api/attractions?keyword=" + AttrationKeyword)
+        fetch("http://3.115.236.143:3000/api/attractions?keyword=" + AttrationKeyword)
             .then(function (response) {
                 return response.json();
             })
@@ -545,7 +591,7 @@
                         //將圖片加入超連結
                         dataid = result.data[i].id; //取得data 的id
                         let linkTag = document.createElement("a"); //建立HTML a 標籤
-                        linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; // 建立 a href=http://192.168.0.131:3000/attraction/<id>
+                        linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
                         mm.appendChild(linkTag); //將id="pic " 插入a標籤
                         linkTag.appendChild(imgTag) //將 a 標籤 插入 img
                     }
@@ -597,7 +643,7 @@
         let keywordloadnum = keywordloadcount * 12
 
 
-        fetch("http://192.168.0.131:3000/api/attractions?keyword=" + AttrationKeyword + "&page=" + String(keywordloadcount))
+        fetch("http://3.115.236.143:3000/api/attractions?keyword=" + AttrationKeyword + "&page=" + String(keywordloadcount))
             .then((result) => {
                 return result.json();//將資料用JSON 的格式用物件和陣列的組合
             })
@@ -658,7 +704,7 @@
                     //將圖片加入超連結
                     dataid = result.data[i].id; //取得data 的id
                     let linkTag = document.createElement("a"); //建立HTML a 標籤
-                    linkTag.href = "http://192.168.0.131:3000/attraction/" + dataid; // 建立 a href=http://192.168.0.131:3000/attraction/<id>
+                    linkTag.href = "http://3.115.236.143:3000/attraction/" + dataid; // 建立 a href=http://3.115.236.143:3000/attraction/<id>
                     mm.appendChild(linkTag); //將id="pic " 插入a標籤
                     linkTag.appendChild(imgTag) //將 a 標籤 插入 img
                 };
@@ -753,7 +799,7 @@
 
     //--------------登出畫面-------------
     function displaysignout() {
-        fetch("http://192.168.0.131:3000/api/user", {
+        fetch("http://3.115.236.143:3000/api/user", {
             method: 'DELETE'
             // method: 'GET'
         }) //測試
@@ -789,7 +835,7 @@
         fd = new FormData(document.getElementById('signinform'))
         console.log("fd", fd)
 
-        fetch("http://192.168.0.131:3000/api/user", {
+        fetch("http://3.115.236.143:3000/api/user", {
             method: 'PATCH',
             body: fd
         })   //發送query string
@@ -815,6 +861,8 @@
                     //右上角 改變成登出
                     document.getElementById('displaysign').style.display = "none"
                     document.getElementById('displaysignout').style.display = "block"
+                    document.getElementById('member').style.display = "block"
+               
                     //重新整理關閉表單
                     location.reload()
                     signclose()
@@ -824,6 +872,7 @@
                     let signinmeg_error = result.message
                     document.getElementById('displaysign').style.display = "block"
                     document.getElementById('displaysignout').style.display = "none"
+                    document.getElementById('member').style.display = "none"
                     //失敗出現錯誤
                     document.getElementById('signinmeg').style.display = "block"
                     document.getElementById('signinmeg').innerText = signinmeg_error
@@ -841,58 +890,62 @@
     //------------- 註冊 -------------
     signup = function () {
 
-        registeruserElement = document.getElementById('registeruser')
-        registeruser = registeruserElement.value;
-        // console.log("registeruser", registeruser)
+        if (document.getElementById('registeruser').validity.valid
+            & document.getElementById('registeremail').validity.valid
+            & document.getElementById('registerrepassword').validity.valid) {
+            // registeruserElement = document.getElementById('registeruser')
+            // registeruser = registeruserElement.value;
+            // console.log("registeruser", registeruser)
 
-        registeremailElement = document.getElementById('registeremail')
-        registeremail = registeremailElement.value;
-        // console.log("registeremail", registeremail)
-        // console.log("email??", email)
+            // registeremailElement = document.getElementById('registeremail')
+            // registeremail = registeremailElement.value;
+            // console.log("registeremail", registeremail)
+            // console.log("email??", email)
 
-        registerrepasswordElement = document.getElementById('registerrepassword')
-        registerrepassword = registerrepasswordElement.value;
-        // console.log("registerrepassword", registerrepassword)
-        // console.log("password??", password)
+            // registerrepasswordElement = document.getElementById('registerrepassword')
+            // registerrepassword = registerrepasswordElement.value;
+            // console.log("registerrepassword", registerrepassword)
+            // console.log("password??", password)
 
-        upfd = new FormData(document.getElementById('signupform'))
-        // console.log("fd", upfd)
+            upfd = new FormData(document.getElementById('signupform'))
+            // console.log("fd", upfd)
 
-        fetch("http://192.168.0.131:3000/api/user", {
-            method: 'POST',
-            body: upfd
+            fetch("http://3.115.236.143:3000/api/user", {
+                method: 'POST',
+                body: upfd
 
-        })   //發送query string
-            .then(function (response) {
-                console.log(response)
-                return response.json();
-            })
-            .then(function (result) {
-                console.log("登入資訊:", result);
-                // console.log("登入資訊:", result.ok);
+            })   //發送query string
+                .then(function (response) {
+                    console.log(response)
+                    return response.json();
+                })
+                .then(function (result) {
+                    console.log("登入資訊:", result);
+                    // console.log("登入資訊:", result.ok);
 
-                if (result.ok == true) {  //註冊成功 顯示
-                    document.getElementById('signinmegerror').style.display = "none"
-                    document.getElementById('signinmegsus').style.display = "block"
-                    // document.getElementById("registeruser").value = null
-                    document.getElementById("registeremail").value = null
-                    document.getElementById("registerrepassword").value = null
+                    if (result.ok == true) {  //註冊成功 顯示
+                        document.getElementById('signinmegerror').style.display = "none"
+                        document.getElementById('signinmegsus').style.display = "block"
+                        // document.getElementById("registeruser").value = null
+                        document.getElementById("registeremail").value = null
+                        document.getElementById("registerrepassword").value = null
 
-                } else {//註冊失敗 顯示
-                    console.log(result.message)
-                    let message = result.message
-                    document.getElementById("registeremail").value = null
-                    document.getElementById("registerrepassword").value = ""
-                    document.getElementById('signinmegerror').style.display = "block"
-                    document.getElementById('signinmegerror').innerText = message
-                    document.getElementById('signinmegsus').style.display = "none"
-                    // document.getElementById("registerform").reset();
+                    } else {//註冊失敗 顯示
+                        console.log(result.message)
+                        let message = result.message
+                        document.getElementById("registeremail").value = null
+                        document.getElementById("registerrepassword").value = ""
+                        document.getElementById('signinmegerror').style.display = "block"
+                        document.getElementById('signinmegerror').innerText = message
+                        document.getElementById('signinmegsus').style.display = "none"
+                        // document.getElementById("registerform").reset();
 
-                }
+                    }
 
-            }).catch((err) => {
-                console.log('錯誤:', err);
-            });
+                }).catch((err) => {
+                    console.log('錯誤:', err);
+                });
+        }
     }
 
     //  表單不跳
@@ -907,8 +960,8 @@
 
 
         // 檢查使用者是否已經登入
-        fetch("http://192.168.0.131:3000/api/user", {//上線測試
-        // fetch("http://192.168.0.131:3000/api/user", {
+        fetch("http://3.115.236.143:3000/api/user", {//上線測試
+            // fetch("http://3.115.236.143:3000/api/user", {
             method: 'GET'
         }) //測試
             .then((sessionresult) => {
@@ -924,8 +977,8 @@
                     start()
                 } else {
                     //有登入 ， 導到 /booking 頁面
-                    // document.location.href = "http://192.168.0.131:3000/booking";
-                    document.location.href = "http://192.168.0.131:3000/booking";
+                    // document.location.href = "http://3.115.236.143:3000/booking";
+                    document.location.href = "http://3.115.236.143:3000/booking";
 
 
                 }
