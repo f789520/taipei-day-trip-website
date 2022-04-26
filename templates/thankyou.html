@@ -26,9 +26,13 @@
                     <div class="top_right_item" id="displaysignout" onclick="displaysignout()"
                         style="display:none;cursor: pointer;"> 登出
                     </div>
+                    <div class="top_right_item" id="member" style="display:block; width: 20px;"> <a
+                            href="http://3.115.236.143:3000/member" style="text-decoration:none; "><img
+                                src="/member.png"> </a></div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- 分割線 -->
@@ -52,12 +56,13 @@
             <!-- 表單應該不是直接傳給後端查資料回傳 是給JS 呼叫後端做請求 -->
             <form id="signinform" action="" onsubmit=" return func()">
                 <div class="userdiv">
-                    <input id="email" class="signinput" type="text" placeholder="輸入電子信箱" name="email">
+                    <input id="email" class="signinput" type="text" placeholder="輸入電子信箱" name="email"
+                        required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
                 </div>
 
                 <div class="pwddiv">
                     <input id="password" class="signinput" type="password" placeholder="輸入密碼" name="password"
-                        autocomplete="on">
+                        required="required" autocomplete="on">
                 </div>
 
                 <div class="postdiv">
@@ -98,18 +103,19 @@
             <form id="signupform" action="" onsubmit=" return func()" method="POST">
                 <!-- return error 不用理 -->
                 <div class="userdiv">
-                    <input id="registeruser" class="signinput" type="text" placeholder="輸入姓名" name="registeruser">
+                    <input id="registeruser" class="signinput" type="text" placeholder="輸入姓名" name="registeruser"
+                        required="required">
                 </div>
 
                 <!-- <img src="image/signloading.gif" style="display: none" id="registerloading"> -->
                 <div class="pwddiv">
-                    <input id="registeremail" class="signinput" type="text" placeholder="輸入電子郵件" name="registeremail"
-                        autocomplete="on">
+                    <input id="registeremail" class="signinput" type="text" placeholder="輸入電子信箱" name="registeremail"
+                        required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" autocomplete="on">
                 </div>
 
                 <div class="pwddiv">
                     <input id="registerrepassword" class="signinput" type="password" placeholder="輸入密碼"
-                        name="registerrepassword" autocomplete="on">
+                        required="required" name="registerrepassword" autocomplete="on">
                 </div>
 
                 <div class="postdiv">
@@ -198,12 +204,12 @@
                     // console.log("SESSSION判斷等於Null 代表沒有session 將右上角顯示登入 登出顯示0")
                     document.getElementById('displaysign').style.display = "block"
                     document.getElementById('displaysignout').style.display = "none"
-
+                    document.getElementById('member').style.display = "none"
                     document.location.href = "http://3.115.236.143:3000/"; //上線測試
                 } else {
                     document.getElementById('displaysign').style.display = "none"
                     document.getElementById('displaysignout').style.display = "block"
-
+                    document.getElementById('member').style.display = "block"
                 }
 
             })
@@ -347,59 +353,62 @@
 
         //------------- 註冊 -------------
         signup = function () {
+            if (document.getElementById('registeruser').validity.valid
+                & document.getElementById('registeremail').validity.valid
+                & document.getElementById('registerrepassword').validity.valid) {
+                registeruserElement = document.getElementById('registeruser')
+                registeruser = registeruserElement.value;
+                // console.log("registeruser", registeruser)
 
-            registeruserElement = document.getElementById('registeruser')
-            registeruser = registeruserElement.value;
-            // console.log("registeruser", registeruser)
+                registeremailElement = document.getElementById('registeremail')
+                registeremail = registeremailElement.value;
+                // console.log("registeremail", registeremail)
+                // console.log("email??", email)
 
-            registeremailElement = document.getElementById('registeremail')
-            registeremail = registeremailElement.value;
-            // console.log("registeremail", registeremail)
-            // console.log("email??", email)
+                registerrepasswordElement = document.getElementById('registerrepassword')
+                registerrepassword = registerrepasswordElement.value;
+                // console.log("registerrepassword", registerrepassword)
+                // console.log("password??", password)
 
-            registerrepasswordElement = document.getElementById('registerrepassword')
-            registerrepassword = registerrepasswordElement.value;
-            // console.log("registerrepassword", registerrepassword)
-            // console.log("password??", password)
+                upfd = new FormData(document.getElementById('signupform'))
+                // console.log("fd", upfd)
 
-            upfd = new FormData(document.getElementById('signupform'))
-            // console.log("fd", upfd)
+                fetch("http://3.115.236.143:3000/api/user", {
+                    method: 'POST',
+                    body: upfd
 
-            fetch("http://3.115.236.143:3000/api/user", {
-                method: 'POST',
-                body: upfd
+                })   //發送query string
+                    .then(function (response) {
+                        console.log(response)
+                        return response.json();
+                    })
+                    .then(function (result) {
+                        console.log("登入資訊:", result);
+                        // console.log("登入資訊:", result.ok);
 
-            })   //發送query string
-                .then(function (response) {
-                    console.log(response)
-                    return response.json();
-                })
-                .then(function (result) {
-                    console.log("登入資訊:", result);
-                    // console.log("登入資訊:", result.ok);
+                        if (result.ok == true) {  //註冊成功 顯示
+                            document.getElementById('signinmegerror').style.display = "none"
+                            document.getElementById('signinmegsus').style.display = "block"
+                            // document.getElementById("registeruser").value = null
+                            document.getElementById("registeremail").value = null
+                            document.getElementById("registerrepassword").value = null
 
-                    if (result.ok == true) {  //註冊成功 顯示
-                        document.getElementById('signinmegerror').style.display = "none"
-                        document.getElementById('signinmegsus').style.display = "block"
-                        // document.getElementById("registeruser").value = null
-                        document.getElementById("registeremail").value = null
-                        document.getElementById("registerrepassword").value = null
+                        } else {//註冊失敗 顯示
+                            console.log(result.message)
+                            let message = result.message
+                            document.getElementById("registeremail").value = null
+                            document.getElementById("registerrepassword").value = ""
+                            document.getElementById('signinmegerror').style.display = "block"
+                            document.getElementById('signinmegerror').innerText = message
+                            document.getElementById('signinmegsus').style.display = "none"
+                            // document.getElementById("registerform").reset();
 
-                    } else {//註冊失敗 顯示
-                        console.log(result.message)
-                        let message = result.message
-                        document.getElementById("registeremail").value = null
-                        document.getElementById("registerrepassword").value = ""
-                        document.getElementById('signinmegerror').style.display = "block"
-                        document.getElementById('signinmegerror').innerText = message
-                        document.getElementById('signinmegsus').style.display = "none"
-                        // document.getElementById("registerform").reset();
+                        }
 
-                    }
-
-                }).catch((err) => {
-                    console.log('錯誤:', err);
-                });
+                    }).catch((err) => {
+                        console.log('錯誤:', err);
+                    });
+            }
         }
         //  表單不跳
         function func() {
@@ -465,7 +474,7 @@
                     message = result.message
                     document.getElementById('ordernumber').innerText = message
 
-                }else{
+                } else {
                     document.getElementById('ordernumber').innerText = ordernumber
                 }
 

@@ -24,8 +24,11 @@
                     <div class="top_right_item" id="displaysign" onclick="start() " style="cursor: pointer;"> 登入/註冊
                     </div>
                     <div class="top_right_item" id="displaysignout" onclick="displaysignout()"
-                        style="display:none;cursor: pointer;"> 登出
-                    </div>
+                        style="display:none;cursor: pointer;"> 登出</div>
+                    <div class="top_right_item" id="member" style="display:block; width: 20px;"> <a
+                            href="http://3.115.236.143:3000/member" style="text-decoration:none; "><img
+                                src="member.png"> </a></div>
+
                 </div>
             </div>
         </div>
@@ -52,12 +55,13 @@
             <!-- 表單應該不是直接傳給後端查資料回傳 是給JS 呼叫後端做請求 -->
             <form id="signinform" action="" onsubmit=" return func()">
                 <div class="userdiv">
-                    <input id="email" class="signinput" type="text" placeholder="輸入電子信箱" name="email">
+                    <input id="email" class="signinput" type="text" placeholder="輸入電子信箱"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="email" required="required">
                 </div>
 
                 <div class="pwddiv">
                     <input id="password" class="signinput" type="password" placeholder="輸入密碼" name="password"
-                        autocomplete="on">
+                        autocomplete="on" required="required">
                 </div>
 
                 <div class="postdiv">
@@ -98,18 +102,20 @@
             <form id="signupform" action="" onsubmit=" return func()" method="POST">
                 <!-- return error 不用理 -->
                 <div class="userdiv">
-                    <input id="registeruser" class="signinput" type="text" placeholder="輸入姓名" name="registeruser">
+                    <input id="registeruser" class="signinput" type="text" placeholder="輸入姓名" name="registeruser"
+                        required="required">
                 </div>
 
 
                 <div class="pwddiv">
-                    <input id="registeremail" class="signinput" type="text" placeholder="輸入電子郵件" name="registeremail"
-                        autocomplete="on">
+                    <input id="registeremail" class="signinput" type="text" placeholder="輸入電子信箱"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="registeremail" autocomplete="on"
+                        required="required">
                 </div>
 
                 <div class="pwddiv">
                     <input id="registerrepassword" class="signinput" type="password" placeholder="輸入密碼"
-                        name="registerrepassword" autocomplete="on">
+                        name="registerrepassword" autocomplete="on" required="required">
                 </div>
 
                 <div class="postdiv">
@@ -217,122 +223,123 @@
         <div>
             <hr class="middle_hr" />
         </div>
-
-
-        <div class="intro">
-            <div class="hello">
-                <h>您的聯絡資訊</h>
-            </div>
-
-            <!-- 聯絡姓名 -->
-            <div class="intro_container">
-                <h
-                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; padding-left: 10px;">
-                    聯絡姓名：
-                </h>
-                <input class="input" id="contactname"></input>
-            </div>
-            <!-- 聯絡信箱 -->
-            <div class="intro_container">
-                <h
-                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
-                    聯絡信箱：
-                </h>
-                <input class="input" id="contactemail"></input>
-
-            </div>
-
-            <!-- 手機號碼 -->
-            <div class="intro_container">
-                <h
-                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
-                    手機號碼：
-                </h>
-                <input class="input" id="contactphone"></input>
-
-            </div>
-
-
-            <div class="hello">
-                <h style="font-size:16px ; margin-top: 20px;">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</h>
-            </div>
-
-  
-        </div>
-
- 
-
-        <div>
-            <hr class="middle_hr" />
-        </div>
-
-
-        <div class="intro">
-            <div class="hello">
-                <h>信用卡付款資訊</h>
-            </div>
-
-            <!-- 卡片號碼： -->
-            <div class="intro_container" style="display: flex;">
-                <h
-                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; padding-left: 10px;">
-                    卡片號碼：
-                </h>
-                <div class="input" id="card-number"></div>
-            </div>
-            <!-- 過期時間： -->
-            <div class="intro_container" style="display: flex;">
-                <h
-                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
-                    過期時間：
-                </h>
-                <div class="input" id="card-expiration-date"></div>
-
-            </div>
-
-            <!-- 驗證密碼： -->
-            <div class="intro_container" style="display: flex;">
-                <h
-                    style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
-                    驗證密碼：
-                </h>
-                <div class="input" id="card-ccv"></div>
-
-            </div>
-
-
-            <!-- TEST FORM -->
-            <!-- <div style="width: 480px; margin: 50px auto;">
-                <label>CardView</label>
-                <div id="cardview-container"></div>
-                <button id="submit-button" onclick="onClick()">Get Prime</button>
-                <pre id="result1"></pre>
-                <pre id="result2"></pre>
-            </div> -->
-
-        </div>
-
-
-        <div>
-            <hr class="middle_hr" />
-        </div>
-
-
-
-        <!-- 需動態 -->
-
-        <div class="intro" style="display: flex;justify-content:end ">
-            <div id="buy_button">
+        <!-- form 表單 前端自動驗證格式 發出提醒 如果輸入錯還是會送出 -->
+        <form id="contactform" onsubmit="return false">
+            <div class="intro">
                 <div class="hello">
-                    <h style="font-size:16px ;  ">總價：新台幣 <h id="totalMoney"></h> 元 </h>
+                    <h>您的聯絡資訊</h>
                 </div>
-                <button class="buy_button" id="orderbutton" onclick="orderbutton()">確認訂購並付款</button>
-                <p id="paymentmeg"
-                    style="text-decoration: none;color:red; display:none;font-size: 16px; ">
-                    付款失敗，輸入不正確或其他原因 </p>
+
+                <!-- 聯絡姓名 -->
+
+                <div class="intro_container">
+                    <h
+                        style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; padding-left: 10px;">
+                        聯絡姓名：
+                    </h>
+                    <input class="input" id="contactname" required="required"></input>
+                </div>
+                <!-- 聯絡信箱 -->
+
+                <div class="intro_container">
+                    <h
+                        style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
+                        聯絡信箱：
+                    </h>
+                    <input class="input" type="email" id="contactemail" placeholder="username@example.com"
+                        title="Please enter an email address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                        required="required"></input>
+
+                </div>
+
+
+                <!-- 手機號碼 -->
+                <div class="intro_container">
+                    <h
+                        style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
+                        手機號碼：
+                    </h>
+                    <input class="input" id="contactphone"
+                        pattern="(\d{2,3}-?|\(\d{2,3}\))\d{3,4}-?\d{4}|09\d{2}(\d{6}|-\d{3}-\d{3})"
+                        placeholder="09xx xxxx xxxx" title="請輸入正確的手機號碼" required="required"></input>
+
+                </div>
+
+
+                <div class="hello">
+                    <h style="font-size:16px ; margin-top: 20px;">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</h>
+                </div>
+
 
             </div>
-        </div>
+
+
+            <div>
+                <hr class="middle_hr" />
+            </div>
+
+
+            <div class="intro">
+                <div class="hello">
+                    <h>信用卡付款資訊</h>
+                </div>
+
+                <!-- 卡片號碼： -->
+                <div class="intro_container" style="display: flex;">
+                    <h
+                        style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px; padding-left: 10px;">
+                        卡片號碼：
+                    </h>
+                    <div class="input" id="card-number"></div>
+                </div>
+                <!-- 過期時間： -->
+                <div class="intro_container" style="display: flex;">
+                    <h
+                        style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
+                        過期時間：
+                    </h>
+                    <div class="input" id="card-expiration-date"></div>
+
+                </div>
+
+                <!-- 驗證密碼： -->
+                <div class="intro_container" style="display: flex;">
+                    <h
+                        style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 32px;height: 32px;padding-left: 10px;">
+                        驗證密碼：
+                    </h>
+                    <div class="input" id="card-ccv"></div>
+
+                </div>
+
+
+
+            </div>
+
+
+            <div>
+                <hr class="middle_hr" />
+            </div>
+
+
+
+            <!-- 需動態 -->
+
+            <div class="intro" style="display: flex;justify-content:end ">
+                <div id="buy_button">
+                    <div class="hello">
+                        <h style="font-size:16px ;  ">總價：新台幣 <h id="totalMoney"></h> 元 </h>
+                    </div>
+                    <button class="buy_button" id="btnSubmit" name="submit" onclick="orderbutton()"
+                        style="cursor: pointer;">確認訂購並付款</button>
+                    <p id="paymentmeg" style="text-decoration: none;color:red; display:none;font-size: 16px; ">
+                        付款失敗，輸入不正確或其他原因 </p>
+
+                </div>
+            </div>
+
+
+        </form>
 
 
 
@@ -429,6 +436,11 @@
             }
         })
 
+
+
+
+
+
         // 判斷登出/入
         fetch("http://3.115.236.143:3000/api/user", {//上線測試
             // fetch("http://3.115.236.143:3000/api/user", { 
@@ -446,13 +458,15 @@
                     // console.log("SESSSION判斷等於Null 代表沒有session 將右上角顯示登入 登出顯示0")
                     document.getElementById('displaysign').style.display = "block"
                     document.getElementById('displaysignout').style.display = "none"
-                    // document.location.href = "http://3.115.236.143:3000/booking";
+
                     document.location.href = "http://3.115.236.143:3000/"; //上線測試
+                    document.getElementById('member').style.display = "none"
                 } else { //表示有登入
 
                     document.getElementById('displaysign').style.display = "none"
                     document.getElementById('displaysignout').style.display = "block"
                     document.getElementById("who").innerHTML = sessionresult.data.name
+                    document.getElementById('member').style.display = "block"
 
                     //檢查訂單狀態是否付款成功 串金流
 
@@ -463,8 +477,7 @@
                 }
 
             })
-        fetch("http://3.115.236.143:3000/api/booking", {//上線測試
-            // fetch("http://3.115.236.143:3000/api/booking", {
+        fetch("http://3.115.236.143:3000/api/booking", {
             method: "GET",
 
         })
@@ -691,58 +704,62 @@
         //------------- 註冊 -------------
         signup = function () {
 
-            registeruserElement = document.getElementById('registeruser')
-            registeruser = registeruserElement.value;
-            // console.log("registeruser", registeruser)
+            if (document.getElementById('registeruser').validity.valid
+                & document.getElementById('registeremail').validity.valid
+                & document.getElementById('registerrepassword').validity.valid) {
+                registeruserElement = document.getElementById('registeruser')
+                registeruser = registeruserElement.value;
+                // console.log("registeruser", registeruser)
 
-            registeremailElement = document.getElementById('registeremail')
-            registeremail = registeremailElement.value;
-            // console.log("registeremail", registeremail)
-            // console.log("email??", email)
+                registeremailElement = document.getElementById('registeremail')
+                registeremail = registeremailElement.value;
+                // console.log("registeremail", registeremail)
+                // console.log("email??", email)
 
-            registerrepasswordElement = document.getElementById('registerrepassword')
-            registerrepassword = registerrepasswordElement.value;
-            // console.log("registerrepassword", registerrepassword)
-            // console.log("password??", password)
+                registerrepasswordElement = document.getElementById('registerrepassword')
+                registerrepassword = registerrepasswordElement.value;
+                // console.log("registerrepassword", registerrepassword)
+                // console.log("password??", password)
 
-            upfd = new FormData(document.getElementById('signupform'))
-            // console.log("fd", upfd)
-            fetch("http://3.115.236.143:3000/api/user", {//上線測試
-                // fetch("http://3.115.236.143:3000/api/user", {
-                method: 'POST',
-                body: upfd
+                upfd = new FormData(document.getElementById('signupform'))
+                // console.log("fd", upfd)
+                fetch("http://3.115.236.143:3000/api/user", {//上線測試
+                    // fetch("http://3.115.236.143:3000/api/user", {
+                    method: 'POST',
+                    body: upfd
 
-            })   //發送query string
-                .then(function (response) {
-                    console.log(response)
-                    return response.json();
-                })
-                .then(function (result) {
-                    console.log("登入資訊:", result);
-                    // console.log("登入資訊:", result.ok);
+                })   //發送query string
+                    .then(function (response) {
+                        console.log(response)
+                        return response.json();
+                    })
+                    .then(function (result) {
+                        console.log("登入資訊:", result);
+                        // console.log("登入資訊:", result.ok);
 
-                    if (result.ok == true) {  //註冊成功 顯示
-                        document.getElementById('signinmegerror').style.display = "none"
-                        document.getElementById('signinmegsus').style.display = "block"
-                        // document.getElementById("registeruser").value = null
-                        document.getElementById("registeremail").value = null
-                        document.getElementById("registerrepassword").value = null
+                        if (result.ok == true) {  //註冊成功 顯示
+                            document.getElementById('signinmegerror').style.display = "none"
+                            document.getElementById('signinmegsus').style.display = "block"
+                            // document.getElementById("registeruser").value = null
+                            document.getElementById("registeremail").value = null
+                            document.getElementById("registerrepassword").value = null
 
-                    } else {//註冊失敗 顯示
-                        console.log(result.message)
-                        let message = result.message
-                        document.getElementById("registeremail").value = null
-                        document.getElementById("registerrepassword").value = ""
-                        document.getElementById('signinmegerror').style.display = "block"
-                        document.getElementById('signinmegerror').innerText = message
-                        document.getElementById('signinmegsus').style.display = "none"
-                        // document.getElementById("registerform").reset();
+                        } else {//註冊失敗 顯示
+                            console.log(result.message)
+                            let message = result.message
+                            document.getElementById("registeremail").value = null
+                            document.getElementById("registerrepassword").value = ""
+                            document.getElementById('signinmegerror').style.display = "block"
+                            document.getElementById('signinmegerror').innerText = message
+                            document.getElementById('signinmegsus').style.display = "none"
+                            // document.getElementById("registerform").reset();
 
-                    }
+                        }
 
-                }).catch((err) => {
-                    console.log('錯誤:', err);
-                });
+                    }).catch((err) => {
+                        console.log('錯誤:', err);
+                    });
+            }
         }
         //  表單不跳
         function func() {
@@ -818,51 +835,6 @@
 
 
 
-
-        // -----------------------------------------TAYPAY
-
-
-
-
-        //可用預設的 form
-        // var defaultCardViewStyle = {
-        //     color: 'rgb(0,0,0)',
-        //     fontSize: '15px',
-        //     lineHeight: '24px',
-        //     fontWeight: '300',
-        //     errorColor: 'red',
-        //     placeholderColor: ''
-        // }
-
-
-        // TPDirect.card.setup('#cardview-container', defaultCardViewStyle)
-
-        // submitButton = document.querySelector('#submit-button')
-        // cardViewContainer = document.querySelector('#cardview-container')
-
-
-        //TEST 小按鈕
-        // function onClick() {
-        //     TPDirect.card.getPrime(function (result) {
-        //         if (result.status !== 0) {
-        //             console.log('getPrime 錯誤')
-        //             return
-        //         }
-        //         alert('getPrime 成功')
-        //         prime = result.card.prime
-        //         document.querySelector('#result1').innerHTML = JSON.stringify(result.card.prime, null, 4)
-
-        //         $.post('/pay-by-prime', { prime: prime }, function (data) {
-        //             alert('付款成功')
-        //             document.querySelector('#result2').innerHTML = JSON.stringify(data, null, 4)
-        //         })
-        //     })
-        // }
-
-
-        // ----------------------
-
-
         function apiPayByPrime() {
 
             return new Promise(function (resolve, reject) {
@@ -873,7 +845,7 @@
                         console.log('getPrime 錯誤')
                         document.getElementById('paymentmeg').style.display = "block"
                         // setTimeout(document.getElementById('paymentmeg').style.display = "none", 5000)
-                         
+
 
 
                         return
@@ -899,119 +871,131 @@
             })
         }
 
+
+        // document.getElementById('contactemail').addEventListener(
+        //     'input',
+        //     function (event) {
+        //         if (!document.getElementById('contactemail').validity.valid) {
+        //             console.log("ddddddddddddddddddddddddddddddddddddddd")
+        //             document.getElementById('contactemail').setCustomValidity('請輸入正確電子郵件');
+        //         }
+        //         // if (document.getElementById('contactemail').validity.typeMismatch) {
+        //         //     document.getElementById('contactemail').setCustomValidity('I expect an e-mail, darling!');
+        //         // } else {
+        //         //     document.getElementById('contactemail').setCustomValidity('');
+        //         // }
+        //     },
+        // );
+
+
         async function orderbutton() {
-            contactname = document.getElementById('contactname').value
-            contactemail = document.getElementById('contactemail').value
-            contactphone = document.getElementById('contactphone').value
-
-
-            // var prime;
-
-            let prime = await apiPayByPrime();
-            console.log("prime await", prime)
+            //前端驗證OK 才繼續
+            if (document.getElementById('contactemail').validity.valid
+                & document.getElementById('contactphone').validity.valid
+                & document.getElementById('contactname').validity.valid) {
 
 
 
-            console.log("prime2", prime)
+                contactname = document.getElementById('contactname').value
+                contactemail = document.getElementById('contactemail').value
+                contactphone = document.getElementById('contactphone').value
+                // contactform = document.getElementById("contactform");
+
+                // document.getElementById("orderbutton").addEventListener("click", function () {
+                //     return false;
+                //     contactform.submit();
+                // });
 
 
-            let res = await fetch("http://3.115.236.143:3000/api/booking", {
+                let prime = await apiPayByPrime();
 
-                method: "GET",
+                let res = await fetch("http://3.115.236.143:3000/api/booking", {
 
-            })
-                .then(function (response) {
-                    console.log(response)
-                    return response.json();
+                    method: "GET",
 
                 })
-                .then(function (bookingresult) {
-
-
-
-                    // let payReslut = await apiPayByPrime(prime);
-                    console.log("prime3", prime)
-
-
-
-                    fetch("http://3.115.236.143:3000/api/orders", {
-
-                        method: "POST",
-                        body: JSON.stringify({
-                            "prime": prime,
-                            "order": {
-                                "price": bookingresult.data.price,
-                                "trip": {
-                                    "attraction": bookingresult.data.attraction,
-                                    "date": bookingresult.data.date,
-                                    "time": bookingresult.data.time
-                                },
-                                "contact": {
-                                    "name": contactname,
-                                    "email": contactemail,
-                                    "phone": contactphone
-                                }
-                            }
-                        })
+                    .then(function (response) {
+                        console.log(response)
+                        return response.json();
 
                     })
-                        .then(function (response) {
-                            console.log(response)
-                            return response.json();
-                            // return response.text();
-                        })
-                        .then(function (bookingresult) {
-                            console.log("bookingresult資訊:", bookingresult);
-                            number = bookingresult.data.number
-                            status = bookingresult.data.payment.status
-
-                            console.log(status)
-
-
-                            //付款成功 status=0
-                            if (bookingresult.data.payment.status == 0) {
-
-
-                                fetch("http://3.115.236.143:3000/api/booking", {//上線測試
-                                    // fetch("http://3.115.236.143:3000/api/user", {
-                                    method: 'DELETE'
-                                }) //測試 
-                                    .then((result) => {
-                                        return result.json();//將資料用JSON 的格式用物件和陣列的組合
-                                    })
-                                    .then((result) => {
-                                        if (result.ok == true) {
-                                            //右上角 改變成登出
-                                            document.getElementById('cancel').style.display = "none"
-                                            document.getElementById('nobooking').style.display = "block"
-                                            document.getElementById('foot').style.height = "100%"
-                                            //重新整理關閉表單
-                                        }
-                                    })
-
-                                document.location.href = "http://3.115.236.143:3000/thankyou?number="+number
-                            } else {
-                                let bookingresultmeg_error = bookingresult.message
-                                document.getElementById('paymentmeg').innerText = bookingresult.message
-                                
-
-
-                            }
+                    .then(function (bookingresult) {
 
 
 
 
+                        fetch("http://3.115.236.143:3000/api/orders", {
+
+                            method: "POST",
+                            body: JSON.stringify({
+                                "prime": prime,
+                                "order": {
+                                    "price": bookingresult.data.price,
+                                    "trip": {
+                                        "attraction": bookingresult.data.attraction,
+                                        "date": bookingresult.data.date,
+                                        "time": bookingresult.data.time
+                                    },
+                                    "contact": {
+                                        "name": contactname,
+                                        "email": contactemail,
+                                        "phone": contactphone
+                                    }
+                                }
+                            })
 
                         })
+                            .then(function (response) {
+                                console.log(response)
+                                return response.json();
+                                // return response.text();
+                            })
+                            .then(function (bookingresult) {
+                                console.log("bookingresult資訊:", bookingresult);
+                                number = bookingresult.data.number
+                                status = bookingresult.data.payment.status
+
+                                console.log(status)
+
+
+                                //付款成功 status=0
+                                if (bookingresult.data.payment.status == 0) {
+
+
+                                    fetch("http://3.115.236.143:3000/api/booking", {
+
+                                        method: 'DELETE'
+                                    }) //測試 
+                                        .then((result) => {
+                                            return result.json();//將資料用JSON 的格式用物件和陣列的組合
+                                        })
+                                        .then((result) => {
+                                            if (result.ok == true) {
+
+                                                document.getElementById('cancel').style.display = "none"
+                                                document.getElementById('nobooking').style.display = "block"
+                                                document.getElementById('foot').style.height = "100%"
+
+                                            }
+                                        })
+
+                                    document.location.href = "http://3.115.236.143:3000/thankyou?number=" + number
+                                } else {
+                                    let bookingresultmeg_error = bookingresult.message
+                                    document.getElementById('paymentmeg').innerText = bookingresult.message
+
+                                }
+
+                            })
 
 
 
-                })
 
 
+                    })
 
+            }
         }
-
 
 
     </script>

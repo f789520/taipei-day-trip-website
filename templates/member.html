@@ -1,0 +1,659 @@
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maxium-scale=1" />
+    <title> 台北一日遊-member </title>
+    <link href="member.css" rel="stylesheet" type="text/css">
+    <!-- 上傳網址要+/ 擺在static ， 離線的話不加 擺在HTML 同一個資料夾 -->
+
+</head>
+
+<body>
+
+    <div class="top1">
+        <div class="top">
+            <div class="top2">
+                <div class="top_left_logo" style="cursor: pointer;"><a href="http://3.115.236.143:3000/"
+                        style="text-decoration:none;color:#448899">台北一日遊 </a>
+                </div>
+                <div class="top_right">
+                    <div class="top_right_item" id="booking" onclick="booking()" style="cursor: pointer;">預定行程</div>
+                    <div class="top_right_item" id="displaysign" onclick="start() " style="cursor: pointer;"> 登入/註冊
+                    </div>
+                    <div class="top_right_item" id="displaysignout" onclick="displaysignout()"
+                        style="display:none;cursor: pointer;"> 登出
+                    </div>
+                    <div class="top_right_item" id="member" style="display:block; width: 20px;"> <a
+                            href="http://3.115.236.143:3000/member" style="text-decoration:none; "><img
+                                src="/member.png"> </a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分割線 -->
+    <hr class="top_hr" style="margin-bottom:37px ; opacity: 0.2;" />
+
+
+
+    <div class="hello" id="hello">
+        <h>您好，<h id="who"> </h> ，歡迎來到會員中心</h>
+    </div>
+
+    <!-- 消失 -->
+    <div id="cancel">
+
+
+        <div class="main">
+            <!-- 左半邊 -->
+            <div class="main_left">
+
+                <div class="main_left_img" id='main_left_img'><img src="IU.png" class="img"></div>
+                <!-- 創立一個div 給會員img  塞入 -->
+
+
+            </div>
+
+
+            <!-- 右半邊 -->
+            <div class="main_right">
+                <!-- <form class="main_right" id="signupform" action="" onsubmit=" return func()" method="POST"></form> -->
+
+
+                <!-- 預定表格 -->
+
+                <!-- <div class="main_right_booking"> -->
+                <!-- 預定表格 row 的 框   訂購導覽行程 -->
+                <form class="main_right_booking" id="signupform" action="" onsubmit=" return false" method="POST">
+                    <div class="main_right_bookingbox" id="main_right_date">
+                        <h
+                            style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;white-space:nowrap">
+                            名稱
+                            :&ensp;
+                        </h>
+
+                        <input class="input" type="text" id="username" name="username" required="required"></input>
+                        <!-- <h id="edit "style="position: relative;width: 25px;"><img src="edit.png" class="img" style="height: 25px;cursor: pointer;"></h> -->
+                    </div>
+                    <!--   登入信箱/帳號 :-->
+                    <div class="main_right_bookingbox" id="main_right_time">
+
+                        <h
+                            style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;white-space:nowrap">
+                            信箱
+                            :&ensp;
+                        </h>
+
+                        <input class="input" type="text" id="useremail" name="useremail" required="required"
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"></input>
+
+                        <!-- <h id="edit "style="position: relative;width: 25px;"><img src="edit.png" class="img" style="height: 25px;cursor: pointer;"></h> -->
+                    </div>
+
+
+
+                    <!--密碼-->
+
+                    <div class="main_right_bookingbox" id="main_right_address">
+                        <h
+                            style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;white-space:nowrap">
+                            密碼
+                            :&ensp;
+                        </h>
+                        <!-- <input id="userpassword" type="text" name="password" > fjhgfhjf</input> -->
+                        <input class="input" type="password" id="userpassword" name="userpassword"
+                            required="required"></input>
+                        <!-- <h id="edit "style="position: relative;width: 25px;"><img src="edit.png" class="img" style="height: 25px;cursor: pointer;"></h> -->
+                    </div>
+
+
+                    <!--修改會員資料-->
+
+                    <div class="main_right_bookingbox" style="margin: 20 auto;">
+                        <h
+                            style="font-size: 16px ; font-weight: 700;  color: #666666; line-height: 13px;white-space:nowrap ;">
+                            修改會員資料</h>
+                        <button id="edit" onclick="signup()"
+                            style="position: absolute ;margin-top: -9px;border:0 ;height: 25px ;background-color:white;cursor: pointer"><img
+                                src="edit.png" class="img" style="height: 25px;cursor: pointer;"></button>
+                        <p id="editmeg"
+                            style="font-size: 16px ; font-weight: 700;  color: #e70c0c; line-height: 13px;white-space:nowrap ;display: none; margin-top: 10px;">
+                            修改成功</p>
+                    </div>
+                </form>
+
+                <!-- </div> -->
+
+
+
+            </div>
+        </div>
+
+
+
+        <div>
+            <hr class="middle_hr" />
+        </div>
+        <!-- form 表單 前端自動驗證格式 發出提醒 如果輸入錯還是會送出 -->
+
+
+
+
+        <div class="intro">
+            <div class="hello" style="margin-bottom:15px; ;">
+                <h style=" color:#448899">歷史訂單：</h>
+                <h id="historynone" style="display: none;">無訂單紀錄</h>
+            </div>
+            <div id="hislist" class="list">
+                <div class="hello" style="font-size: 16px;font-weight: 600;">訂單編號</div>
+                <div class="hello" style="font-size: 16px;font-weight: 600;">景點</div>
+                <div class="hello" style="font-size: 16px;font-weight: 600;">日期</div>
+                <!-- <div class="hello" style="font-size: 16px;font-weight: 600;">連絡電話</div>
+                <div class="hello" style="font-size: 16px;font-weight: 600;">價錢</div> -->
+                <div class="hello" style="font-size: 16px;font-weight: 600;white-space: normal;">付款紀錄</div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div>
+            <hr class="middle_hr" />
+        </div>
+        <div id="detaillist" class="detaillist" style="display:none  ; " onclick="detailclose()">
+            <h height="3px" class="hello" style="display:block  ;color:#448899"> 歷史訂單明細&nbsp&nbsp&nbsp <img id="close"
+                    src="icon_close.png" width="10px" onclick="close()">
+            </h>
+            <div class="hello" style="font-size: 16px;font-weight: 600;display: revert;">訂單編號：<h class="hello"
+                    id="detailorder" style="display:revert">4165456
+                </h>
+            </div>
+            <div class="hello" style="font-size: 16px;font-weight: 600;display: revert;">景點：<h class="hello"
+                    id="detailatt" style="display:revert">4165456</h>
+            </div>
+            <div class="hello" style="font-size: 16px;font-weight: 600;display: revert;">景點地址：<h class="hello"
+                    id="detailadd" style="display:revert">4165456
+                </h>
+            </div>
+            <div class="hello" style="font-size: 16px;font-weight: 600;display: revert;">日期：<h class="hello"
+                    id="detaildate" style="display:revert">4165456</h>
+            </div>
+            <div class="hello" style="font-size: 16px;font-weight: 600;display: revert;">時間：<h class="hello"
+                    id="detailtime" style="display:revert">4165456</h>
+            </div>
+            <div class="hello" style="font-size: 16px;font-weight: 600;display: revert;">連絡姓名：<h class="hello"
+                    id="detailname" style="display:revert">4165456
+                </h>
+            </div>
+            <div class="hello" style="font-size: 16px;font-weight: 600;display: revert;">連絡電話：<h class="hello"
+                    id="detailphone" style="display:revert">4165456
+                </h>
+            </div>
+            <div class="hello" style="font-size: 16px;font-weight: 600;display: revert;">價錢：<h class="hello"
+                    id="detailprice" style="display:revert">4165456
+                </h>
+            </div>
+            <div class="hello" style="font-size: 16px;font-weight: 600;display: revert;">付款狀態：<h class="hello"
+                    id="detailstatus" style="display:revert">4165456
+                </h>
+            </div>
+
+        </div>
+
+        <!-- 需動態 -->
+
+        <div class="intro" style="display: flex;justify-content:end ">
+            <div id="buy_button" style="text-align: center;" >
+
+                <button class="buy_button" style="padding: 0px;cursor: pointer; text-align: center;width: 100%;"href="http://3.115.236.143:3000/"><a
+                        
+                    href="http://3.115.236.143:3000/" style="width: 100px;cursor: pointer; text-align: center;text-decoration:none;color: rgb(255, 255, 255);display: flex;
+                    justify-content: center;">回首頁</a></button>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <footer class="footer" id="foot">
+        <div id="keywordfoot"></div>
+        <div class="footer_text">
+            <p>COPYRIGHT © 2021 台北一日遊 </p>
+    </footer>
+
+
+    <script>
+
+
+
+
+
+        // 判斷登出/入
+        fetch("http://3.115.236.143:3000/api/user", {
+            method: 'GET'
+        })
+            .then((sessionresult) => {
+                return sessionresult.json();//將資料用JSON 的格式用物件和陣列的組合
+            })
+            .then((sessionresult) => {
+                // console.log("SESSSION判斷", result)
+                console.log("SESSSION判斷", sessionresult.data)
+                //如果回傳有值的話，右上角顯示登出 登入顯示
+                //如果回傳沒有值 代表沒有登入狀態 display:""
+                if (sessionresult.data == null) {
+                    // console.log("SESSSION判斷等於Null 代表沒有session 將右上角顯示登入 登出顯示0")
+                    document.getElementById('displaysign').style.display = "block"
+                    document.getElementById('displaysignout').style.display = "none"
+
+                    document.location.href = "http://3.115.236.143:3000/"; //上線測試
+                } else { //表示有登入
+
+                    document.getElementById('displaysign').style.display = "none"
+                    document.getElementById('displaysignout').style.display = "block"
+                    document.getElementById("who").innerHTML = sessionresult.data.name
+                    document.getElementById("username").value = sessionresult.data.name
+                    document.getElementById("useremail").value = sessionresult.data.email
+                    document.getElementById("userpassword").value = sessionresult.data.password
+                    // document.getElementById("userpassword").setAttribute("type", "password");
+
+
+
+
+                }
+
+            })
+
+
+
+
+        function showmeg(message) {
+            return new Promise(function (resolve, reject) {
+                document.getElementById('editmeg').style.display = "block"
+                setTimeout(
+                    function () {
+                        document.getElementById('editmeg').style.display = "none";
+                        // resolve(console.log(message))
+                    }, 3000
+                )
+            })
+        }
+
+
+        function errshowmeg(message) {
+            return new Promise(function (resolve, reject) {
+                resolve(document.getElementById('editmeg').innerText = message)
+                setTimeout(
+                    function () {
+                        document.getElementById('editmeg').style.display = "none"
+                    }, 3000
+                )
+            })
+        }
+
+
+        signup = function () {
+            console.log("username", document.getElementById('username'))
+            console.log("useremail", document.getElementById('useremail'))
+            console.log("userpassword", document.getElementById('userpassword'))
+
+
+            if (document.getElementById('username').validity.valid
+                & document.getElementById('useremail').validity.valid
+                & document.getElementById('userpassword').validity.valid) {
+                registeruserElement = document.getElementById('username')
+                registeruser = registeruserElement.value;
+                console.log("username", registeruser)
+
+                registeremailElement = document.getElementById('useremail')
+                registeremail = registeremailElement.value;
+                console.log("useremail", registeremail)
+                // console.log("email??", email)
+
+                registerrepasswordElement = document.getElementById('userpassword')
+                registerrepassword = registerrepasswordElement.value;
+                console.log("userpassword", registerrepassword)
+                // console.log("password??", password)
+
+                upfd = new FormData(document.getElementById('signupform'))
+                console.log("fd", upfd)
+                console.log("fddd", document.getElementById('signupform'))
+
+                fetch("http://3.115.236.143:3000/api/edituser", {
+                    method: 'POST',
+                    body: JSON.stringify({
+
+                        "registerrepassword": registerrepassword,
+                        "registeremail": registeremail,
+                        "registeruser": registeruser
+
+                    })
+
+                })   //發送query string
+                    .then(function (response) {
+                        console.log(response)
+
+                        return response.json();
+
+                    })
+                    .then(async function (result) {
+                        console.log("修改資訊:", result);
+
+                        // console.log("登入資訊:", result.ok);
+
+
+                        if (result.ok == true) {  //修改成功 顯示
+
+
+
+                            let message = result.ok
+                            // console.log(message)
+                            let test = await showmeg(message);
+
+
+                        } else {//修改失敗 顯示
+                            console.log(result.message)
+
+                            let message = result.message
+                            let test = await errshowmeg(message);
+
+
+                        }
+
+                    })
+
+
+                // .catch((err) => {
+                //     console.log('錯誤:', err);
+                // });
+            }
+        }
+
+
+        // function showdetail(i) {
+        //     return new Promise(function (resolve, reject) {
+        //         resolve(document.getElementById('editmeg').innerText = message)
+        //         setTimeout(
+        //             function () {
+        //                 document.getElementById('editmeg').style.display = "none"
+        //             }, 3000
+        //         )
+        //     })
+        // }
+
+
+
+
+
+        // let detailresult
+        async function testresult() {
+
+            // fetch("http://3.115.236.143:3000/api/history", {
+            //     method: "GET",
+
+            // })
+            //     .then(function (response) {
+            //         console.log(response)
+            //         return response.json();
+
+            //     })
+            // .then( function (result) {
+
+            let res = await fetch("http://3.115.236.143:3000/api/history");
+            let result = await res.json();
+
+            // let detailresult = result;
+            // let test = await showdetail(detailresult);
+
+
+
+            // console.log("detailresult", detailresult) //得到API 回傳的訊息!
+
+
+
+            if (result == null) { //代表沒有預定資料
+
+                // document.getElementById('historynone').style.display = "none"
+                document.getElementById('historynone').style.display = "block"
+                // document.getElementById('foot').style.height = "100%"
+
+            }
+            else {
+                // console.log(result)
+                // console.log(result.data)
+                // console.log(typeof (number))
+                // console.log(String(number))
+                // console.log(number)
+
+                for (i = 0; i < result.length; i++) {
+                    //得到資料景點編號  order  > 塞進 id=order1
+                    number = result[i].number;
+                    console.log(result)
+                    console.log(number)
+                    console.log(typeof (number))
+                    console.log(String(number))
+                    console.log(number)
+                    let number_h = document.createElement("h");
+                    number_h.setAttribute("class", "hello");
+                    number_h.setAttribute("id", "number" + i);
+                    number_h.setAttribute("style", "cursor: pointer;");
+                    number_h.setAttribute("onclick", "showdetail(" + i + ")");
+
+                    let number_text = document.createTextNode(number);
+                    number_h.appendChild(number_text);
+                    hislist.appendChild(number_h);
+
+                    // console.log("result", result)
+
+
+
+                    //得到資料景點名字  name  > 塞進 id=att1
+                    name = result[i].name;
+                    console.log(name)
+                    let name_h = document.createElement("h");
+                    name_h.setAttribute("class", "hello");
+                    let name_text = document.createTextNode(name);
+                    name_h.appendChild(name_text);
+                    hislist.appendChild(name_h);
+
+                    date = result[i].date;
+                    let date_h = document.createElement("h");
+                    date_h.setAttribute("class", "hello");
+                    let date_text = document.createTextNode(date);
+                    date_h.appendChild(date_text);
+                    hislist.appendChild(date_h);
+
+                    if (result[i].status === 0) {
+                        price = result[i].price;
+                        let price_h = document.createElement("h");
+                        price_h.setAttribute("class", "hello");
+                        let price_text = document.createTextNode(price);
+                        price_h.appendChild(price_text);
+                        hislist.appendChild(price_h);
+
+                    } else if (result[i].status === 1) {
+                        price = result[i].price;
+                        let price_h = document.createElement("h");
+                        price_h.setAttribute("class", "hello");
+                        let price_text = document.createTextNode("付款失敗");
+                        price_h.appendChild(price_text);
+                        hislist.appendChild(price_h);
+
+                    }
+
+
+                }
+
+
+
+
+
+
+            }
+
+
+
+
+        }
+
+        testresult()
+
+
+        function showdetail(i) {
+
+            fetch("http://3.115.236.143:3000/api/history", {
+            })
+                .then(function (response) {
+                    console.log(response)
+                    return response.json();
+
+                })
+                .then(function (result) {
+
+                    console.log("1", i)
+
+                    console.log("2", result)
+
+
+
+                    // console.log("4", result)
+                    // console.log(i)
+                    document.getElementById('detaillist').style.display = "grid"
+                    document.getElementById('detailorder').innerText = result[i].number
+                    document.getElementById('detailatt').innerText = result[i].name
+                    document.getElementById('detailadd').innerText = result[i].address
+                    document.getElementById('detaildate').innerText = result[i].date
+                    if (result[i].time == "morning") {
+
+                        document.getElementById('detailtime').innerText = "上半天"
+
+                    } else if (result[i].time == "afternoon") {
+
+                        document.getElementById('detailtime').innerText = "下半天"
+                    }
+
+
+                    document.getElementById('detailname').innerText = result[i].contactName
+                    document.getElementById('detailphone').innerText = result[i].phone
+                    document.getElementById('detailprice').innerText = result[i].price
+
+                    if (result[i].status == 0) {
+
+                        document.getElementById('detailstatus').innerText = "付款成功"
+
+                    } else if (result[i].status == 1) {
+
+                        document.getElementById('detailstatus').innerText = "付款失敗"
+                    }
+
+
+                }
+
+                )
+        }
+
+
+        //# 階段二 WEEK 4 API-------------------------------------
+        // ----------------------彈出登入登出視窗------------------
+        function start() {
+            document.getElementById('signform').style.display = ""
+            document.getElementById('signformbackground').style.display = ""
+        }
+
+
+
+        //--------------登出畫面-------------
+        function displaysignout() {
+            fetch("http://3.115.236.143:3000/api/user", {
+                // fetch("http://3.115.236.143:3000/api/user", {//上線測試
+                method: 'DELETE'
+                // method: 'GET'
+            }) //測試
+                .then((sessionresult) => {
+                    return sessionresult.json();//將資料用JSON 的格式用物件和陣列的組合
+                })
+                .then((sessionresult) => {
+                    if (sessionresult.ok == true) {
+                        location.reload()
+                        document.getElementById('displaysignout').style.display = "none"
+                        document.getElementById('displaysign').style.display = ""
+
+
+                    }
+
+
+                })
+
+
+        }
+
+
+        //  表單不跳
+        function func() {
+            return false;
+        }
+
+
+
+        // 處理右上角 預定文字
+        function booking() {
+
+
+            // 檢查使用者是否已經登入
+            fetch("http://3.115.236.143:3000/api/user", {
+            })
+                .then((sessionresult) => {
+                    return sessionresult.json();
+                })
+                .then((sessionresult) => {
+                    // console.log("SESSSION判斷", result)
+                    // console.log("SESSSION判斷", sessionresult.data)
+                    //如果回傳有值的話，右上角顯示登出 登入顯示
+                    //如果回傳沒有值 代表沒有登入狀態 display:""
+                    if (sessionresult.data == null) {
+                        // SESSSION判斷等於Null 代表沒有登入，進入登入流程
+                        start()
+                    } else {
+                        //有登入 ， 導到 /booking 頁面
+
+                        document.location.href = "http://3.115.236.143:3000/booking";
+
+                    }
+
+                })
+
+        }
+
+
+
+
+        // //瀏覽器改變尺寸的時候，改為顯示三個
+        // window.addEventListener('resize', function () {
+        //
+        // });
+
+
+        function detailclose() {
+            document.getElementById('detaillist').style.display = "none"
+            console.log("123")
+
+        }
+
+
+
+    </script>
+
+
+
+
+</body>
+
+</html>
